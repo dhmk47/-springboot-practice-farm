@@ -45,6 +45,34 @@ nav ul {
     align-items: center;
 }
 
+.farm-product-dtl-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    position: absolute;
+    top: 120px;
+    left: 540px;
+    padding-left: 20px;
+    width: 200px;
+    height: 300px;
+
+    background-color: aquamarine;
+}
+
+.board-dtl-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    position: absolute;
+    top: 120px;
+    left: 840px;
+    padding-left: 20px;
+    width: 200px;
+    height: 300px;
+
+    background-color: aquamarine;
+}
+
 /* main box */
 /* top box */
 .top-box {
