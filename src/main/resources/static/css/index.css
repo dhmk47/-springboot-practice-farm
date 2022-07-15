@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding-top: 70px;
+    width: 1920px;
+    height: 120px;
+
+    background-color: darkseagreen;
+}
+
+header div {
+    margin-left: 50px;
+    width: 200px;
+    height: 150px;
+}
+
+header h1 {
+    padding-left: 20px;
+    font-size: 80px;
+}
+
+.header-nav-box {
+    margin-left: 400px;
+    width: 700px;
+    height: 100px;
+}
+
+.header-nav-box li {
+    cursor: pointer;
+
+    font-size: 20px;
+    font-weight: 500;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* main box */
+
+.top-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.new-farm-product {
+    width: 200px;
+    height: 300px;
+    overflow: auto;
+
+    background-color: aquamarine;
+}
+
+.search-farm-product {
+    display: flex;
+    align-items: center;
+}
+
+.search-farm-product input {
+    width: 800px;
+    height: 50px;
+
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.search-farm-product button {
+    border: none;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+}
+
+.login-box {
+    display: flex;
+    align-items: center;
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-box input {
+    padding: 15px;
+    height: 50px;
+}
+
+.signin-signup-button-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.signin-signup-button-box button {
+    width: 100px;
+    height: 50px;
+}
