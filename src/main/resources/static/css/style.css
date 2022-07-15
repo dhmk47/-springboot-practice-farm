@@ -15,3 +15,7 @@ ul {
     list-style-type: none;
 }
 
+ul li {
+    cursor: pointer;
+    color: rgb(9, 12, 180);
+}

@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+body {
+    height: 1100px;
+}
+
 header {
     display: flex;
     justify-content: flex-start;
@@ -30,10 +34,9 @@ header h1 {
 }
 
 .header-nav-box li {
-    cursor: pointer;
-
     font-size: 20px;
     font-weight: 500;
+    color: black;
 }
 
 nav ul {
@@ -43,14 +46,17 @@ nav ul {
 }
 
 /* main box */
-
+/* top box */
 .top-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    height: 300px;
 }
 
 .new-farm-product {
+    /* margin-top: 150px; */
     width: 200px;
     height: 300px;
     overflow: auto;
@@ -101,4 +107,40 @@ nav ul {
 .signin-signup-button-box button {
     width: 100px;
     height: 50px;
+}
+
+/* bottom box */
+
+.bottom-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.show-price-change {
+    width: 200px;
+    height: 300px;
+    overflow: auto;
+
+    background-color: aquamarine;
+}
+
+.recently-board {
+    margin-right: 400px;
+    width: 1200px;
+    height: 500px;
+
+    background-color: aquamarine;
+}
+
+.top-left-margin {
+    margin-top: 150px;
+    margin-left: 20px;
+}
+
+/* footer */
+
+footer nav {
+    margin: 100px 710px;
+    width: 500px;
 }
