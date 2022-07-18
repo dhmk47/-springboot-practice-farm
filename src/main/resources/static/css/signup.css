@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+:root {
+    --main-btn-color: #0F1840;
+	--main-bg-color: #232D5C;
+	--main-bright-color: #535D89;
+	--main-font-color: #7C84A7;
+}
+
+body {
+    background-color: var(--main-bg-color);
+}
+
+header h1 {
+    color: var(--main-font-color);
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
+    width: 1920px;
+    height: 400px;
+}
+
+.main-box > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+
+    width: 400px;
+}
+
+main label {
+    font-size: 20px;
+    color: var(--main-font-color);
+}
+
+main input {
+    padding: 15px;
+    height: 30px;
+}
+
+main button {
+    cursor: pointer;
+    height: 30px;
+    color: var(--main-bright-color);
+    background-color: var(--main-btn-color);
+}
+
+.username-check {
+    position: absolute;
+    top: 342px;
+    left: 1170px;
+}
+
+.signup-button {
+    width: 80px;
+}

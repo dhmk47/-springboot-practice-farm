@@ -23,6 +23,7 @@ header div {
 }
 
 header h1 {
+    cursor: pointer;
     padding-left: 20px;
     font-size: 80px;
 }
@@ -43,6 +44,10 @@ nav ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+header span {
+    cursor: pointer;
 }
 
 .farm-product-dtl-menu {
@@ -115,6 +120,7 @@ nav ul {
 .login-box {
     display: flex;
     align-items: center;
+    margin-right: 20px;
 }
 
 .input-box {

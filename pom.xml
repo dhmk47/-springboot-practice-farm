@@ -42,6 +42,17 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+		    <groupId>org.mariadb.jdbc</groupId>
+		    <artifactId>mariadb-java-client</artifactId>
+		    <!-- <version>2.7.6</version>  스프링부트는 버젼관리를 자동으로 해줘서 생략해도 됩니다. 그래도 사용하겠다면 그대로 두면 됩니다.-->
+		</dependency>
+		<!-- mybatis -->
+		<dependency>
+		    <groupId>org.mybatis.spring.boot</groupId>
+		    <artifactId>mybatis-spring-boot-starter</artifactId>
+		    <version>2.2.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
