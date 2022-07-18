@@ -2,15 +2,31 @@
 const headerNavItems = document.querySelectorAll(".header-nav-box li");
 const productDtlMenu = document.querySelector(".farm-product-dtl-menu");
 const boardDtlMenu = document.querySelector(".board-dtl-menu");
+
+const productAdminmenu = document.querySelectorAll(".farm-product-dtl-menu span");
 //main
 const loginInputItems = document.querySelectorAll(".login-box input");
 const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box button");
 
-
 let signinFlag = false;
 
+// 게시판 구분짓는 flag
 let productMenuFlag = false;
 let boardMenuFlag = false;
+
+let adminFlag = false;
+
+// 구매하기인지 판매하기인지 구분짓는 flag
+let purchaseFlag = false;
+
+// 구매, 판매 박스
+const dtlMenu = document.querySelector(".purchase-product-menu");
+const dtlProductMenu = document.querySelector(".show-available-product-box");
+let dtlMenuFlag = false;
+let dtlProductFlag = false;
+
+$(dtlMenu).fadeOut(0);
+$(dtlProductMenu).fadeOut(0);
 
 load();
 
@@ -65,6 +81,48 @@ document.querySelector("main").onmouseover = () => {
     }
 }
 
+productAdminmenu[1].onclick = () => {
+    toggleDtlBox();
+    purchaseFlag = true;
+    document.querySelector(".purchase-product-menu h1").innerHTML = "농산물 구매하기";
+    document.querySelector(".purchase-box input").placeholder = "구매할 농산물을 입력하세요.";
+    document.querySelector(".purchase-box button").innerHTML = "구매하기";
+    document.querySelector(".show-product-button").innerHTML = "구매 가능한 농산물 보기";
+}
+
+productAdminmenu[2].onclick = () => {
+    toggleDtlBox();
+    purchaseFlag = false;
+    document.querySelector(".purchase-product-menu h1").innerHTML = "농산물 판매하기";
+    document.querySelector(".purchase-box input").placeholder = "판매할 농산물을 입력하세요.";
+    document.querySelector(".purchase-box button").innerHTML = "판매하기";
+    document.querySelector(".show-product-button").innerHTML = "판매 가능한 농산물 보기";
+}
+
+productAdminmenu[3].onclick = () => {
+
+}
+
+document.querySelector(".xmark1").onclick = () => {
+    toggleDtlBox();
+    if(dtlProductFlag){
+        $(dtlProductMenu).fadeOut(200);
+    }
+}
+
+document.querySelector(".xmark2").onclick = () => {
+    toggleProductDtlBox();
+}
+
+document.querySelector(".show-product-button").onclick = () => {
+    $(dtlProductMenu).fadeIn(20);
+    dtlProductFlag = true;
+    if(purchaseFlag) {
+        
+    }else {
+    }
+}
+
 loginBoxButtons[0].onclick = () => {
     for(let i = 0; i < loginInputItems.length; i++){
         if(isEmpty(loginInputItems[i].value)){
@@ -86,6 +144,35 @@ function load(){
     }else {
         loginBoxButtons[0].innerHTML = "로그인";
         loginBoxButtons[1].innerHTML = "회원가입";
+    }
+    if(adminFlag){
+        productAdminmenu[1].innerHTML = "농산물 추가";
+        productAdminmenu[2].innerHTML = "농산물 제거";
+        productAdminmenu[3].innerHTML = "농산물 수정";
+    }else {
+        productAdminmenu[1].innerHTML = "농산물 구매";
+        productAdminmenu[2].innerHTML = "농산물 판매";
+        productAdminmenu[3].innerHTML = "농산물 재배";
+    }
+}
+
+function toggleDtlBox() {
+    if(dtlMenuFlag){
+        $(dtlMenu).fadeOut(200);
+        dtlMenuFlag = false;
+    }else {
+        $(dtlMenu).fadeIn(200);
+        dtlMenuFlag = true;
+    }
+}
+
+function toggleProductDtlBox() {
+    if(dtlProductFlag){
+        $(dtlProductMenu).fadeOut(200);
+        dtlProductFlag = false;
+    }else {
+        $(dtlProductMenu).fadeIn(200);
+        dtlProductFlag = true;
     }
 }
 

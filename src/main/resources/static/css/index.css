@@ -129,7 +129,6 @@ header span {
 }
 
 .input-box input {
-    padding: 15px;
     height: 50px;
 }
 
@@ -141,6 +140,70 @@ header span {
 .signin-signup-button-box button {
     width: 100px;
     height: 50px;
+}
+
+.purchase-product-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    position: absolute;
+    top: 300px;
+    left: 500px;
+
+    width: 800px;
+    height: 500px;
+    background-color: bisque;
+}
+
+.purchase-product-menu h1 {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.purchase-product-menu input {
+    width: 300px;
+    height: 50px;
+
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.purchase-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.purchase-box button {
+    width: 70px;
+    height: 50px;
+}
+
+.show-product-button {
+    width: 150px;
+    height: 30px;
+}
+
+.fa-xmark {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+
+    cursor: pointer;
+
+    font-size: 30px;
+}
+
+.show-available-product-box {
+    position: absolute;
+    top: 350px;
+    right: 100px;
+
+    width: 200px;
+    height: 500px;
+    background-color: bisque;
 }
 
 /* bottom box */
