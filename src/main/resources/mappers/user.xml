@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.springboot.farm.springbootpractice.domain.user.UserRepository">
+  	<insert id="insertUser" parameterType="com.springboot.farm.springbootpractice.domain.user.User">
+  		insert into
+  			user_mst
+  		values(
+  			0,
+  			#{name},
+  			#{username},
+  			#{password},
+  			#{email},
+  			now(),
+  			now()
+  		)
+  	</insert>
+  </mapper>

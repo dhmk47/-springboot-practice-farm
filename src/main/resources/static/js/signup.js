@@ -49,7 +49,22 @@ buttons[1].onclick = () => {
     }
 
     if(checkUsername() && checkPassword() && passwordValueCheck() && checkEmail()){
-        alert("회원가입 실행");
+        $.ajax({
+            type: "post",
+            url: "/api/v1/user/signup",
+            data: {
+                name: inputItems[0].value,
+                username: inputItems[1].value,
+                passowrd: inputItems[2].value,
+                email: inputItems[4].value 
+            },
+            dataType: "json",
+            success: (response) => {
+                alert("회원가입 성공");
+                console.log(response);
+            },
+            error: errorMessage
+        });
     }else {
         alert("양식을 다시 확인해 주세요.");
     }
@@ -109,4 +124,11 @@ function checkEmail() {
 
 function isEmpty(value) {
     return value == "" || value == undefined || value == null;
+}
+
+function errorMessage(request, status, error) {
+    alert("요청 실패!");
+    console.log(request.status);
+    console.log(request.responseText);
+    console.log(error);
 }
