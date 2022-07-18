@@ -11,7 +11,20 @@ body {
     background-color: var(--main-bg-color);
 }
 
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+header {
+    margin-top: 150px;
+}
+
 header h1 {
+    font-size: 30px;
+    font-weight: 500;
     color: var(--main-font-color);
 }
 
@@ -27,7 +40,7 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 200px;
+    margin-top: 50px;
     width: 1920px;
     height: 400px;
 }
@@ -49,7 +62,14 @@ main label {
 
 main input {
     padding: 15px;
+    width: 250px;
     height: 30px;
+}
+
+main span {
+    font-size: 20px;
+    font-weight: 400;
+    color: red;
 }
 
 main button {
@@ -61,8 +81,47 @@ main button {
 
 .username-check {
     position: absolute;
-    top: 342px;
+    top: 365px;
     left: 1170px;
+}
+
+.not-match-box {
+    display: none;
+    position: absolute;
+    top: 471px;
+    left: 1170px;
+}
+
+.username-dtl-form {
+	display: none;
+    position: absolute;
+    top: 364px;
+    left: 1240px;
+}
+
+.password-dtl-form {
+	display: none;
+    position: absolute;
+    top: 418px;
+    left: 1170px;
+}
+
+.email-dtl-form {
+    display: none;
+    position: absolute;
+    top: 575px;
+    left: 910px;
+}
+
+.email-select-box {
+    position: absolute;
+    top: 526px;
+    left: 1170px;
+}
+
+.email-select-box select {
+    width: 150px;
+    height: 30px;
 }
 
 .signup-button {
