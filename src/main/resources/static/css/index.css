@@ -206,6 +206,31 @@ header span {
     background-color: bisque;
 }
 
+.auto-search {
+    position: absolute;
+    top: 295px;
+    right: 632px;
+
+    width: 800px;
+    height: 300px;
+    background-color: bisque;
+}
+
+
+.auto-search-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auto-search-list li{
+    margin: 10px;
+    font-size: 20px;
+    font-weight: 400;
+
+    color: black;
+}
+
 /* bottom box */
 
 .bottom-box {

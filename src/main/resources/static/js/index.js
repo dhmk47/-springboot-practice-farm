@@ -8,6 +8,8 @@ const productAdminmenu = document.querySelectorAll(".farm-product-dtl-menu span"
 const loginInputItems = document.querySelectorAll(".login-box input");
 const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box button");
 
+const searchInput = document.querySelector(".search-farm-product input");
+
 let signinFlag = false;
 
 // 게시판 구분짓는 flag
@@ -25,10 +27,41 @@ const dtlProductMenu = document.querySelector(".show-available-product-box");
 let dtlMenuFlag = false;
 let dtlProductFlag = false;
 
+let array = ["사과", "오렌지", "수박", "딸기", "사과탕후루"];
+let boolean = [false, false, false, false];
+
+
 $(dtlMenu).fadeOut(0);
 $(dtlProductMenu).fadeOut(0);
 
 load();
+
+let timeout = true;
+let delay = 2000;
+
+searchInput.onkeyup = () => {
+    if(timeout) {
+        clearTimeout(timeout);
+    }
+    timeout = setTimeout(function() {
+        search();
+    }, delay);
+}
+
+function search() {
+    let text = searchInput.value;
+    console.log(text);
+    for(let i = 0; i < array.length; i++){
+        if(text == ""){
+            document.querySelector(".auto-search-list").innerHTML = "";
+            // boolean[i] = false;
+        }else if(array[i].indexOf(text) > -1){
+            document.querySelector(".auto-search-list").innerHTML += 
+            `<li>${array[i]}</li>`;
+            // boolean[i] = true;
+        }
+    }
+}
 
 document.querySelector("header h1").onclick = () => {
     location.href = "/index";
