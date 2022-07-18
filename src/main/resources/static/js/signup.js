@@ -5,6 +5,8 @@ const emailFormBox = document.querySelector(".email-dtl-form");
 const selectBox = document.querySelector("select");
 const buttons = document.querySelectorAll("main button");
 
+let email = null;
+
 inputItems[1].onblur = () => {
     checkUsername();
 }
@@ -51,17 +53,17 @@ buttons[1].onclick = () => {
     if(checkUsername() && checkPassword() && passwordValueCheck() && checkEmail()){
         $.ajax({
             type: "post",
-            url: "/api/v1/user/signup",
+            url: "api/v1/user/signup",
             data: {
                 name: inputItems[0].value,
                 username: inputItems[1].value,
-                passowrd: inputItems[2].value,
-                email: inputItems[4].value 
+                password: inputItems[2].value,
+                email: email 
             },
             dataType: "json",
             success: (response) => {
                 alert("회원가입 성공");
-                console.log(response);
+                location.replace("/index");
             },
             error: errorMessage
         });
@@ -105,9 +107,11 @@ function passwordValueCheck() {
 function checkEmail() {
     let regExr = null;
     let emailFormFlag = false;
+    email = inputItems[4].value;
     if(selectBox.options[selectBox.selectedIndex].text != "직접입력"){
         regExr = /^[A-Za-z0-9]+$/;
         emailFormFlag = (regExr).test(inputItems[4].value);
+        email += selectBox.options[selectBox.selectedIndex].text;
     }else {
         regExr = /^[A-Za-z0-9]+@[A-Za-z0-9]+\.com$/
         emailFormFlag = (regExr).test(inputItems[4].value);

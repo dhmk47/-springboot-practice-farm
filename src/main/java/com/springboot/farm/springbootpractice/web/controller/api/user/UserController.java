@@ -19,7 +19,8 @@ public class UserController {
 	private final UserService userService;
 	
 	@PostMapping("/signup")
-	public ResponseEntity<?> signupUser(@RequestBody CreateUserReqDto createUserReqDto) {
+	public ResponseEntity<?> signupUser(CreateUserReqDto createUserReqDto) {
+		System.out.println(createUserReqDto);
 		
 		if(userService.signupUser(createUserReqDto)) {
 			return ResponseEntity.ok().body(createUserReqDto);
