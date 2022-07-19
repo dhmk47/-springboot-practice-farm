@@ -17,4 +17,18 @@
   			now()
   		)
   	</insert>
+  	
+  	<select id="getUserByUsername" parameterType="String" resultType="com.springboot.farm.springbootpractice.domain.user.User">
+  		select
+  			usercode,
+  			name,
+  			username,
+  			password,
+  			email,
+  			roles
+  		from
+  			user_mst
+  		where
+  			username = #{username}
+  	</select>
   </mapper>

@@ -42,14 +42,15 @@ let timeout = true;
 let delay = 200;
 
 searchInput.onkeyup = () => {
+	let keyCode = window.event.keyCode;
     if(timeout) {
         clearTimeout(timeout);
     }
     timeout = setTimeout(function() {
-        search();
+        search(keyCode);
     }, delay);
     autoSearchFlag = true;
-    // autoSearchValues = document.querySelectorAll(".auto-search-list li");
+    
 }
 
 searchInput.onfocus = () => {
@@ -66,16 +67,15 @@ document.querySelector("main").onclick = (event) => {
     }
 } 
 
-function search() {
+function search(keyCode) {
     let text = searchInput.value;
     document.querySelector(".auto-search-list").innerHTML = "";
-    // let keyCode = window.event.keyCode;
-    // if(keyCode == 40 && autoSearchValues != null){         // down
-    //     // objOver(autoSearchValues[0]);
-    //     alert("down");
-    // }else if(keyCode == 38 && autoSearchValues != null){   // up
-    //     alert("up");
-    // }
+    if(keyCode == 40 && autoSearchValues != null){         // down
+        // objOver(autoSearchValues[0]);
+        alert("down");
+    }else if(keyCode == 38 && autoSearchValues != null){   // up
+        alert("up");
+    }
     for(let i = 0; i < array.length; i++){
         if(searchInput.value == ""){
             document.querySelector(".auto-search-list").innerHTML += 
@@ -85,6 +85,7 @@ function search() {
             `<li onmouseover="objOver(this)" onmouseout="objOut(this)" onclick="add('${array[i]}')" style="width: 800px; text-align: center">${array[i]}</li>`;
         }
     }
+    autoSearchValues = document.querySelectorAll(".auto-search-list li");
 }
 
 // 마우스가 위에 있을 때 회색으로 처리, 입력창에 값 대입

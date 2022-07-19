@@ -2,6 +2,9 @@ package com.springboot.farm.springbootpractice.domain.user;
 
 import java.time.LocalDateTime;
 
+import com.springboot.farm.springbootpractice.web.dto.user.CreateUserRespDto;
+import com.springboot.farm.springbootpractice.web.dto.user.ReadUserRespDto;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +16,27 @@ public class User {
 	private String username;
 	private String password;
 	private String email;
-	private LocalDateTime create_date;
-	private LocalDateTime update_date;
+	private String roles;
+	
+	public CreateUserRespDto toCreateUserDto() {
+		return CreateUserRespDto.builder()
+				.usercode(usercode)
+				.name(name)
+				.username(username)
+				.password(password)
+				.email(email)
+				.roles(roles)
+				.build();
+	}
+	
+	public ReadUserRespDto toReadUserDto() {
+		return ReadUserRespDto.builder()
+				.usercode(usercode)
+				.name(name)
+				.username(username)
+				.password(password)
+				.email(email)
+				.roles(roles)
+				.build();
+	}
 }
