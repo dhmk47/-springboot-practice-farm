@@ -29,8 +29,9 @@ let dtlMenuFlag = false;
 let dtlProductFlag = false;
 
 let autoSearchFlag = false;
+let autoSearchValues = null;
 
-let array = ["사과", "오렌지", "수박", "딸기", "사과탕후루", "사과탕"];
+let array = ["사과", "오렌지", "수박", "딸기", "사과탕후루", "사과탕", "참외", "귤"];
 
 $(dtlMenu).fadeOut(0);
 $(dtlProductMenu).fadeOut(0);
@@ -48,6 +49,7 @@ searchInput.onkeyup = () => {
         search();
     }, delay);
     autoSearchFlag = true;
+    // autoSearchValues = document.querySelectorAll(".auto-search-list li");
 }
 
 searchInput.onfocus = () => {
@@ -62,25 +64,37 @@ document.querySelector("main").onclick = (event) => {
         autoSearchBox.style.display = "none";
         autoSearchFlag = false;
     }
-}
+} 
 
 function search() {
     let text = searchInput.value;
     document.querySelector(".auto-search-list").innerHTML = "";
+    // let keyCode = window.event.keyCode;
+    // if(keyCode == 40 && autoSearchValues != null){         // down
+    //     // objOver(autoSearchValues[0]);
+    //     alert("down");
+    // }else if(keyCode == 38 && autoSearchValues != null){   // up
+    //     alert("up");
+    // }
     for(let i = 0; i < array.length; i++){
         if(searchInput.value == ""){
             document.querySelector(".auto-search-list").innerHTML += 
-            `<li onmouseover="objFocus(this)" onclick="add('${array[i]}')" style="width: 800px; text-align: center">${array[i]}</li>`;
+            `<li onmouseover="objOver(this)" onmouseout="objOut(this)" onclick="add('${array[i]}')" style="width: 800px; text-align: center">${array[i]}</li>`;
         }else if(array[i].indexOf(text) > -1){
             document.querySelector(".auto-search-list").innerHTML += 
-            `<li onmouseover="objFocus(this)" onclick="add('${array[i]}')" style="width: 800px; text-align: center">${array[i]}</li>`;
+            `<li onmouseover="objOver(this)" onmouseout="objOut(this)" onclick="add('${array[i]}')" style="width: 800px; text-align: center">${array[i]}</li>`;
         }
     }
 }
 
-function objFocus(obj){
-    console.log(obj);
-    obj.style.color = "red";
+// 마우스가 위에 있을 때 회색으로 처리, 입력창에 값 대입
+function objOver(obj){
+    searchInput.value = obj.textContent;
+    obj.style.backgroundColor = "gray";
+}
+
+function objOut(obj){
+    obj.style.backgroundColor = "white";
 }
 
 function add(value) {

@@ -212,6 +212,7 @@ header span {
     top: 295px;
     right: 632px;
 
+    overflow: hidden;
     width: 800px;
     height: 300px;
     background-color: bisque;
@@ -221,11 +222,13 @@ header span {
 .auto-search-list {
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
+
 }
 
 .auto-search-list li{
-    margin: 10px;
+    padding: 10px 0px;
     font-size: 20px;
     font-weight: 400;
 
