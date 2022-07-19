@@ -28,6 +28,8 @@ const dtlProductMenu = document.querySelector(".show-available-product-box");
 let dtlMenuFlag = false;
 let dtlProductFlag = false;
 
+let autoSearchFlag = false;
+
 let array = ["사과", "오렌지", "수박", "딸기", "사과탕후루", "사과탕"];
 
 $(dtlMenu).fadeOut(0);
@@ -45,18 +47,20 @@ searchInput.onkeyup = () => {
     timeout = setTimeout(function() {
         search();
     }, delay);
+    autoSearchFlag = true;
 }
 
 searchInput.onfocus = () => {
     autoSearchBox.style.display = "block";
     search();
+    autoSearchFlag = true;
 }
 
+// 자동검색창을 닫게 해주기 위해서 검색창이 아닌 곳을 클릭하면 none
 document.querySelector("main").onclick = (event) => {
-    console.log(event.target);
-    alert(event.target);
-    if(!event.target.includes("li")){
+    if(!String(event.target).includes("HTMLLIElement") && !String(event.target).includes("HTMLInput")){
         autoSearchBox.style.display = "none";
+        autoSearchFlag = false;
     }
 }
 
@@ -66,12 +70,17 @@ function search() {
     for(let i = 0; i < array.length; i++){
         if(searchInput.value == ""){
             document.querySelector(".auto-search-list").innerHTML += 
-            `<li onclick="add('${array[i]}')">${array[i]}</li>`;
+            `<li onmouseover="objFocus(this)" onclick="add('${array[i]}')" style="width: 800px; text-align: center">${array[i]}</li>`;
         }else if(array[i].indexOf(text) > -1){
             document.querySelector(".auto-search-list").innerHTML += 
-            `<li onclick="add('${array[i]}')">${array[i]}</li>`;
+            `<li onmouseover="objFocus(this)" onclick="add('${array[i]}')" style="width: 800px; text-align: center">${array[i]}</li>`;
         }
     }
+}
+
+function objFocus(obj){
+    console.log(obj);
+    obj.style.color = "red";
 }
 
 function add(value) {
@@ -183,6 +192,21 @@ loginBoxButtons[0].onclick = () => {
 
 loginBoxButtons[1].onclick = () => {
     location.href = "/signup";
+}
+
+// 자동검색창이 열려있을때 로그인 input창이 focus면 자동검색창 닫기
+loginInputItems[0].onfocus = () => {
+    if(autoSearchFlag) {
+        autoSearchBox.style.display = "none";
+        autoSearchFlag = false;
+    }
+}
+// 위와 동일
+loginInputItems[1].onfocus = () => {
+    if(autoSearchFlag) {
+        autoSearchBox.style.display = "none";
+        autoSearchFlag = false;
+    }
 }
 
 function load(){
