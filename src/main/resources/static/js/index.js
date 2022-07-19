@@ -9,6 +9,7 @@ const loginInputItems = document.querySelectorAll(".login-box input");
 const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box button");
 
 const searchInput = document.querySelector(".search-farm-product input");
+const autoSearchBox = document.querySelector(".auto-search");
 
 let signinFlag = false;
 
@@ -27,9 +28,7 @@ const dtlProductMenu = document.querySelector(".show-available-product-box");
 let dtlMenuFlag = false;
 let dtlProductFlag = false;
 
-let array = ["사과", "오렌지", "수박", "딸기", "사과탕후루"];
-let boolean = [false, false, false, false];
-
+let array = ["사과", "오렌지", "수박", "딸기", "사과탕후루", "사과탕"];
 
 $(dtlMenu).fadeOut(0);
 $(dtlProductMenu).fadeOut(0);
@@ -37,7 +36,7 @@ $(dtlProductMenu).fadeOut(0);
 load();
 
 let timeout = true;
-let delay = 2000;
+let delay = 200;
 
 searchInput.onkeyup = () => {
     if(timeout) {
@@ -48,19 +47,35 @@ searchInput.onkeyup = () => {
     }, delay);
 }
 
+searchInput.onfocus = () => {
+    autoSearchBox.style.display = "block";
+    search();
+}
+
+document.querySelector("main").onclick = (event) => {
+    console.log(event.target);
+    alert(event.target);
+    if(!event.target.includes("li")){
+        autoSearchBox.style.display = "none";
+    }
+}
+
 function search() {
     let text = searchInput.value;
-    console.log(text);
+    document.querySelector(".auto-search-list").innerHTML = "";
     for(let i = 0; i < array.length; i++){
-        if(text == ""){
-            document.querySelector(".auto-search-list").innerHTML = "";
-            // boolean[i] = false;
+        if(searchInput.value == ""){
+            document.querySelector(".auto-search-list").innerHTML += 
+            `<li onclick="add('${array[i]}')">${array[i]}</li>`;
         }else if(array[i].indexOf(text) > -1){
             document.querySelector(".auto-search-list").innerHTML += 
-            `<li>${array[i]}</li>`;
-            // boolean[i] = true;
+            `<li onclick="add('${array[i]}')">${array[i]}</li>`;
         }
     }
+}
+
+function add(value) {
+    // location.href = "/index";
 }
 
 document.querySelector("header h1").onclick = () => {

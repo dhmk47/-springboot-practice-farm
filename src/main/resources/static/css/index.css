@@ -207,6 +207,7 @@ header span {
 }
 
 .auto-search {
+    display: none;
     position: absolute;
     top: 295px;
     right: 632px;
