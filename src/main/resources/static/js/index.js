@@ -191,7 +191,7 @@ productAdminmenu[0].onclick = () => {
 
 productAdminmenu[1].onclick = () => {
     if(adminFlag) { // 관리자일 경우 새로운 getMapping 요청
-        
+        location.href = "/product/management";
     }else {
         toggleDtlBox();
     }
@@ -296,6 +296,10 @@ loginBoxButtons[0].onclick = () => {
         },
         error: errorMessage
     });
+}
+
+loginBoxButtons[1].onclick = () => {
+    location.href = "/signup";
 }
 
 // 자동검색창이 열려있을때 로그인 input창이 focus면 자동검색창 닫기
