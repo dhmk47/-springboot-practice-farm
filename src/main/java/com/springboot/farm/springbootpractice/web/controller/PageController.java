@@ -17,8 +17,8 @@ public class PageController {
 		return "signup";
 	}
 	
-	@GetMapping("/add/product")
+	@GetMapping("/product/management")
 	public String goAddProductPage() {
-		return "addProduct";
+		return "managementProduct";
 	}
 }
