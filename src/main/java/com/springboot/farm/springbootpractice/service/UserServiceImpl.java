@@ -30,7 +30,8 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public ReadUserRespDto readUserByUsername(String username) throws Exception{
-		return userRepository.getUserByUsername(username).toReadUserDto();
+		User user = userRepository.getUserByUsername(username);
+		return user == null ? null : user.toReadUserDto();
 	}
 
 

@@ -5,10 +5,15 @@ const emailFormBox = document.querySelector(".email-dtl-form");
 const selectBox = document.querySelector("select");
 const buttons = document.querySelectorAll("main button");
 
+let usernameFlag = false;
+let username = null;
 let email = null;
 
 inputItems[1].onblur = () => {
     checkUsername();
+    if(username != inputItems[1].value) {
+        usernameFlag = false;
+    }
 }
 
 inputItems[2].onblur = () => {
@@ -32,7 +37,28 @@ selectBox.onchange = () => {
 }
 
 buttons[0].onclick = () => {
+    username = inputItems[1].value;
 
+    if(isEmpty(username)) {
+        alert("아이디를 입력해 주세요.");
+        return;
+    }
+
+    $.ajax({
+        type: "get",
+        url: `api/v1/user/check/${username}`,
+        dataType: "json",
+        success: (response) => {
+            if(response.data != null){
+                alert("이미 중복된 아이디입니다.")
+                usernameFlag = false;
+            }else {
+                alert("사용가능한 아이디입니다.");
+                usernameFlag = true;
+            }
+        },
+        error: errorMessage
+    })
 }
 
 buttons[1].onclick = () => {
@@ -50,7 +76,7 @@ buttons[1].onclick = () => {
         }
     }
 
-    if(checkUsername() && checkPassword() && passwordValueCheck() && checkEmail()){
+    if(checkUsername() && checkPassword() && passwordValueCheck() && checkEmail() && usernameFlag){
         $.ajax({
             type: "post",
             url: "api/v1/user/signup",
@@ -68,7 +94,11 @@ buttons[1].onclick = () => {
             error: errorMessage
         });
     }else {
-        alert("양식을 다시 확인해 주세요.");
+        if(!usernameFlag) {
+            alert("아이디 중복확인을 진행해 주세요.");
+        }else {
+            alert("양식을 다시 확인해 주세요.");
+        }
     }
 }
 

@@ -1,14 +1,10 @@
 package com.springboot.farm.springbootpractice.web.controller.api.user;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.farm.springbootpractice.service.UserService;
@@ -52,6 +48,22 @@ public class UserController {
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "유저불러오기 성공", readUserRespDto));
+	}
+	
+	@PostMapping("/signin")
+	public ResponseEntity<?> signinUser(String username, String password){
+		boolean result = false;
+		try {
+			ReadUserRespDto readUserRespDto = userService.readUserByUsername(username);
+			if(readUserRespDto != null) {
+				result = readUserRespDto.getPassword().equals(password);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.ok().body(new CMRespDto<>(-1, "로그인 요청 실패", result));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "로그인 요청 성공", result));
 	}
 
 }

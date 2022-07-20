@@ -19,6 +19,7 @@ public class CreateUserReqDto {
 				.username(username)
 				.password(password)
 				.email(email)
+				.roles("ROLE_USER")
 				.build();
 	}
 }

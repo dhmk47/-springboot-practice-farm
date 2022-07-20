@@ -1,10 +1,15 @@
 // header
 const headerNavItems = document.querySelectorAll(".header-nav-box li");
+const userMenu = document.querySelector(".user-menu");
+const userMenuBtn = document.querySelector(".fa-caret-down");
 const productDtlMenu = document.querySelector(".farm-product-dtl-menu");
 const boardDtlMenu = document.querySelector(".board-dtl-menu");
+const userDtlMenu = document.querySelector(".user-dtl-menu");
+const userDtlMenuItems = document.querySelectorAll(".user-dtl-menu span");
 
 const productAdminmenu = document.querySelectorAll(".farm-product-dtl-menu span");
 //main
+const loginBox = document.querySelector(".login-box");
 const loginInputItems = document.querySelectorAll(".login-box input");
 const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box button");
 
@@ -14,6 +19,7 @@ const autoSearchBox = document.querySelector(".auto-search");
 let signinFlag = false;
 
 // 게시판 구분짓는 flag
+let userMenuFlag = false;
 let productMenuFlag = false;
 let boardMenuFlag = false;
 
@@ -33,6 +39,8 @@ let autoSearchValues = null;
 
 let array = ["사과", "오렌지", "수박", "딸기", "사과탕후루", "사과탕", "참외", "귤"];
 
+// $(userMenu).fadeOut(0);
+$(userDtlMenu).fadeOut(0);
 $(dtlMenu).fadeOut(0);
 $(dtlProductMenu).fadeOut(0);
 
@@ -113,6 +121,8 @@ headerNavItems[0].onclick = () => {
     }else {
         if(boardMenuFlag){
             headerNavItems[1].click();
+        }else if(userMenuFlag) {
+            userMenuBtn.click();
         }
         $(productDtlMenu).fadeIn(200);
         productDtlMenu.style.display = "flex";
@@ -128,6 +138,8 @@ headerNavItems[1].onclick = () => {
     }else {
         if(productMenuFlag){
             headerNavItems[0].click();
+        }else if(userMenuFlag) {
+            userMenuBtn.click();
         }
         $(boardDtlMenu).fadeIn(200);
         boardDtlMenu.style.display = "flex";
@@ -143,6 +155,21 @@ headerNavItems[2].onclick = () => {
     }
 }
 
+userMenuBtn.onclick = () => {
+    if(userMenuFlag){
+        $(userDtlMenu).fadeOut(200);
+        userMenuFlag = false;
+    }else {
+        if(boardMenuFlag) {
+            headerNavItems[1].click();
+        }else if(productMenuFlag){
+            headerNavItems[0].click();
+        }
+        $(userDtlMenu).fadeIn(200);
+        userMenuFlag = true;
+    }
+}
+
 document.querySelector("main").onmouseover = () => {
     if(productMenuFlag){
         $(productDtlMenu).fadeOut(200);
@@ -150,6 +177,9 @@ document.querySelector("main").onmouseover = () => {
     }else if(boardMenuFlag){
         $(boardDtlMenu).fadeOut(200);
         boardMenuFlag = false;
+    }else if(userMenuFlag) {
+        $(userDtlMenu).fadeOut(200);
+        userMenuFlag = false;
     }
 }
 
@@ -175,6 +205,22 @@ productAdminmenu[3].onclick = () => {
 
 }
 
+// 내 정보 보기
+userDtlMenuItems[0].onclick = () => {
+
+}
+
+userDtlMenuItems[1].onclick = () => {
+    alert("로그아웃");
+    signinFlag = false;
+    location.replace("/index");
+}
+
+// 회원탈퇴
+userDtlMenuItems[2].onclick = () => {
+    
+}
+
 document.querySelector(".xmark1").onclick = () => {
     toggleDtlBox();
     if(dtlProductFlag){
@@ -189,9 +235,9 @@ document.querySelector(".xmark2").onclick = () => {
 document.querySelector(".show-product-button").onclick = () => {
     $(dtlProductMenu).fadeIn(20);
     dtlProductFlag = true;
-    if(purchaseFlag) {
+    if(purchaseFlag) {  // 구매 가능한 품목 나타내기
         
-    }else {
+    }else {             // 판매 가능한 품목 나타내기
     }
 }
 
@@ -203,10 +249,27 @@ loginBoxButtons[0].onclick = () => {
             return;
         }
     }
-}
 
-loginBoxButtons[1].onclick = () => {
-    location.href = "/signup";
+    $.ajax({
+        type: "post",
+        url: "/api/v1/user/signin",
+        data: {
+            "username": loginInputItems[0].value,
+            "password": loginInputItems[1].value
+        },
+        dataType: "json",
+        success: (response) => {
+            if(response.data == true) {
+                alert("로그인 성공");
+                signinFlag = true;
+                // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
+                load();
+            }else {
+                alert("회원정보가 옳바르지 않습니다.");
+            }
+        },
+        error: errorMessage
+    });
 }
 
 // 자동검색창이 열려있을때 로그인 input창이 focus면 자동검색창 닫기
@@ -226,11 +289,11 @@ loginInputItems[1].onfocus = () => {
 
 function load(){
     if(signinFlag) {
-        loginBoxButtons[0].innerHTML = "로그아웃";
-        loginBoxButtons[1].innerHTML = "내정보 보기";
+        userMenu.style.display = "block";
+        loginBox.style.visibility = "hidden";
     }else {
-        loginBoxButtons[0].innerHTML = "로그인";
-        loginBoxButtons[1].innerHTML = "회원가입";
+        userMenu.style.display = "none";
+        loginBox.style.visibility = "visible";
     }
     if(adminFlag){
         productAdminmenu[1].innerHTML = "농산물 추가";
@@ -261,6 +324,13 @@ function toggleProductDtlBox() {
         $(dtlProductMenu).fadeIn(200);
         dtlProductFlag = true;
     }
+}
+
+function errorMessage(request, status, error) {
+    alert("요청실패");
+    console.log(request.status);
+    console.log(request.responseText);
+    console.log(error);
 }
 
 function isEmpty(value) {
