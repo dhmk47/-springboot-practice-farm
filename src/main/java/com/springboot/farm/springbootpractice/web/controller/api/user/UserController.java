@@ -52,18 +52,20 @@ public class UserController {
 	
 	@PostMapping("/signin")
 	public ResponseEntity<?> signinUser(String username, String password){
-		boolean result = false;
+		ReadUserRespDto readUserRespDto = null;
 		try {
-			ReadUserRespDto readUserRespDto = userService.readUserByUsername(username);
+			readUserRespDto = userService.readUserByUsername(username);
 			if(readUserRespDto != null) {
-				result = readUserRespDto.getPassword().equals(password);
+				if(readUserRespDto.getPassword().equals(password)) {
+					return ResponseEntity.ok().body(new CMRespDto<>(1, "로그인 요청 성공", readUserRespDto));
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.ok().body(new CMRespDto<>(-1, "로그인 요청 실패", result));
+			return ResponseEntity.ok().body(new CMRespDto<>(-1, "로그인 요청 실패", readUserRespDto));
 		}
 		
-		return ResponseEntity.ok().body(new CMRespDto<>(1, "로그인 요청 성공", result));
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "로그인 요청 성공", null));
 	}
 
 }

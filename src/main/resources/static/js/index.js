@@ -13,6 +13,8 @@ const loginBox = document.querySelector(".login-box");
 const loginInputItems = document.querySelectorAll(".login-box input");
 const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box button");
 
+const customButtons = document.querySelectorAll(".custom-button-box button");
+
 const searchInput = document.querySelector(".search-farm-product input");
 const autoSearchBox = document.querySelector(".auto-search");
 
@@ -183,26 +185,43 @@ document.querySelector("main").onmouseover = () => {
     }
 }
 
+productAdminmenu[0].onclick = () => {
+    
+}
+
 productAdminmenu[1].onclick = () => {
-    toggleDtlBox();
+    if(adminFlag) { // 관리자일 경우 새로운 getMapping 요청
+        
+    }else {
+        toggleDtlBox();
+    }
+}
+
+customButtons[0].onclick = () => {
     purchaseFlag = true;
+    growFlag = false;
     document.querySelector(".purchase-product-menu h1").innerHTML = "농산물 구매하기";
     document.querySelector(".purchase-box input").placeholder = "구매할 농산물을 입력하세요.";
     document.querySelector(".purchase-box button").innerHTML = "구매하기";
     document.querySelector(".show-product-button").innerHTML = "구매 가능한 농산물 보기";
 }
 
-productAdminmenu[2].onclick = () => {
-    toggleDtlBox();
+customButtons[1].onclick = () => {
     purchaseFlag = false;
+    growFlag = false;
     document.querySelector(".purchase-product-menu h1").innerHTML = "농산물 판매하기";
     document.querySelector(".purchase-box input").placeholder = "판매할 농산물을 입력하세요.";
     document.querySelector(".purchase-box button").innerHTML = "판매하기";
     document.querySelector(".show-product-button").innerHTML = "판매 가능한 농산물 보기";
 }
 
-productAdminmenu[3].onclick = () => {
-
+customButtons[2].onclick = () => {
+    purchaseFlag = false;
+    growFlag = true;
+    document.querySelector(".purchase-product-menu h1").innerHTML = "농산물 재배하기";
+    document.querySelector(".purchase-box input").placeholder = "재배할 농산물을 입력하세요.";
+    document.querySelector(".purchase-box button").innerHTML = "재배하기";
+    document.querySelector(".show-product-button").innerHTML = "재배 가능한 농산물 보기";
 }
 
 // 내 정보 보기
@@ -213,6 +232,7 @@ userDtlMenuItems[0].onclick = () => {
 userDtlMenuItems[1].onclick = () => {
     alert("로그아웃");
     signinFlag = false;
+    adminFlag = false;
     location.replace("/index");
 }
 
@@ -237,7 +257,10 @@ document.querySelector(".show-product-button").onclick = () => {
     dtlProductFlag = true;
     if(purchaseFlag) {  // 구매 가능한 품목 나타내기
         
-    }else {             // 판매 가능한 품목 나타내기
+    }else if(!purchaseFlag) {    // 판매 가능한 품목 나타내기
+                    
+    }else if(growFlag) {        // 재배 가능한 품목 나타내기
+
     }
 }
 
@@ -259,9 +282,12 @@ loginBoxButtons[0].onclick = () => {
         },
         dataType: "json",
         success: (response) => {
-            if(response.data == true) {
+            if(response.data != null) {
                 alert("로그인 성공");
                 signinFlag = true;
+                if(response.data.roles.includes("ADMIN")){
+                    adminFlag = true;
+                }
                 // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
                 load();
             }else {
@@ -294,15 +320,6 @@ function load(){
     }else {
         userMenu.style.display = "none";
         loginBox.style.visibility = "visible";
-    }
-    if(adminFlag){
-        productAdminmenu[1].innerHTML = "농산물 추가";
-        productAdminmenu[2].innerHTML = "농산물 제거";
-        productAdminmenu[3].innerHTML = "농산물 수정";
-    }else {
-        productAdminmenu[1].innerHTML = "농산물 구매";
-        productAdminmenu[2].innerHTML = "농산물 판매";
-        productAdminmenu[3].innerHTML = "농산물 재배";
     }
 }
 
