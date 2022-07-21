@@ -9,14 +9,14 @@ public class CreateProductReqDto {
 	private String productName;
 	private int price;
 	private String season;
-	private String growDay;
+	private int growDay;
 	
 	public Product toEntity() {
 		return Product.builder()
 				.product_name(productName)
 				.price(price)
 				.season(season)
-				.grow_day(price)
+				.grow_day(growDay)
 				.build();
 	}
 }

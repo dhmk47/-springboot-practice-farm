@@ -40,6 +40,11 @@ let result = false;
 // 값을 입력했는지 안 했는지 확인 하느 flag
 let hasValue = false;
 
+// 추가 화면인지 확인 하는 flag
+let addProductFlag = true;
+
+// 중복체크 후에 이름을 변경했는지 확인하기 위한 flag
+let checkedProductName = null;
 
 $(userDtlMenu).fadeOut(0);
 
@@ -156,6 +161,7 @@ customButtons[0].onclick = () => {
             result = confirm("변경사항이 저장되지 않습니다.\n그래도 진행 하시겠습니까?");
             if(result) {
                 inputItems.forEach(i => i.value = "");
+                checkedProductName = null;
             }
             break;
         }
@@ -171,7 +177,7 @@ customButtons[0].onclick = () => {
             return;
         }
     }
-
+    addProductFlag = true;
     removeFlag = false;
     if(modifyFlag){
         toggleProductDivBox();
@@ -193,6 +199,7 @@ customButtons[1].onclick = () => {
             result = confirm("변경사항이 저장되지 않습니다.\n그래도 진행 하시겠습니까?");
             if(result) {
                 inputItems.forEach(i => i.value = "");
+                checkedProductName = null;
             }
             break;
         }
@@ -207,6 +214,7 @@ customButtons[1].onclick = () => {
             return;
         }
     }
+    addProductFlag = false;
     removeFlag = false;
     if(!modifyFlag) {
         toggleProductDivBox();
@@ -227,6 +235,7 @@ customButtons[2].onclick = () => {
             result = confirm("변경사항이 저장되지 않습니다.\n그래도 진행 하시겠습니까?");
             if(result) {
                 inputItems.forEach(i => i.value = "");
+                checkedProductName = null;
             }
             break;
         }
@@ -245,6 +254,7 @@ customButtons[2].onclick = () => {
         toggleProductDivBox();
         modifyFlag = false;
     }
+    addProductFlag = false;
     removeFlag = true;
     inputItems[0].placeholder = "삭제할 농선물 이름";
     submitButton.innerHTML = "제거하기"
@@ -252,6 +262,12 @@ customButtons[2].onclick = () => {
 
 // 농산물 체크 버튼
 checkButton.onclick = () => {
+    if (isEmpty(inputItems[0].value)) {
+        alert("이름을 입력해주세요");
+        return;
+    }else if(checkedProductName == inputItems[0].value){
+        return;
+    }
     $.ajax({
         data: "get",
         url: `/api/v1/product/${inputItems[0].value}`,
@@ -259,31 +275,87 @@ checkButton.onclick = () => {
         success: (response) => {
             if(response.data != null) {
                 alert("데이터가 존재합니다.");
-                permissionFlag = true;
-
-                if(!removeFlag) {   // 삭제 버튼창이 아니라면 토글
+                
+                if(!removeFlag && !addProductFlag) {   // 삭제 버튼창이 아니라면 토글
                     toggleInputItems();
+                    permissionFlag = true;
+                }else if(removeFlag){
+                    permissionFlag = true;
                 }
 
             }else {
                 alert("데이터가 존재하지 않습니다.");
-                permissionFlag = false;
+                if(addProductFlag) {
+                    permissionFlag = true;
+                    toggleInputItems();
+                }else if(permissionFlag){
+                    permissionFlag = false;
+                    toggleInputItems();
+                }
             }
         },
         error: errorMessage
     });
+    checkedProductName = inputItems[0].value;
+}
+
+inputItems[0].onblur = () => {
+    if(checkedProductName != inputItems[0].value && permissionFlag) {
+        alert("농산물 확인 후에 이름을 변경하지 마세요.");
+        inputItems.forEach(i => i.value = "");
+        checkedProductName = null;
+        permissionFlag = false;
+        toggleInputItems();
+    }
 }
 
 // 최종 submit버튼
 submitButton.onclick = () => {
-    if(!modifyFlag && !removeFlag){ // 추가 요청
-        alert("추가 요청");
+    if(addProductFlag){ // 추가 요청
+        // if(inputItemsCheck(inputItems)) {
+        //     $.ajax({
+        //         data: "post",
+        //         url: "/api/v1/product/new",
+        //         data: {
+        //             productName: inputItems[0].value,
+        //             price: inputItems[1].value,
+        //             season: inputItems[2].value,
+        //             growDay: inputItems[3].value
+        //         },
+        //         dataType: "json",
+        //         success: (response) => {
+        //             if(response.data != null) {
+        //                 alert("농산물 추가 완료");
+        //                 location.replace("/product/management");
+        //             }else {
+        //                 alert("농산물 추가 실패");
+        //             }
+        //         },
+        //         error: errorMessage
+        //     });
+        // }
+        
     }else if(modifyFlag){           // 수정 요청
         alert("수정 요청");
     }else {                         // 삭제 요청
         alert("삭제 요청");
     }
 }
+
+// function inputItemsCheck(items) {
+//     for(let i = 0; i < items.length; i++) {
+//         if(isEmpty(items[i].value)) {
+//             alert(
+//                 (i == 0 ? "이름을"
+//                 : i == 1 ? "가격을"
+//                 : i == 2 ? "계절을"
+//                 : "재배 기간") + " 입력해 주세요."
+//             );
+//             return false;
+//         }
+//     }
+//     return true;
+// }
 
 function toggleInputItems() {
     changeInputDivBoxes.forEach(i => {

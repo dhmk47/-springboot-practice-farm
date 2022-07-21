@@ -8,7 +8,7 @@
   		insert into
   			product_kind
   		values(
-  			#{product_code},
+  			0,
   			#{product_name},
   			#{price},
   			#{season},
