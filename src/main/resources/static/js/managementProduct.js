@@ -34,6 +34,12 @@ let modifyFlag = false;
 // 해당 품목이 있는지 없는지 확인 하는 flag
 let permissionFlag = false;
 
+// confirm 확인용 변수
+let result = false;
+
+// 값을 입력했는지 안 했는지 확인 하느 flag
+let hasValue = false;
+
 
 $(userDtlMenu).fadeOut(0);
 
@@ -144,10 +150,28 @@ productAdminmenu[1].onclick = () => {   // 농산물 관리
 // main
 
 customButtons[0].onclick = () => {
-    // if(permissionFlag) {
-    //     hideInputItems();
-    // }
-    // permissionFlag = false;     // 버튼 새롭게 클릭시 농산물 확인인증 다시 받게끔
+    for(let i = 0; i < inputItems.length; i++) {
+        if(!isEmpty(inputItems[i].value)) {
+            hasValue = true;
+            result = confirm("변경사항이 저장되지 않습니다.\n그래도 진행 하시겠습니까?");
+            if(result) {
+                inputItems.forEach(i => i.value = "");
+            }
+            return;
+        }
+    }
+    if(permissionFlag && result) {
+
+        if(result && !removeFlag) {     // yes이고 삭제창에서 넘어온 것이 아닐때
+            toggleInputItems();
+            permissionFlag = false;
+        }else if(result) {    // yes이고 삭제창에서 넘어왔을 때
+            permissionFlag = false;
+        }else {
+            return;
+        }
+    }
+    
     removeFlag = false;
     if(modifyFlag){
         toggleProductDivBox();
@@ -163,10 +187,18 @@ customButtons[0].onclick = () => {
 }
 
 customButtons[1].onclick = () => {
-    // if(permissionFlag) {
-    //     hideInputItems();
-    // }
-    // permissionFlag = false;     // 버튼 새롭게 클릭시 농산물 확인인증 다시 받게끔
+    if(permissionFlag) {
+        result = confirm("변경사항이 저장되지 않습니다.\n그래도 진행 하시겠습니까?");
+
+        if(result && !removeFlag) {     // yes이고 삭제창에서 넘어온 것이 아닐때
+            toggleInputItems();
+            permissionFlag = false;
+        }else if(result) {    // yes이고 삭제창에서 넘어왔을 때
+            permissionFlag = false;
+        }else {
+            return;
+        }
+    }
     removeFlag = false;
     if(!modifyFlag) {
         toggleProductDivBox();
@@ -181,10 +213,18 @@ customButtons[1].onclick = () => {
 }
 
 customButtons[2].onclick = () => {
-    // if(permissionFlag) {
-    //     hideInputItems();
-    // }
-    // permissionFlag = false;     // 버튼 새롭게 클릭시 농산물 확인인증 다시 받게끔
+    if(permissionFlag) {
+        result = confirm("변경사항이 저장되지 않습니다.\n그래도 진행 하시겠습니까?");
+
+        if(result && !removeFlag) {     // yes이고 추가,수정창에서 넘어왔을 때
+            toggleInputItems();
+            permissionFlag = false;
+        }else if(result) {              // yes이고 삭제창에서 삭제창을 눌렀을 때
+            permissionFlag = false;
+        }else {
+            return;
+        }
+    }
     if(modifyFlag){
         toggleProductDivBox();
         modifyFlag = false;
@@ -196,14 +236,26 @@ customButtons[2].onclick = () => {
 
 // 농산물 체크 버튼
 checkButton.onclick = () => {
+    $.ajax({
+        data: "get",
+        url: `/api/v1/product/${inputItems[0].value}`,
+        dataType: "json",
+        success: (response) => {
+            if(response.data != null) {
+                alert("데이터가 존재합니다.");
+                permissionFlag = true;
 
+                if(!removeFlag) {   // 삭제 버튼창이 아니라면 토글
+                    toggleInputItems();
+                }
 
-    // if(!permissionFlag) {
-    //     permissionFlag = true;
-    // }
-    // if(!removeFlag && permissionFlag) {
-    //     hideInputItems();
-    // }
+            }else {
+                alert("데이터가 존재하지 않습니다.");
+                permissionFlag = false;
+            }
+        },
+        error: errorMessage
+    });
 }
 
 // 최종 submit버튼
@@ -227,6 +279,10 @@ function toggleProductDivBox() {
     changeProductInfoBoxes.forEach(i => {
         i.classList.toggle("hideAndShowProductDivBox");
     })
+}
+
+function isEmpty(value) {
+    return value == undefined || value == "" || value == null;
 }
 
 function errorMessage(request, status, error) {
