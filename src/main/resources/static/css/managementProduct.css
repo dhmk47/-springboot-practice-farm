@@ -110,3 +110,49 @@ header span {
     background-color: aquamarine;
 }
 
+/* main */
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.custom-button-box button{
+    margin: 50px;
+
+    width: 100px;
+    height: 54px;
+}
+
+.r-flex {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin: 60px 0px;
+}
+
+.r-flex button {
+    width: 100px;
+    height: 54px;
+}
+
+.show-product-info-box {
+    display: none;
+    width: 200px;
+    height: 54px;
+
+    background-color: cadetblue;
+}
+
+main > button {
+    width: 80px;
+    height: 40px;
+}
+
+.hideAndShowProductDivBox {
+    display: inline-block;
+}
