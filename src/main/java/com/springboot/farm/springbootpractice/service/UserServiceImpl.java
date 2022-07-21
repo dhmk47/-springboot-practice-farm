@@ -2,7 +2,7 @@ package com.springboot.farm.springbootpractice.service;
 
 import org.springframework.stereotype.Service;
 
-import com.springboot.farm.springbootpractice.domain.user.User;
+import com.springboot.farm.springbootpractice.domain.entity.User;
 import com.springboot.farm.springbootpractice.domain.user.UserRepository;
 import com.springboot.farm.springbootpractice.web.dto.user.CreateUserReqDto;
 import com.springboot.farm.springbootpractice.web.dto.user.CreateUserRespDto;

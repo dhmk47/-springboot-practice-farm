@@ -1,14 +1,18 @@
-package com.springboot.farm.springbootpractice.domain.user;
+package com.springboot.farm.springbootpractice.domain.entity;
 
 import java.time.LocalDateTime;
 
 import com.springboot.farm.springbootpractice.web.dto.user.CreateUserRespDto;
 import com.springboot.farm.springbootpractice.web.dto.user.ReadUserRespDto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class User {
 	private int usercode;
@@ -17,6 +21,8 @@ public class User {
 	private String password;
 	private String email;
 	private String roles;
+	private LocalDateTime create_date;
+	private LocalDateTime update_date;
 	
 	public CreateUserRespDto toCreateUserDto() {
 		return CreateUserRespDto.builder()
@@ -26,6 +32,8 @@ public class User {
 				.password(password)
 				.email(email)
 				.roles(roles)
+				.create_date(create_date)
+				.update_date(update_date)
 				.build();
 	}
 	
@@ -37,6 +45,8 @@ public class User {
 				.password(password)
 				.email(email)
 				.roles(roles)
+				.create_date(create_date)
+				.update_date(update_date)
 				.build();
 	}
 }

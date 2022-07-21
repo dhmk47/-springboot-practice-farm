@@ -1,6 +1,6 @@
 package com.springboot.farm.springbootpractice.web.dto.user;
 
-import com.springboot.farm.springbootpractice.domain.user.User;
+import com.springboot.farm.springbootpractice.domain.entity.User;
 
 import lombok.Builder;
 import lombok.Data;

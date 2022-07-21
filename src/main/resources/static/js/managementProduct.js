@@ -15,7 +15,9 @@ const userDtlMenuItems = document.querySelectorAll(".user-dtl-menu span");
 const customButtons = document.querySelectorAll(".custom-button-box button");
 const inputItems = document.querySelectorAll("main input");
 const checkButton = document.querySelector(".r-flex button");
+const changeInputDivBoxes = document.querySelectorAll(".hideAndShowtoggle");
 const changeProductInfoBoxes = document.querySelectorAll(".show-product-info-box");
+const submitButton = document.querySelector("main > button");
 
 // 게시판 구분 짓는 플래그
 let userMenuFlag = false;
@@ -27,7 +29,11 @@ let boardMenuFlag = false;
 let removeFlag = false;
 
 // 수정버튼이면 div박스 보여야 하기 때문에 구분 짓는 flag
-let showDivFlag = false;
+let modifyFlag = false;
+
+// 해당 품목이 있는지 없는지 확인 하는 flag
+let permissionFlag = false;
+
 
 $(userDtlMenu).fadeOut(0);
 
@@ -132,65 +138,92 @@ productAdminmenu[0].onclick = () => {   // 농산물 품목 전체 보기
 }
 
 productAdminmenu[1].onclick = () => {   // 농산물 관리
-    
+    location.href = "/product/management";
 }
 
 // main
 
 customButtons[0].onclick = () => {
-    if(removeFlag) {
-        inputItems[1].style.display = "inline-block";
-        inputItems[2].style.display = "inline-block";
-        inputItems[3].style.display = "inline-block";
-        removeFlag = false;
-    }
-    if(showDivFlag){
-        hideProductDivBox();
-        showDivFlag = false;
+    // if(permissionFlag) {
+    //     hideInputItems();
+    // }
+    // permissionFlag = false;     // 버튼 새롭게 클릭시 농산물 확인인증 다시 받게끔
+    removeFlag = false;
+    if(modifyFlag){
+        toggleProductDivBox();
+        modifyFlag = false;
     }
     inputItems[0].placeholder = "추가할 농선물 이름";
     inputItems[1].placeholder = "추가할 농선물 가격";
     inputItems[2].placeholder = "추가할 농선물 계절";
     inputItems[3].placeholder = "추가할 농선물 재배 기간";
+    submitButton.innerHTML = "추가하기"
 
     
 }
 
 customButtons[1].onclick = () => {
-    if(removeFlag) {
-        inputItems[1].style.display = "inline-block";
-        inputItems[2].style.display = "inline-block";
-        inputItems[3].style.display = "inline-block";
-        removeFlag = false;
-    }
-    if(!showDivFlag) {
-        hideProductDivBox();
-        showDivFlag = true;
+    // if(permissionFlag) {
+    //     hideInputItems();
+    // }
+    // permissionFlag = false;     // 버튼 새롭게 클릭시 농산물 확인인증 다시 받게끔
+    removeFlag = false;
+    if(!modifyFlag) {
+        toggleProductDivBox();
+        modifyFlag = true;
     }
     
     inputItems[0].placeholder = "수정할 농선물 이름";
     inputItems[1].placeholder = "수정할 농선물 가격";
     inputItems[2].placeholder = "수정할 농선물 계절";
     inputItems[3].placeholder = "수정할 농선물 재배 기간";
+    submitButton.innerHTML = "수정하기"
 }
 
 customButtons[2].onclick = () => {
-    if(showDivFlag){
-        hideProductDivBox();
-        showDivFlag = false;
+    // if(permissionFlag) {
+    //     hideInputItems();
+    // }
+    // permissionFlag = false;     // 버튼 새롭게 클릭시 농산물 확인인증 다시 받게끔
+    if(modifyFlag){
+        toggleProductDivBox();
+        modifyFlag = false;
     }
     removeFlag = true;
     inputItems[0].placeholder = "삭제할 농선물 이름";
-    inputItems[1].style.display = "none";
-    inputItems[2].style.display = "none";
-    inputItems[3].style.display = "none";
+    submitButton.innerHTML = "제거하기"
 }
 
+// 농산물 체크 버튼
+checkButton.onclick = () => {
 
-checkButton
 
+    // if(!permissionFlag) {
+    //     permissionFlag = true;
+    // }
+    // if(!removeFlag && permissionFlag) {
+    //     hideInputItems();
+    // }
+}
 
-function hideProductDivBox() {
+// 최종 submit버튼
+submitButton.onclick = () => {
+    if(!modifyFlag && !removeFlag){ // 추가 요청
+        alert("추가 요청");
+    }else if(modifyFlag){           // 수정 요청
+        alert("수정 요청");
+    }else {                         // 삭제 요청
+        alert("삭제 요청");
+    }
+}
+
+function toggleInputItems() {
+    changeInputDivBoxes.forEach(i => {
+        i.classList.toggle("hideAndShowInputDivBox");
+    })
+}
+
+function toggleProductDivBox() {
     changeProductInfoBoxes.forEach(i => {
         i.classList.toggle("hideAndShowProductDivBox");
     })

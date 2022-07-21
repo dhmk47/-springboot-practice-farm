@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.springboot.farm.springbootpractice.domain.user.UserRepository">
-  	<insert id="insertUser" parameterType="com.springboot.farm.springbootpractice.domain.user.User">
+  	<insert id="insertUser" parameterType="com.springboot.farm.springbootpractice.domain.entity.User">
   		insert into
   			user_mst
   		values(
@@ -19,7 +19,7 @@
   		)
   	</insert>
   	
-  	<select id="getUserByUsername" parameterType="String" resultType="com.springboot.farm.springbootpractice.domain.user.User">
+  	<select id="getUserByUsername" parameterType="String" resultType="com.springboot.farm.springbootpractice.domain.entity.User">
   		select
   			usercode,
   			name,

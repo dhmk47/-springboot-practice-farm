@@ -153,6 +153,14 @@ main > button {
     height: 40px;
 }
 
+.hideAndShowtoggle {
+    display: none;
+}
+
+.hideAndShowInputDivBox {
+    display: flex;
+}
+
 .hideAndShowProductDivBox {
     display: inline-block;
 }
