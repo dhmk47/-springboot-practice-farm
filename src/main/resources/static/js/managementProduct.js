@@ -157,7 +157,7 @@ customButtons[0].onclick = () => {
             if(result) {
                 inputItems.forEach(i => i.value = "");
             }
-            return;
+            break;
         }
     }
     if(permissionFlag && result) {
@@ -171,7 +171,7 @@ customButtons[0].onclick = () => {
             return;
         }
     }
-    
+
     removeFlag = false;
     if(modifyFlag){
         toggleProductDivBox();
@@ -187,9 +187,17 @@ customButtons[0].onclick = () => {
 }
 
 customButtons[1].onclick = () => {
+    for(let i = 0; i < inputItems.length; i++) {
+        if(!isEmpty(inputItems[i].value)) {
+            hasValue = true;
+            result = confirm("변경사항이 저장되지 않습니다.\n그래도 진행 하시겠습니까?");
+            if(result) {
+                inputItems.forEach(i => i.value = "");
+            }
+            break;
+        }
+    }
     if(permissionFlag) {
-        result = confirm("변경사항이 저장되지 않습니다.\n그래도 진행 하시겠습니까?");
-
         if(result && !removeFlag) {     // yes이고 삭제창에서 넘어온 것이 아닐때
             toggleInputItems();
             permissionFlag = false;
@@ -213,9 +221,17 @@ customButtons[1].onclick = () => {
 }
 
 customButtons[2].onclick = () => {
+    for(let i = 0; i < inputItems.length; i++) {
+        if(!isEmpty(inputItems[i].value)) {
+            hasValue = true;
+            result = confirm("변경사항이 저장되지 않습니다.\n그래도 진행 하시겠습니까?");
+            if(result) {
+                inputItems.forEach(i => i.value = "");
+            }
+            break;
+        }
+    }
     if(permissionFlag) {
-        result = confirm("변경사항이 저장되지 않습니다.\n그래도 진행 하시겠습니까?");
-
         if(result && !removeFlag) {     // yes이고 추가,수정창에서 넘어왔을 때
             toggleInputItems();
             permissionFlag = false;

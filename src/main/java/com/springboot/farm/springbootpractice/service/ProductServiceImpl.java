@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.springboot.farm.springbootpractice.domain.entity.Product;
 import com.springboot.farm.springbootpractice.domain.product.ProductRepository;
+import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductRespDto;
 
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,11 @@ import lombok.RequiredArgsConstructor;
 public class ProductServiceImpl implements ProductService{
 
 	private final ProductRepository productRepository;
+	
+	@Override
+	public int insertProduct(CreateProductReqDto createProductReqDto) throws Exception {
+		return productRepository.save(createProductReqDto.toEntity());
+	}
 	@Override
 	public ReadProductRespDto getProductByProductName(String productName) throws Exception {
 		Product readProductRespDto = null;

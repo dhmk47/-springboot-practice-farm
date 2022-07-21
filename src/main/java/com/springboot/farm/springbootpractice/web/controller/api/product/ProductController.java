@@ -3,11 +3,13 @@ package com.springboot.farm.springbootpractice.web.controller.api.product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.farm.springbootpractice.service.ProductService;
 import com.springboot.farm.springbootpractice.web.dto.CMRespDto;
+import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductRespDto;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,20 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 	
 	private final ProductService productService;
+	
+	@PostMapping("/new")
+	public ResponseEntity<?> addProduct(CreateProductReqDto createProductReqDto) {
+		boolean result = false;
+		
+		try {
+			result = productService.insertProduct(createProductReqDto) > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.ok().body(new CMRespDto<>(-1, "새로운 품목 생성 실패", result));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "새로운 품목 생성 성공", result));
+	}
 	
 	@GetMapping("/{productName}")
 	public ResponseEntity<?> getProductByProductName(@PathVariable String productName) {
