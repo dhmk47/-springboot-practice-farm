@@ -46,6 +46,9 @@ let addProductFlag = true;
 // 중복체크 후에 이름을 변경했는지 확인하기 위한 flag
 let checkedProductName = null;
 
+// 농산물 수정에 사용할 code
+let productCode = -1;
+
 $(userDtlMenu).fadeOut(0);
 
 
@@ -283,6 +286,13 @@ checkButton.onclick = () => {
                     permissionFlag = true;
                 }
 
+                if(modifyFlag) {    // 수정창에서는 체크후에 기존 값들 쭉 나오게끔
+                    inputItems[1].value = response.data.price;
+                    inputItems[2].value = response.data.season;
+                    inputItems[3].value = response.data.grow_day;
+                    productCode = response.data.product_code;
+                }
+
             }else {
                 alert("데이터가 존재하지 않습니다.");
                 if(addProductFlag) {
@@ -311,51 +321,78 @@ inputItems[0].onblur = () => {
 
 // 최종 submit버튼
 submitButton.onclick = () => {
+    if(!permissionFlag) {
+        alert("농산물 확인을 진행해 주세요.");
+        return;
+    }
+
     if(addProductFlag){ // 추가 요청
-        // if(inputItemsCheck(inputItems)) {
-        //     $.ajax({
-        //         data: "post",
-        //         url: "/api/v1/product/new",
-        //         data: {
-        //             productName: inputItems[0].value,
-        //             price: inputItems[1].value,
-        //             season: inputItems[2].value,
-        //             growDay: inputItems[3].value
-        //         },
-        //         dataType: "json",
-        //         success: (response) => {
-        //             if(response.data != null) {
-        //                 alert("농산물 추가 완료");
-        //                 location.replace("/product/management");
-        //             }else {
-        //                 alert("농산물 추가 실패");
-        //             }
-        //         },
-        //         error: errorMessage
-        //     });
-        // }
+        if(inputItemsCheck(inputItems)) {
+            $.ajax({
+                type: "post",
+                url: "/api/v1/product/new",
+                data: {
+                    productName: inputItems[0].value,
+                    price: inputItems[1].value,
+                    season: inputItems[2].value,
+                    growDay: inputItems[3].value
+                },
+                dataType: "json",
+                success: (response) => {
+                    if(response.data != null) {
+                        alert("농산물 추가 완료");
+                        location.replace("/product/management");
+                    }else {
+                        alert("농산물 추가 실패");
+                    }
+                },
+                error: errorMessage
+            });
+        }
         
     }else if(modifyFlag){           // 수정 요청
-        alert("수정 요청");
+        if(inputItemsCheck(inputItems)) {
+            $.ajax({
+                type: "put",
+                url: "/api/v1/product/modify",
+                data: {
+                    productCode: productCode,
+                    productName: inputItems[0].value,
+                    price: inputItems[1].value,
+                    season: inputItems[2].value,
+                    growDay: inputItems[3].value
+                },
+                dataType: "json",
+                success: (response) => {
+                    if(response.data != null) {
+                        alert("농산물 수정 완료");
+                        location.replace("/product/management");
+                    }else {
+                        alert("농산물 수정 실패");
+                    }
+                },
+                error: errorMessage
+            })
+        }
     }else {                         // 삭제 요청
         alert("삭제 요청");
     }
 }
 
-// function inputItemsCheck(items) {
-//     for(let i = 0; i < items.length; i++) {
-//         if(isEmpty(items[i].value)) {
-//             alert(
-//                 (i == 0 ? "이름을"
-//                 : i == 1 ? "가격을"
-//                 : i == 2 ? "계절을"
-//                 : "재배 기간") + " 입력해 주세요."
-//             );
-//             return false;
-//         }
-//     }
-//     return true;
-// }
+function inputItemsCheck(items) {
+    for(let i = 0; i < items.length; i++) {
+        if(isEmpty(items[i].value)) {
+            alert(
+                (i == 0 ? "이름을"
+                : i == 1 ? "가격을"
+                : i == 2 ? "계절을"
+                : "재배 기간") + " 입력해 주세요."
+            );
+            return false;
+        }
+    }
+    return true;
+}
 
 function toggleInputItems() {
     changeInputDivBoxes.forEach(i => {

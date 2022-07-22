@@ -31,5 +31,18 @@
   		where
   			product_name = #{productName}
   	</select>
+  	
+  	<update id="update" parameterType="com.springboot.farm.springbootpractice.domain.entity.Product">
+  		update
+  			product_kind
+  		set
+  			product_name = #{product_name},
+  			price = #{price},
+  			season = #{season},
+  			grow_day = #{grow_day}
+  		where
+  			product_code = #{product_code}
+  	
+  	</update>
   
   </mapper>

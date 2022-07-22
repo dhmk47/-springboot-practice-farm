@@ -6,6 +6,7 @@ import com.springboot.farm.springbootpractice.domain.entity.Product;
 import com.springboot.farm.springbootpractice.domain.product.ProductRepository;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductRespDto;
+import com.springboot.farm.springbootpractice.web.dto.product.UpdateProductReqDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,14 +17,18 @@ public class ProductServiceImpl implements ProductService{
 	private final ProductRepository productRepository;
 	
 	@Override
-	public int insertProduct(CreateProductReqDto createProductReqDto) throws Exception {
-		return productRepository.save(createProductReqDto.toEntity());
+	public boolean insertProduct(CreateProductReqDto createProductReqDto) throws Exception {
+		return productRepository.save(createProductReqDto.toEntity()) > 0;
 	}
 	@Override
 	public ReadProductRespDto getProductByProductName(String productName) throws Exception {
 		Product readProductRespDto = null;
 		readProductRespDto = productRepository.readProductByProductName(productName);
 		return readProductRespDto == null ? null : readProductRespDto.toReadRespDto();
+	}
+	@Override
+	public boolean modifyProductInfo(UpdateProductReqDto updateProductReqDto) throws Exception {
+		return productRepository.update(updateProductReqDto.toEntity()) > 0;
 	}
 
 }

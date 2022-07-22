@@ -3,6 +3,7 @@ package com.springboot.farm.springbootpractice.domain.entity;
 import java.time.LocalDateTime;
 
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductRespDto;
+import com.springboot.farm.springbootpractice.web.dto.product.UpdateProductReqDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,5 +39,6 @@ public class Product {
 				.create_date(create_date)
 				.update_date(update_date)
 				.build();
+		
 	}
 }
