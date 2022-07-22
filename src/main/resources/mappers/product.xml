@@ -32,6 +32,21 @@
   			product_name = #{productName}
   	</select>
   	
+  	<select id="readRecentlyProductLIst" parameterType="String" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">
+  		SELECT
+			product_code,
+			product_name,
+			price,
+			season,
+			grow_day,
+			create_date,
+			update_date
+		FROM
+			product_kind
+		WHERE
+			create_date > #{date}
+  	</select>
+  	
   	<update id="update" parameterType="com.springboot.farm.springbootpractice.domain.entity.Product">
   		update
   			product_kind

@@ -1,5 +1,12 @@
 package com.springboot.farm.springbootpractice.web.controller.api.product;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.farm.springbootpractice.service.ProductService;
+import com.springboot.farm.springbootpractice.util.Util;
 import com.springboot.farm.springbootpractice.web.dto.CMRespDto;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductRespDto;
@@ -28,10 +36,11 @@ public class ProductController {
 	public ResponseEntity<?> addProduct(CreateProductReqDto createProductReqDto) {
 		boolean result = false;
 		
-		System.out.println(createProductReqDto);
-		
 		try {
-			result = productService.insertProduct(createProductReqDto);
+			if(productService.insertProduct(createProductReqDto)) {
+				result = true;
+				Util.addProductFlag = true;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.ok().body(new CMRespDto<>(-1, "새로운 품목 생성 실패", result));
@@ -51,6 +60,27 @@ public class ProductController {
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "품목 불러오기 성공", readProductRespDto));
+	}
+	
+	@GetMapping("/list")
+	public ResponseEntity<?> getRecentrylProductList() {
+		List<ReadProductRespDto> productList = null;
+		
+		if(Util.addProductFlag) {
+			
+			Date date = new Date();
+			date.setDate(date.getDate() - 1);
+			SimpleDateFormat now = new SimpleDateFormat("yyyy-MM-dd");
+			
+			try {
+				productList = productService.getRecentlyProductList(now.format(date) + "");
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "새롭게 추가된 품목 불러오기 실패", productList));
+			}
+		}
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "새롭게 추가된 품목 불러오기 성공", productList));
 	}
 		
 	@PutMapping("/modify")

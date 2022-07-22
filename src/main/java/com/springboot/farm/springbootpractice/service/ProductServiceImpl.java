@@ -1,5 +1,9 @@
 package com.springboot.farm.springbootpractice.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.springboot.farm.springbootpractice.domain.entity.Product;
@@ -26,6 +30,19 @@ public class ProductServiceImpl implements ProductService{
 		readProductRespDto = productRepository.readProductByProductName(productName);
 		return readProductRespDto == null ? null : readProductRespDto.toReadRespDto();
 	}
+	
+	@Override
+	public List<ReadProductRespDto> getRecentlyProductList(String date) throws Exception {
+		List<ReadProductRespDto> productList = null;
+		
+		productList = productRepository.readRecentlyProductLIst(date)
+		.stream()
+		.map(dto -> dto.toReadRespDto())
+		.collect(Collectors.toCollection(ArrayList::new));
+		
+		return productList;
+	}
+	
 	@Override
 	public boolean modifyProductInfo(UpdateProductReqDto updateProductReqDto) throws Exception {
 		return productRepository.update(updateProductReqDto.toEntity()) > 0;
