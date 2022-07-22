@@ -9,4 +9,5 @@ public interface ProductRepository {
 	public int save(Product product);
 	public Product readProductByProductName(String productName);
 	public int update(Product product);
+	public int delete(int productCode);
 }

@@ -1,6 +1,7 @@
 package com.springboot.farm.springbootpractice.web.controller.api.product;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,9 +61,23 @@ public class ProductController {
 			result = productService.modifyProductInfo(updateProductReqDto);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.ok().body(new CMRespDto<>(-1, "품목 수정 실패", result));
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "품목 수정 실패", result));
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "품목 수정 성공", result));
+	}
+	
+	@DeleteMapping("/remove")
+	public ResponseEntity<?> removeProduct(int productCode) {
+		boolean result = false;
+		
+		try {
+			productService.removeProduct(productCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "품목 삭제 실패", result));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "품목 삭제 성공", result));
 	}
 }

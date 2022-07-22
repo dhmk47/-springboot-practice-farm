@@ -302,6 +302,7 @@ checkButton.onclick = () => {
                     permissionFlag = true;
                 }else if(removeFlag){
                     permissionFlag = true;
+                    productCode = response.data.product_code;
                 }
 
                 if(modifyFlag) {    // 수정창에서는 체크후에 기존 값들 쭉 나오게끔
@@ -363,8 +364,6 @@ inputItems[0].onkeyup = () => {
     }
     
 }
-
-
 
 inputItems[1].onkeyup = () => {
     if(modifyFlag && permissionFlag) {
@@ -440,10 +439,28 @@ submitButton[0].onclick = () => {
                     }
                 },
                 error: errorMessage
-            })
+            });
         }
     }else {                         // 삭제 요청
-        alert("삭제 요청");
+        if(inputItemsCheck(inputItems[0])){
+            $.ajax({
+                type: "delete",
+                url: "/api/v1/product/remove",
+                data: {
+                    productCode: productCode
+                },
+                dataType: "json",
+                success: (response) => {
+                    if(response.data != null) {
+                        alert("농산물 삭제 완료");
+                        location.replace("/product/management");
+                    }else {
+                        alert("농산물 삭제 실패");
+                    }
+                },
+                error: errorMessage
+            });
+        }
     }
 }
 

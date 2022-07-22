@@ -42,7 +42,14 @@
   			grow_day = #{grow_day}
   		where
   			product_code = #{product_code}
-  	
   	</update>
+  	
+  	<delete id="delete" parameterType="Integer">
+  		delete
+  		from
+  			product_kind
+  		where
+  			product_code = #{productCode}
+  	</delete>
   
   </mapper>

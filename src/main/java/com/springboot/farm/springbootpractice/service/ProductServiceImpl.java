@@ -31,4 +31,8 @@ public class ProductServiceImpl implements ProductService{
 		return productRepository.update(updateProductReqDto.toEntity()) > 0;
 	}
 
+	@Override
+	public boolean removeProduct(int productCode) throws Exception {
+		return productRepository.delete(productCode) > 0;
+	}
 }

@@ -8,4 +8,5 @@ public interface ProductService {
 	public boolean insertProduct(CreateProductReqDto createProductReqDto) throws Exception;
 	public ReadProductRespDto getProductByProductName(String productName) throws Exception;
 	public boolean modifyProductInfo(UpdateProductReqDto updateProductReqDto) throws Exception;
+	public boolean removeProduct(int productCode) throws Exception;
 }
