@@ -142,15 +142,20 @@ main {
 
 .show-product-info-box {
     display: none;
+    align-items: center;
     width: 200px;
     height: 54px;
 
     background-color: cadetblue;
 }
 
-main > button {
+.main-button button {
     width: 80px;
     height: 40px;
+}
+
+.main-button :last-child {
+    display: none;
 }
 
 .hideAndShowtoggle {
@@ -162,5 +167,5 @@ main > button {
 }
 
 .hideAndShowProductDivBox {
-    display: inline-block;
+    display: flex;
 }

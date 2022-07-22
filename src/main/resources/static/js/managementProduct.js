@@ -17,7 +17,7 @@ const inputItems = document.querySelectorAll("main input");
 const checkButton = document.querySelector(".r-flex button");
 const changeInputDivBoxes = document.querySelectorAll(".hideAndShowtoggle");
 const changeProductInfoBoxes = document.querySelectorAll(".show-product-info-box");
-const submitButton = document.querySelector("main > button");
+const submitButton = document.querySelectorAll(".main-button button");
 
 // 게시판 구분 짓는 플래그
 let userMenuFlag = false;
@@ -46,8 +46,22 @@ let addProductFlag = true;
 // 중복체크 후에 이름을 변경했는지 확인하기 위한 flag
 let checkedProductName = null;
 
-// 농산물 수정에 사용할 code
+// 수정창에서만 사용하는 div박스가 켜져있는지 확인하는 flag
+let showProductDivFlag = false;
+
+// response에서 가져온 값 저장 할 변수
 let productCode = -1;
+let getProductName = null;
+let getProductPrice = null;
+let getProductSeason = null;
+let getProductGrowDay = null;
+
+// 위의 변수를 배열에 저장
+let getProductInfoList = new Array();
+
+// delay
+let timeout = true;
+let delay = 500;
 
 $(userDtlMenu).fadeOut(0);
 
@@ -180,17 +194,20 @@ customButtons[0].onclick = () => {
             return;
         }
     }
+    if(showProductDivFlag){
+        toggleProductDivBox();
+        showProductDivFlag = false;
+    }
+
     addProductFlag = true;
     removeFlag = false;
-    if(modifyFlag){
-        toggleProductDivBox();
-        modifyFlag = false;
-    }
+    modifyFlag = false;
+    submitButton[1].style.display = "none";
     inputItems[0].placeholder = "추가할 농선물 이름";
     inputItems[1].placeholder = "추가할 농선물 가격";
     inputItems[2].placeholder = "추가할 농선물 계절";
     inputItems[3].placeholder = "추가할 농선물 재배 기간";
-    submitButton.innerHTML = "추가하기"
+    submitButton[0].innerHTML = "추가하기"
 
     
 }
@@ -220,7 +237,6 @@ customButtons[1].onclick = () => {
     addProductFlag = false;
     removeFlag = false;
     if(!modifyFlag) {
-        toggleProductDivBox();
         modifyFlag = true;
     }
     
@@ -228,7 +244,7 @@ customButtons[1].onclick = () => {
     inputItems[1].placeholder = "수정할 농선물 가격";
     inputItems[2].placeholder = "수정할 농선물 계절";
     inputItems[3].placeholder = "수정할 농선물 재배 기간";
-    submitButton.innerHTML = "수정하기"
+    submitButton[0].innerHTML = "수정하기"
 }
 
 customButtons[2].onclick = () => {
@@ -253,14 +269,16 @@ customButtons[2].onclick = () => {
             return;
         }
     }
-    if(modifyFlag){
+    if(showProductDivFlag){
         toggleProductDivBox();
-        modifyFlag = false;
+        showProductDivFlag = false;
     }
+    submitButton[1].style.display = "none";
+    modifyFlag = false;
     addProductFlag = false;
     removeFlag = true;
     inputItems[0].placeholder = "삭제할 농선물 이름";
-    submitButton.innerHTML = "제거하기"
+    submitButton[0].innerHTML = "제거하기"
 }
 
 // 농산물 체크 버튼
@@ -287,10 +305,25 @@ checkButton.onclick = () => {
                 }
 
                 if(modifyFlag) {    // 수정창에서는 체크후에 기존 값들 쭉 나오게끔
+                    getProductInfoList.push(response.data.product_name);
+                    getProductInfoList.push(response.data.price);
+                    getProductInfoList.push(response.data.season);
+                    getProductInfoList.push(response.data.grow_day);
+
                     inputItems[1].value = response.data.price;
                     inputItems[2].value = response.data.season;
                     inputItems[3].value = response.data.grow_day;
                     productCode = response.data.product_code;
+
+                    submitButton[1].style.display = "inline-block"
+                    toggleProductDivBox();
+                    showProductDivFlag = true;
+
+                    let index = 0;
+                    changeProductInfoBoxes.forEach(input => {
+                        input.innerHTML = `<span style="padding-left: 40px">${inputItems[index].value} -> </span>`;
+                        index++;
+                    });
                 }
 
             }else {
@@ -302,6 +335,11 @@ checkButton.onclick = () => {
                     permissionFlag = false;
                     toggleInputItems();
                 }
+                
+                if(showProductDivFlag) {
+                    toggleProductDivBox();
+                    showProductDivFlag = false;
+                }
             }
         },
         error: errorMessage
@@ -310,7 +348,7 @@ checkButton.onclick = () => {
 }
 
 inputItems[0].onblur = () => {
-    if(checkedProductName != inputItems[0].value && permissionFlag) {
+    if(checkedProductName != inputItems[0].value && permissionFlag && !modifyFlag) {
         alert("농산물 확인 후에 이름을 변경하지 마세요.");
         inputItems.forEach(i => i.value = "");
         checkedProductName = null;
@@ -319,8 +357,38 @@ inputItems[0].onblur = () => {
     }
 }
 
+inputItems[0].onkeyup = () => {
+    if(modifyFlag && permissionFlag) {
+        setDelay(0);
+    }
+    
+}
+
+
+
+inputItems[1].onkeyup = () => {
+    if(modifyFlag && permissionFlag) {
+        setDelay(1);
+    }
+
+}
+
+inputItems[2].onkeyup = () => {
+    if(modifyFlag && permissionFlag) {
+        setDelay(2);
+    }
+
+}
+
+inputItems[3].onkeyup = () => {
+    if(modifyFlag && permissionFlag) {
+        setDelay(3);
+    }
+
+}
+
 // 최종 submit버튼
-submitButton.onclick = () => {
+submitButton[0].onclick = () => {
     if(!permissionFlag) {
         alert("농산물 확인을 진행해 주세요.");
         return;
@@ -379,6 +447,17 @@ submitButton.onclick = () => {
     }
 }
 
+submitButton[1].onclick = () => {
+    inputItems.forEach(input => input.value = "");
+    changeProductInfoBoxes.forEach(div => div.innerHTML = "");
+    toggleInputItems();
+    toggleProductDivBox();
+    submitButton[1].style.display = "none";
+    permissionFlag = false;
+    checkedProductName = null;
+    showProductDivFlag = false;
+}
+
 function inputItemsCheck(items) {
     for(let i = 0; i < items.length; i++) {
         if(isEmpty(items[i].value)) {
@@ -404,6 +483,20 @@ function toggleProductDivBox() {
     changeProductInfoBoxes.forEach(i => {
         i.classList.toggle("hideAndShowProductDivBox");
     })
+}
+
+function setDelay(index) {
+    if(timeout) {
+        clearTimeout(timeout);
+    }
+    timeout = setTimeout(function() {
+        showNewValue(index);
+    }, delay);
+}
+
+function showNewValue(index) {
+    changeProductInfoBoxes[index].innerHTML = 
+    `<span style="padding-left: 40px">${getProductInfoList[index]} -> ${inputItems[index].value}</span>`;
 }
 
 function isEmpty(value) {
