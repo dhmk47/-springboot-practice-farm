@@ -122,11 +122,30 @@ header span {
 
 .new-farm-product {
     /* margin-top: 150px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: auto;
     width: 200px;
     height: 300px;
     overflow: auto;
 
     background-color: aquamarine;
+}
+
+.new-product {
+    margin: 20px 0px 20px 40px;
+}
+
+.new-product::before {
+    margin-right: 10px;
+    border-radius: 5px;
+    
+    content: "NEW!! ";
+    font-size: 12px;
+    text-align: center;
+
+    background-color: red;
+    color: white;
 }
 
 .search-farm-product {

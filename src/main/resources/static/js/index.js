@@ -325,6 +325,24 @@ function load(){
         userMenu.style.display = "none";
         loginBox.style.visibility = "visible";
     }
+
+    $.ajax({
+        type: "get",
+        url: "/api/v1/product/list",
+        dataType: "json",
+        success: (response) => {
+            if(response.data != null) {
+                for(let i = 0; i < response.data.length; i++){
+                    document.querySelector(".new-farm-product").innerHTML += 
+                    `<span class="new-product"> ${response.data[i].product_name}</span>`;
+                }
+            }else {
+                document.querySelector(".new-farm-product").innerHTML = 
+                "새롭게 추가된 농산물이 없습니다.";
+            }
+        },
+        error: errorMessage
+    });
 }
 
 function toggleDtlBox() {
