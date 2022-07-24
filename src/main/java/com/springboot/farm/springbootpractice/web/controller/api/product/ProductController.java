@@ -39,7 +39,9 @@ public class ProductController {
 		try {
 			if(productService.insertProduct(createProductReqDto)) {
 				result = true;
-				Util.addProductFlag = true;
+				/*Util.addProductFlag.forEach((key, value) -> {
+					Util.addProductFlag.put(key, true);
+				});*/
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -63,10 +65,10 @@ public class ProductController {
 	}
 	
 	@GetMapping("/list")
-	public ResponseEntity<?> getRecentrylProductList() {
+	public ResponseEntity<?> getRecentrylProductList(/*int userCode*/) {
 		List<ReadProductRespDto> productList = null;
 		
-		if(Util.addProductFlag) {
+		if(Util.addProductFlag/*Util.addProductFlag.get(userCode)*/) {
 			
 			Date date = new Date();
 			date.setDate(date.getDate() - 1);
@@ -74,6 +76,7 @@ public class ProductController {
 			
 			try {
 				productList = productService.getRecentlyProductList(now.format(date) + "");
+				/*Util.addProductFlag.replace(userCode, false);*/
 				
 			} catch (Exception e) {
 				e.printStackTrace();

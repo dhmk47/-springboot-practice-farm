@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.farm.springbootpractice.service.UserService;
+import com.springboot.farm.springbootpractice.util.Util;
 import com.springboot.farm.springbootpractice.web.dto.CMRespDto;
 import com.springboot.farm.springbootpractice.web.dto.user.CreateUserReqDto;
 import com.springboot.farm.springbootpractice.web.dto.user.CreateUserRespDto;
@@ -28,6 +29,7 @@ public class UserController {
 		
 		try {
 			createUserRespDto = userService.signupUser(createUserReqDto);
+			/*Util.addProductFlag.put(createUserRespDto.getUsercode(), true);*/
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.ok().body(new CMRespDto<>(-1, "회원가입 실패", createUserRespDto));
