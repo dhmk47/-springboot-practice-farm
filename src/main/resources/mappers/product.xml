@@ -47,6 +47,27 @@
 			create_date > #{date}
   	</select>
   	
+  	<select id="readModifiedProductList" parameterType="String" resultType="com.springboot.farm.springbootpractice.domain.entity.PastAndNowProductInfo">
+  		SELECT
+			nullif(op.product_name, pk.product_name) AS original_name,
+			nullif(pk.product_name, op.product_name) AS updated_name,
+			nullif(op.price, pk.price) AS original_price,
+			nullif(pk.price, op.price) AS updated_price,
+			nullif(op.season, pk.season) AS original_season,
+			nullif(pk.season, op.season) AS updated_season,
+			nullif(op.grow_day, pk.grow_day) AS original_grow_day,
+			nullif(pk.grow_day, op.grow_day) AS updated_grow_day
+		FROM
+			original_product op
+			LEFT OUTER JOIN product_kind pk ON(pk.product_code = op.product_code)
+		WHERE
+			op.update_date > #{data}
+			AND (op.product_name != pk.product_name 
+			or op.price != pk.price 
+			or op.season != pk.season 
+			or op.grow_day != pk.grow_day)
+  	</select>
+  	
   	<update id="update" parameterType="com.springboot.farm.springbootpractice.domain.entity.Product">
   		update
   			product_kind

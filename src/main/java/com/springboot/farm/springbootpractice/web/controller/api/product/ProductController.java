@@ -85,6 +85,9 @@ public class ProductController {
 		}
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "새롭게 추가된 품목 불러오기 성공", productList));
 	}
+	
+	@GetMapping("/modify/list")
+	
 		
 	@PutMapping("/modify")
 	public ResponseEntity<?> modifyProduct(UpdateProductReqDto updateProductReqDto) {
