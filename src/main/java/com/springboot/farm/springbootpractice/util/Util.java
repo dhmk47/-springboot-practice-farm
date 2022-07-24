@@ -8,4 +8,6 @@ public class Util {
 	// ㄴ 회원마다 true 또는 false 값으로 db에 접근할지 안 할지 결정이 됩니다.
 	public static boolean addProductFlag = true;
 	/* public static Map<Integer, Boolean> addProductFlag = new HashMap<Integer, Boolean>();*/
+	
+	public static boolean modifyProductFlag = true;
 }

@@ -49,8 +49,8 @@
   	
   	<select id="readModifiedProductList" parameterType="String" resultType="com.springboot.farm.springbootpractice.domain.entity.PastAndNowProductInfo">
   		SELECT
-			nullif(op.product_name, pk.product_name) AS original_name,
-			nullif(pk.product_name, op.product_name) AS updated_name,
+			if(op.product_name != pk.product_name, op.product_name, pk.product_name) AS original_name,
+			if(pk.product_name != op.product_name, pk.product_name, op.product_name) AS updated_name,
 			nullif(op.price, pk.price) AS original_price,
 			nullif(pk.price, op.price) AS updated_price,
 			nullif(op.season, pk.season) AS original_season,

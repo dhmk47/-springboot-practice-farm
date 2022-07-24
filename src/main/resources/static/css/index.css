@@ -294,12 +294,26 @@ header span {
     align-items: center;
 }
 
-.show-price-change {
+.show-product-change {
+    display: flex;
+    flex-direction: column;
+    justify-content: auto;
+
     width: 200px;
     height: 300px;
     overflow: auto;
 
     background-color: aquamarine;
+}
+
+.change-product-title {
+    margin: 20px 0px 0px 40px;
+
+    font-weight: 500;
+}
+
+.change-product {
+    margin: 20px 0px 0px 40px;
 }
 
 .recently-board {

@@ -328,7 +328,7 @@ function load(){
 
     $.ajax({
         type: "get",
-        url: "/api/v1/product/list",
+        url: "/api/v1/product/new/list",
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
@@ -343,6 +343,47 @@ function load(){
         },
         error: errorMessage
     });
+
+    $.ajax({
+        type: "get",
+        url: "/api/v1/product/modify/list",
+        dataType: "json",
+        success: (response) => {
+            if(response.data != null) {
+
+                const showProductInfoChangeBox = document.querySelector(".show-product-change");
+
+                let obj = null;
+                for(let i = 0; i < response.data.length; i++) {
+                    obj = response.data[i];
+
+                    showProductInfoChangeBox.innerHTML =
+                    `<span class="change-product-title">${obj.updatedName}<br></span>`;
+                    
+                    if(obj.originalName != obj.updatedName) {
+                        showProductInfoChangeBox.innerHTML +=
+                        `<span class="change-product">이름: ${obj.originalName} -> ${obj.updatedName}</span>`;
+                    }
+                    if(obj.originalPrice != obj.updatedPrice) {
+                        showProductInfoChangeBox.innerHTML +=
+                        `<span class="change-product">가격: ${obj.originalPrice} -> ${obj.updatedPrice}</span>`;
+                    }
+                    if(obj.originalSeason != obj.updatedSeason) {
+                        showProductInfoChangeBox.innerHTML +=
+                        `<span class="change-product">계절: ${obj.originalSeason} -> ${obj.updatedSeason}</span>`;
+                    }
+                    if(obj.originalGrowDay != obj.updatedGrowDay) {
+                        showProductInfoChangeBox.innerHTML +=
+                        `<span class="change-product">재배기간: ${obj.originalGrowDay} -> ${obj.updatedGrowDay}</span>`;
+                    }
+                }
+            }else {
+                showProductInfoChangeBox.innerHTML =
+                "변경된 농산물이 없습니다.";
+            }
+        },
+        error: errorMessage
+    })
 }
 
 function toggleDtlBox() {
