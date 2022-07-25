@@ -11,6 +11,8 @@ import com.springboot.farm.springbootpractice.domain.entity.Product;
 public interface ProductRepository {
 	public int save(Product product);
 	public Product readProductByProductName(String productName);
+	public List<Product> readAllProduct();
+	public List<Product> readMyProductList(int userCode);
 	public List<Product> readRecentlyProductLIst(String date);
 	public List<PastAndNowProductInfo> readModifiedProductList(String date);
 	public int update(Product product);

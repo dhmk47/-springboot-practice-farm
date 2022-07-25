@@ -34,6 +34,30 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
+	public List<ReadProductRespDto> getAllProductList() throws Exception {
+		List<ReadProductRespDto> productList = null;
+		
+		productList = productRepository.readAllProduct()
+				.stream()
+				.map(entity -> entity.toReadRespDto())
+				.collect(Collectors.toCollection(ArrayList::new));
+		
+		return productList;
+	}
+	
+	@Override
+	public List<ReadProductRespDto> getMyProductList(int userCode) throws Exception {
+		List<ReadProductRespDto> productList = null;
+		
+		productList = productRepository.readMyProductList(userCode)
+				.stream()
+				.map(entity -> entity.toReadRespDto())
+				.collect(Collectors.toCollection(ArrayList::new));
+		
+		return productList;
+	}
+	
+	@Override
 	public List<ReadProductRespDto> getRecentlyProductList(String date) throws Exception {
 		List<ReadProductRespDto> productList = null;
 		

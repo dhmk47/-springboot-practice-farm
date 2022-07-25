@@ -65,6 +65,34 @@ public class ProductController {
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "품목 불러오기 성공", readProductRespDto));
 	}
 	
+	@GetMapping("/list")
+	public ResponseEntity<?> getAllProductToList() {
+		List<ReadProductRespDto> productList = null;
+		
+		try {
+			productList = productService.getAllProductList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "모든 농산물 리스트로 불러오기 실패", productList));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "모든 농산물 리스트로 불러오기 성공", productList));
+	}
+	
+	@GetMapping("/list/{userCode}")
+	public ResponseEntity<?> getMyProductList(@PathVariable int userCode) {
+		List<ReadProductRespDto> productList = null;
+		
+		try {
+			productList = productService.getMyProductList(userCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "사용자 농산물 리스트 불러오기 실패", productList));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "사용자 농산물 리스트 불러오기 성공", productList));
+	}
+	
 	@GetMapping("/new/list")
 	public ResponseEntity<?> getRecentlyProductList(/*int userCode*/) {
 		List<ReadProductRespDto> productList = null;

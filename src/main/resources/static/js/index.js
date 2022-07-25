@@ -30,9 +30,13 @@ let adminFlag = false;
 // 구매하기인지 판매하기인지 구분짓는 flag
 let purchaseFlag = false;
 
+// userCode를 담을 임시 변수
+let userCode = null;
+
 // 구매, 판매 박스
 const dtlMenu = document.querySelector(".purchase-product-menu");
 const dtlProductMenu = document.querySelector(".show-available-product-box");
+const showProductList = document.querySelector(".show-available-product-box ul");
 let dtlMenuFlag = false;
 let dtlProductFlag = false;
 
@@ -255,8 +259,30 @@ document.querySelector(".xmark2").onclick = () => {
 document.querySelector(".show-product-button").onclick = () => {
     $(dtlProductMenu).fadeIn(20);
     dtlProductFlag = true;
+    let obj = null;
     if(purchaseFlag) {  // 구매 가능한 품목 나타내기
-        
+        $.ajax({
+            type: "get",
+            url: "/api/v1/product/list",
+            dataType: "json",
+            success: (response) => {
+                if(response.data != null) {
+
+                    showProductList.innerHTML = "";
+
+                    for(let i = 0; i < response.data.length; i++){
+                        obj = response.data[i];
+
+                        showProductList.innerHTML += 
+                        `<li class="product-list-title">${obj.product_name}<br></li>
+                        <li class="product-list">개당 가격: ${obj.price}</li>`;
+                    }
+                }else {
+                    showProductList.innerHTML = `<li>아직 구매 가능한 농산물이 없습니다.</li>`
+                }
+            },
+            error: errorMessage
+        });
     }else if(!purchaseFlag) {    // 판매 가능한 품목 나타내기
                     
     }else if(growFlag) {        // 재배 가능한 품목 나타내기
@@ -287,6 +313,8 @@ loginBoxButtons[0].onclick = () => {
                 signinFlag = true;
                 if(response.data.roles.includes("ADMIN")){
                     adminFlag = true;
+                }else {
+                    userCode = response.data.user_code;
                 }
                 // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
                 load();

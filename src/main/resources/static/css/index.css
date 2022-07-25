@@ -254,7 +254,28 @@ header span {
 
     width: 200px;
     height: 500px;
+
+    overflow: auto;
     background-color: bisque;
+}
+
+.show-available-product-box ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.show-available-product-box ul li {
+    margin-left: 40px;
+    color: black;
+}
+
+.product-list-title {
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+.product-list {
+    margin-top: 10px;
 }
 
 .auto-search {
