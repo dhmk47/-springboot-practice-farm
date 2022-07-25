@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class ReadUserRespDto {
-	private int usercode;
+	private int userCode;
 	private String name;
 	private String username;
 	private String password;

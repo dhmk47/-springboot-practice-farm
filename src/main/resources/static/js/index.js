@@ -198,10 +198,12 @@ productAdminmenu[1].onclick = () => {
         location.href = "/product/management";
     }else {
         toggleDtlBox();
+        purchaseFlag = true;
     }
 }
 
 customButtons[0].onclick = () => {
+    $(dtlProductMenu).fadeOut(0);
     purchaseFlag = true;
     growFlag = false;
     document.querySelector(".purchase-product-menu h1").innerHTML = "농산물 구매하기";
@@ -211,6 +213,7 @@ customButtons[0].onclick = () => {
 }
 
 customButtons[1].onclick = () => {
+    $(dtlProductMenu).fadeOut(0);
     purchaseFlag = false;
     growFlag = false;
     document.querySelector(".purchase-product-menu h1").innerHTML = "농산물 판매하기";
@@ -220,6 +223,7 @@ customButtons[1].onclick = () => {
 }
 
 customButtons[2].onclick = () => {
+    $(dtlProductMenu).fadeOut(0);
     purchaseFlag = false;
     growFlag = true;
     document.querySelector(".purchase-product-menu h1").innerHTML = "농산물 재배하기";
@@ -266,7 +270,7 @@ document.querySelector(".show-product-button").onclick = () => {
             url: "/api/v1/product/list",
             dataType: "json",
             success: (response) => {
-                if(response.data != null) {
+                if(response.data.length != 0) {
 
                     showProductList.innerHTML = "";
 
@@ -278,15 +282,61 @@ document.querySelector(".show-product-button").onclick = () => {
                         <li class="product-list">개당 가격: ${obj.price}</li>`;
                     }
                 }else {
-                    showProductList.innerHTML = `<li>아직 구매 가능한 농산물이 없습니다.</li>`
+                    showProductList.innerHTML = `<li class="no-product-list">아직 구매 가능한 농산물이 없습니다.</li>`
                 }
             },
             error: errorMessage
         });
-    }else if(!purchaseFlag) {    // 판매 가능한 품목 나타내기
-                    
-    }else if(growFlag) {        // 재배 가능한 품목 나타내기
+    }else if(!purchaseFlag && !growFlag) {    // 판매 가능한 품목 나타내기
+        $.ajax({
+            type: "get",
+            url: `/api/v1/product/list/${userCode}`,
+            dataType: "json",
+            success: (response) => {
+                if(response.data.length != 0) {
 
+                    console.log(response.data);
+                    
+                    showProductList.innerHTML = "";
+
+                    for(let i = 0; i < response.data.length; i++){
+                        obj = response.data[i];
+
+                        showProductList.innerHTML +=
+                        `<li class="product-list-title">${obj.product_name}<br></li>
+                        <li class="product-list">개당 가격: ${obj.price}</li>
+                        <li class="product-list">수량: ${obj.amount}</li>`;
+                    }
+
+                }else {
+                    showProductList.innerHTML = '<li class="no-product-list">아직 판매 가능한 농산물이 없습니다.</li>'
+                }
+            }
+        });
+
+    }else if(growFlag) {        // 재배 가능한 품목 나타내기
+        $.ajax({
+            type: "get",
+            url: "/api/v1/product/list",
+            dataType: "json",
+            success: (response) => {
+                if(response.data.length != 0) {
+
+                    showProductList.innerHTML = "";
+
+                    for(let i = 0; i < response.data.length; i++){
+                        obj = response.data[i];
+
+                        showProductList.innerHTML += 
+                        `<li class="product-list-title">${obj.product_name}<br></li>
+                        <li class="product-list">재배 기간: ${obj.grow_day}</li>`;
+                    }
+                }else {
+                    showProductList.innerHTML = `<li class="no-product-list">아직 재배 가능한 농산물이 없습니다.</li>`
+                }
+            },
+            error: errorMessage
+        });
     }
 }
 
@@ -314,7 +364,7 @@ loginBoxButtons[0].onclick = () => {
                 if(response.data.roles.includes("ADMIN")){
                     adminFlag = true;
                 }else {
-                    userCode = response.data.user_code;
+                    userCode = response.data.userCode;
                 }
                 // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
                 load();

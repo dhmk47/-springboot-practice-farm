@@ -39,7 +39,7 @@ public class User {
 	
 	public ReadUserRespDto toReadUserDto() {
 		return ReadUserRespDto.builder()
-				.usercode(usercode)
+				.userCode(usercode)
 				.name(name)
 				.username(username)
 				.password(password)
