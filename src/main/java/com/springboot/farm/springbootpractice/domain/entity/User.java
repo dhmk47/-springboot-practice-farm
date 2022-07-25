@@ -21,6 +21,7 @@ public class User {
 	private String password;
 	private String email;
 	private String roles;
+	private int money;
 	private LocalDateTime create_date;
 	private LocalDateTime update_date;
 	
@@ -32,6 +33,7 @@ public class User {
 				.password(password)
 				.email(email)
 				.roles(roles)
+				.money(money)
 				.create_date(create_date)
 				.update_date(update_date)
 				.build();
@@ -45,6 +47,7 @@ public class User {
 				.password(password)
 				.email(email)
 				.roles(roles)
+				.money(money)
 				.create_date(create_date)
 				.update_date(update_date)
 				.build();

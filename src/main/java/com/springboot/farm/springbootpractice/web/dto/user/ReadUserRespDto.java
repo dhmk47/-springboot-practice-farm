@@ -18,6 +18,7 @@ public class ReadUserRespDto {
 	private String password;
 	private String email;
 	private String roles;
+	private int money;
 	private LocalDateTime create_date;
 	private LocalDateTime update_date;
 }

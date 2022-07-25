@@ -5,8 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/87ed282d9d.js" crossorigin="anonymous"></script>
-    <!-- <script src="https://code.jquery.com/jquery-latest.min.js"></script> -->
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/index.css">
     <title>농부 게임</title>
@@ -82,8 +81,12 @@
                 <div>
                     <h1>농산물 구매하기</h1>
                 </div>
+                <div>
+                    <span class="show-money">보유금액: </span>\
+                </div>
                 <div class="purchase-box">
-                    <input type="text" placeholder="구매할 농산물을 입력하세요.">
+                    <input class="product-name" type="text" placeholder="구매할 농산물을 입력하세요.">
+                    <input class="amount-input" type="text" placeholder="개수">
                     <button type="button">구매하기</button>
                 </div>
                 <button type="button" class="show-product-button">구매 가능한 농산물 보기</button>

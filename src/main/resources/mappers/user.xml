@@ -22,15 +22,17 @@
   	
   	<select id="getUserByUsername" parameterType="String" resultType="com.springboot.farm.springbootpractice.domain.entity.User">
   		select
-  			usercode,
-  			name,
-  			username,
-  			password,
-  			email,
-  			roles
+  			um.usercode,
+  			um.name,
+  			um.username,
+  			um.password,
+  			um.email,
+  			um.roles,
+  			ud.money
   		from
-  			user_mst
+  			user_mst um
+  			left outer join user_dtl ud on(ud.usercode = um.usercode)
   		where
-  			username = #{username}
+  			um.username = #{username}
   	</select>
   </mapper>

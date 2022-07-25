@@ -14,6 +14,7 @@ const loginInputItems = document.querySelectorAll(".login-box input");
 const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box button");
 
 const customButtons = document.querySelectorAll(".custom-button-box button");
+const showMoneyBox = document.querySelector(".show-money");
 
 const searchInput = document.querySelector(".search-farm-product input");
 const autoSearchBox = document.querySelector(".auto-search");
@@ -30,10 +31,14 @@ let adminFlag = false;
 // 구매하기인지 판매하기인지 구분짓는 flag
 let purchaseFlag = false;
 
-// userCode를 담을 임시 변수
+// 유저정보를 담을 임시 변수
 let userCode = null;
+let money = null;
 
 // 구매, 판매 박스
+const productNameInput = document.querySelector(".product-name");
+const productAmountInput = document.querySelector(".amount-input");
+
 const dtlMenu = document.querySelector(".purchase-product-menu");
 const dtlProductMenu = document.querySelector(".show-available-product-box");
 const showProductList = document.querySelector(".show-available-product-box ul");
@@ -197,8 +202,12 @@ productAdminmenu[1].onclick = () => {
     if(adminFlag) { // 관리자일 경우 새로운 getMapping 요청
         location.href = "/product/management";
     }else {
+        if(!signinFlag) {
+            alert("로그인을 먼저 진행해 주세요.");
+            return;
+        }
         toggleDtlBox();
-        purchaseFlag = true;
+        customButtons[0].click();
     }
 }
 
@@ -247,6 +256,44 @@ userDtlMenuItems[1].onclick = () => {
 // 회원탈퇴
 userDtlMenuItems[2].onclick = () => {
     
+}
+
+document.querySelector(".purchase-box button").onclick = () => {
+    if(purchaseFlag) {                          // 구매버튼
+        $.ajax({
+            type: "get",
+            url: `/api/v1/product/${productNameInput.value}`,
+            dataType: "json",
+            success: (response) => {
+                if(response.data.length != 0) {
+                    let price = null;
+                    let money = null;
+
+                    price = response.data.price;
+                    money = money - price;
+
+                    if(money < 0) {
+                        alert(`구매 불가!\n부족 금액: ${money * -1}`);
+                    }else {
+                        let result = null;
+                        result = confirm(`${productNameInput.value}을(를) ${productAmountInput.value}
+                        개 구매하시겠습니까?\n잔액: ${money}`);
+
+                        if(result){
+                            updateUserMoney(money);
+                        }
+                    }
+                }else {
+                    alert("구매 불가!\n해당 농산물은 존재 하지 않습니다.");
+                }
+            },
+            error: errorMessage
+        });
+    }else if(!purchaseFlag && !growFlag) {      // 판매버튼
+
+    }else {                                     // 재배버튼
+
+    }
 }
 
 document.querySelector(".xmark1").onclick = () => {
@@ -365,6 +412,8 @@ loginBoxButtons[0].onclick = () => {
                     adminFlag = true;
                 }else {
                     userCode = response.data.userCode;
+                    money = response.data.money;
+                    showMoneyBox.innerHTML += ` ${money}원`;
                 }
                 // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
                 load();
@@ -489,6 +538,10 @@ function errorMessage(request, status, error) {
     console.log(request.status);
     console.log(request.responseText);
     console.log(error);
+}
+
+function updateUserMoney(money, userCode) {
+
 }
 
 function isEmpty(value) {
