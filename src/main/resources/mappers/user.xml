@@ -35,4 +35,13 @@
   		where
   			um.username = #{username}
   	</select>
+  	
+  	<update id="updateMoney" parameterType="Integer">
+  		update
+  			user_dtl
+  		set
+  			money = #{money}
+  		where
+  			usercode = #{userCode}
+  	</update>
   </mapper>
