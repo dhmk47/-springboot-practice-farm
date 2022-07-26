@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadPastAndNowProductInfoDto;
+import com.springboot.farm.springbootpractice.web.dto.product.ReadProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductRespDto;
 import com.springboot.farm.springbootpractice.web.dto.product.UpdateProductReqDto;
 
 public interface ProductService {
 	public boolean insertProduct(CreateProductReqDto createProductReqDto) throws Exception;
+	public ReadProductRespDto getUserProductByProductName(ReadProductReqDto readProductReqDto) throws Exception;
 	public ReadProductRespDto getProductByProductName(String productName) throws Exception;
 	public List<ReadProductRespDto> getAllProductList() throws Exception;
 	public List<ReadProductRespDto> getMyProductList(int userCode) throws Exception;

@@ -39,6 +39,11 @@ public class UserServiceImpl implements UserService{
 	public boolean modifyUser(CreateUserReqDto createUserReqDto) throws Exception{
 		return false;
 	}
+	
+	@Override
+	public boolean updateUserMoney(int money, int userCode) throws Exception {
+		return userRepository.updateUserMoney(money, userCode) > 0;
+	}
 
 	@Override
 	public boolean removeUser(CreateUserReqDto createUserReqDto) throws Exception{

@@ -11,6 +11,7 @@ import com.springboot.farm.springbootpractice.domain.entity.Product;
 import com.springboot.farm.springbootpractice.domain.product.ProductRepository;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadPastAndNowProductInfoDto;
+import com.springboot.farm.springbootpractice.web.dto.product.ReadProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductRespDto;
 import com.springboot.farm.springbootpractice.web.dto.product.UpdateProductReqDto;
 
@@ -26,6 +27,16 @@ public class ProductServiceImpl implements ProductService{
 	public boolean insertProduct(CreateProductReqDto createProductReqDto) throws Exception {
 		return productRepository.save(createProductReqDto.toEntity()) > 0;
 	}
+	
+	@Override
+	public ReadProductRespDto getUserProductByProductName(ReadProductReqDto readProductReqDto) throws Exception {
+		Product product = null;
+		
+		product = productRepository.readUserProductByProductName(readProductReqDto.toEntity());
+		
+		return product == null ? null : product.toReadRespDto();
+	}
+	
 	@Override
 	public ReadProductRespDto getProductByProductName(String productName) throws Exception {
 		Product readProductRespDto = null;

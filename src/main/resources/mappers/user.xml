@@ -36,7 +36,7 @@
   			um.username = #{username}
   	</select>
   	
-  	<update id="updateMoney" parameterType="Integer">
+  	<update id="updateUserMoney" parameterType="Integer">
   		update
   			user_dtl
   		set

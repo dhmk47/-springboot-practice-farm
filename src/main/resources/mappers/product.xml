@@ -43,6 +43,24 @@
   			user_code = #{userCode}
   	</select>
   	
+  	<select id="readUserProductByProductName" parameterType="com.springboot.farm.springbootpractice.domain.entity.Product" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">
+  		select
+  			product_code,
+  			product_name,
+  			price,
+  			season,
+  			amount,
+  			user_code,
+  			purchase_price,
+  			create_date,
+  			update_date
+  		from
+  			user_product
+  		where
+  			product_name = #{product_name}
+  			and user_code = #{user_code}
+  	</select>
+  	
   	<select id="readProductByProductName" parameterType="String" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">
   		select
   			product_code,

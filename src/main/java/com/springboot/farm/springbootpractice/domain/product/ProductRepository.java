@@ -10,6 +10,7 @@ import com.springboot.farm.springbootpractice.domain.entity.Product;
 @Mapper
 public interface ProductRepository {
 	public int save(Product product);
+	public Product readUserProductByProductName(Product product);
 	public Product readProductByProductName(String productName);
 	public List<Product> readAllProduct();
 	public List<Product> readMyProductList(int userCode);

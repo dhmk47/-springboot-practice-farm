@@ -36,6 +36,7 @@ let userCode = null;
 let money = null;
 
 // 구매, 판매 박스
+const productInputItems = document.querySelectorAll(".purchase-box input");
 const productNameInput = document.querySelector(".product-name");
 const productAmountInput = document.querySelector(".amount-input");
 
@@ -259,6 +260,19 @@ userDtlMenuItems[2].onclick = () => {
 }
 
 document.querySelector(".purchase-box button").onclick = () => {
+    if(!growFlag) {
+        for(let i = 0; i < productInputItems.length; i++) {
+            if(isEmpty(productInputItems[i].value)) {
+                alert(
+                    (i == 0 ? "농산물 이름을"
+                    : "개수를") + " 입력해주세요."
+                );
+                return;
+            }
+        }
+        
+    }
+
     if(purchaseFlag) {                          // 구매버튼
         $.ajax({
             type: "get",
@@ -267,20 +281,21 @@ document.querySelector(".purchase-box button").onclick = () => {
             success: (response) => {
                 if(response.data.length != 0) {
                     let price = null;
-                    let money = null;
 
-                    price = response.data.price;
-                    money = money - price;
+                    price = response.data.price * productAmountInput.value;
 
-                    if(money < 0) {
-                        alert(`구매 불가!\n부족 금액: ${money * -1}`);
+                    if(money - price < 0) {
+                        alert(`구매 불가!\n부족 금액: ${(money - price) * -1}`);
                     }else {
                         let result = null;
-                        result = confirm(`${productNameInput.value}을(를) ${productAmountInput.value}
-                        개 구매하시겠습니까?\n잔액: ${money}`);
+                        result = confirm(`${productNameInput.value}을(를) ${productAmountInput.value}개 구매하시겠습니까?\n잔액: ${money - price}`);
 
                         if(result){
-                            updateUserMoney(money);
+                            money = money - price;
+                            if(updateUserMoney(money, userCode)) {
+                                updateUserProduct(productNameInput.value, productAmountInput.value);
+                            }
+                            
                         }
                     }
                 }else {
@@ -413,7 +428,7 @@ loginBoxButtons[0].onclick = () => {
                 }else {
                     userCode = response.data.userCode;
                     money = response.data.money;
-                    showMoneyBox.innerHTML += ` ${money}원`;
+                    showMoneyBox.innerHTML = `보유금액: ${money}원`;
                 }
                 // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
                 load();
@@ -541,6 +556,31 @@ function errorMessage(request, status, error) {
 }
 
 function updateUserMoney(money, userCode) {
+	$.ajax({
+		type: "put",
+		url: "/api/v1/user/money",
+		data: {
+			money: money,
+			userCode: userCode
+		},
+		dataType: "json",
+		success: (response) => {
+			if(response.data != false) {
+				alert("돈 업데이트 성공");
+                showMoneyBox.innerHTML = `보유금액: ${money}원`;
+
+                return true;
+			}else {
+				alert("돈 업데이트 실패");
+
+                return false;
+			}
+		},
+		error: errorMessage
+	});
+}
+
+function updateUserProduct(productName, amount) {
 
 }
 

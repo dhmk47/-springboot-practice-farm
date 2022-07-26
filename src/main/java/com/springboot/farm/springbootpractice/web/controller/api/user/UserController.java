@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,6 +69,20 @@ public class UserController {
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "로그인 요청 성공", null));
+	}
+	
+	@PutMapping("/money")
+	public ResponseEntity<?> updateUserMoney(int money, int userCode) {
+		boolean result = false;
+		
+		try {
+			result = userService.updateUserMoney(money, userCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.ok().body(new CMRespDto<>(-1, "사용자 돈 업데이트 실패", result));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "사용자 돈 업데이트 성공", result));
 	}
 
 }

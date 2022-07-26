@@ -21,6 +21,7 @@ import com.springboot.farm.springbootpractice.util.Util;
 import com.springboot.farm.springbootpractice.web.dto.CMRespDto;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadPastAndNowProductInfoDto;
+import com.springboot.farm.springbootpractice.web.dto.product.ReadProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductRespDto;
 import com.springboot.farm.springbootpractice.web.dto.product.UpdateProductReqDto;
 
@@ -50,6 +51,20 @@ public class ProductController {
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "새로운 품목 생성 성공", result));
+	}
+	
+	@GetMapping("/users")
+	public ResponseEntity<?> getUserProductByProductName(ReadProductReqDto readProductReqDto) {
+		ReadProductRespDto readProductRespDto = null;
+		
+		try {
+			readProductRespDto = productService.getUserProductByProductName(readProductReqDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "사용자 농산물 불러오기 실패", readProductRespDto));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "사용자 농산물 불러오기 성공", readProductRespDto));
 	}
 	
 	@GetMapping("/{productName}")

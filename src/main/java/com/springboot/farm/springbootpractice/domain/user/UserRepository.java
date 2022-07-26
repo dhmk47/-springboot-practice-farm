@@ -8,4 +8,5 @@ import com.springboot.farm.springbootpractice.domain.entity.User;
 public interface UserRepository {
 	public int insertUser(User user);
 	public User getUserByUsername(String username);
+	public int updateUserMoney(int money, int userCode);
 }
