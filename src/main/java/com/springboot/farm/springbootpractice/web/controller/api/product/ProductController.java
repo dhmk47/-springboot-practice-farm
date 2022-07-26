@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.farm.springbootpractice.service.ProductService;
 import com.springboot.farm.springbootpractice.util.Util;
 import com.springboot.farm.springbootpractice.web.dto.CMRespDto;
+import com.springboot.farm.springbootpractice.web.dto.product.BuyProductDto;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadPastAndNowProductInfoDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductReqDto;
@@ -51,6 +52,20 @@ public class ProductController {
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "새로운 품목 생성 성공", result));
+	}
+	
+	@PostMapping("/users/new")
+	public ResponseEntity<?> addUserProduct(BuyProductDto buyProductDto) {
+		boolean result = false;
+		
+		try {
+			result = productService.addUserProduct(buyProductDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "사용자 농산물 추가 실패", result));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "사용자 농산물 추가 성공", result));
 	}
 	
 	@GetMapping("/users")

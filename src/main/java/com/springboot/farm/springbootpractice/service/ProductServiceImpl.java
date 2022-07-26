@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.springboot.farm.springbootpractice.domain.entity.PastAndNowProductInfo;
 import com.springboot.farm.springbootpractice.domain.entity.Product;
 import com.springboot.farm.springbootpractice.domain.product.ProductRepository;
+import com.springboot.farm.springbootpractice.web.dto.product.BuyProductDto;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadPastAndNowProductInfoDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductReqDto;
@@ -28,11 +29,17 @@ public class ProductServiceImpl implements ProductService{
 		return productRepository.save(createProductReqDto.toEntity()) > 0;
 	}
 	
+
+	@Override
+	public boolean addUserProduct(BuyProductDto buyProductDto) throws Exception {
+		return productRepository.addUserProduct(buyProductDto.toEntity()) > 0;
+	}
+	
 	@Override
 	public ReadProductRespDto getUserProductByProductName(ReadProductReqDto readProductReqDto) throws Exception {
 		Product product = null;
 		
-		product = productRepository.readUserProductByProductName(readProductReqDto.toEntity());
+		product = productRepository.readUserProductByProductCode(readProductReqDto.toEntity());
 		
 		return product == null ? null : product.toReadRespDto();
 	}

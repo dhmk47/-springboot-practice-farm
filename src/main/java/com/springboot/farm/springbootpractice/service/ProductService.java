@@ -2,6 +2,7 @@ package com.springboot.farm.springbootpractice.service;
 
 import java.util.List;
 
+import com.springboot.farm.springbootpractice.web.dto.product.BuyProductDto;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadPastAndNowProductInfoDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductReqDto;
@@ -10,6 +11,7 @@ import com.springboot.farm.springbootpractice.web.dto.product.UpdateProductReqDt
 
 public interface ProductService {
 	public boolean insertProduct(CreateProductReqDto createProductReqDto) throws Exception;
+	public boolean addUserProduct(BuyProductDto buyProductDto) throws Exception;
 	public ReadProductRespDto getUserProductByProductName(ReadProductReqDto readProductReqDto) throws Exception;
 	public ReadProductRespDto getProductByProductName(String productName) throws Exception;
 	public List<ReadProductRespDto> getAllProductList() throws Exception;

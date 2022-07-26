@@ -273,7 +273,16 @@ document.querySelector(".purchase-box button").onclick = () => {
         
     }
 
+    let obj = null;
+
+    obj = checkProduct(productNameInput.value)
+
     if(purchaseFlag) {                          // 구매버튼
+        if(obj == null) {
+            alert("해당 농산물은 구매할 수 없습니다.");
+            return;
+        }
+        
         $.ajax({
             type: "get",
             url: `/api/v1/product/${productNameInput.value}`,
@@ -291,9 +300,12 @@ document.querySelector(".purchase-box button").onclick = () => {
                         result = confirm(`${productNameInput.value}을(를) ${productAmountInput.value}개 구매하시겠습니까?\n잔액: ${money - price}`);
 
                         if(result){
+                            let salesPrice = prompt("개당 얼마로 판매하시겠습니까?")
                             money = money - price;
                             if(updateUserMoney(money, userCode)) {
-                                updateUserProduct(productNameInput.value, productAmountInput.value);
+                                obj.amount = productAmountInput.value;
+                                obj.price = salesPrice;
+                                updateUserProduct(obj);
                             }
                             
                         }
@@ -580,8 +592,72 @@ function updateUserMoney(money, userCode) {
 	});
 }
 
-function updateUserProduct(productName, amount) {
+function checkProduct(productName) {
+    $.ajax({
+        type: "get",
+        url: `/api/v1/product/${productName}`,
+        dataType: "json",
+        success: (response) => {
+            if(response.data != null) {
+                let obj = {};
 
+                obj = {
+                    productCode: response.data.product_code,
+                    productName: response.data.product_name,
+                    price: null,
+                    season: response.data.season,
+                    amount: null,
+                    userCode: userCode,
+                    purchasePrice: response.data.price
+                };
+
+                return obj;
+            }else {
+                return null;
+            }
+        }
+    })
+}
+
+function checkUserProduct(productCode, userCode) {
+    $.ajax({
+        type: "get",
+        url: `/api/v1/product/users?productName=${productCode}&userCode=${userCode}`,
+        dataType: "json",
+        success: (response) => {
+            if(response.data != null) {
+                return true;
+            }else {
+                return false;
+            }
+        },
+        error: errorMessage
+    })
+}
+
+function updateUserProduct(obj) {
+    if(checkUserProduct(obj.productCode, userCode)) {   // 사용자에게 해당 농산물이 있다면 update
+        alert("640 농산물 있음!");
+    }else { // 없다면 insert
+        alert("642 농산물 없음!");
+        $.ajax({
+            type: "post",
+            url: "/api/v1/product/users/new",
+            data: {
+                obj: obj
+            },
+            dataType: "json",
+            success: (response) => {
+                if(response.data != false) {
+                    alert("사용자 농산물 추가 성공");
+                }else {
+                    alert("사용자 농산물 추가 실패");
+                }
+            },
+            error: errorMessage
+
+        });
+    }
 }
 
 function isEmpty(value) {

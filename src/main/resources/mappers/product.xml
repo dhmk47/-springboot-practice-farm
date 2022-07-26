@@ -18,6 +18,22 @@
   		)
   	</insert>
   	
+  	<insert id="addUserProduct" parameterType="com.springboot.farm.springbootpractice.domain.entity.Product">
+  		insert into
+  			user_product
+  		values(
+  			#{product_code},
+  			#{product_name},
+  			#{price},
+  			#{season},
+  			#{amount},
+  			#{user_code},
+  			#{purchase_price},
+  			now(),
+  			now()
+  		)
+  	</insert>
+  	
   	<select id="readAllProduct" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">
   		select
   			product_code,
@@ -43,7 +59,7 @@
   			user_code = #{userCode}
   	</select>
   	
-  	<select id="readUserProductByProductName" parameterType="com.springboot.farm.springbootpractice.domain.entity.Product" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">
+  	<select id="readUserProductByProductCode" parameterType="com.springboot.farm.springbootpractice.domain.entity.Product" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">
   		select
   			product_code,
   			product_name,
@@ -57,7 +73,7 @@
   		from
   			user_product
   		where
-  			product_name = #{product_name}
+  			product_code = #{product_code}
   			and user_code = #{user_code}
   	</select>
   	
