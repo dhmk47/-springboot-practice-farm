@@ -140,6 +140,17 @@
   			product_code = #{product_code}
   	</update>
   	
+  	<update id="updateUserProduct" parameterType="com.springboot.farm.springbootpractice.domain.entity.Product">
+  		update
+  			user_product
+  		set
+  			amount = #{amount},
+  			purchase_price = #{purchase_price}
+  		where
+  			product_code = #{product_code}
+  			and user_cdoe = #{user_code}
+  	</update>
+  	
   	<delete id="delete" parameterType="Integer">
   		delete
   		from

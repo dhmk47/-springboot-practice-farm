@@ -18,5 +18,6 @@ public interface ProductRepository {
 	public List<Product> readRecentlyProductLIst(String date);
 	public List<PastAndNowProductInfo> readModifiedProductList(String date);
 	public int update(Product product);
+	public int updateUserProduct(Product product);
 	public int delete(int productCode);
 }

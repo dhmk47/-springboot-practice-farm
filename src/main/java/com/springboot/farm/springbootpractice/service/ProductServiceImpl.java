@@ -103,6 +103,11 @@ public class ProductServiceImpl implements ProductService{
 	public boolean modifyProductInfo(UpdateProductReqDto updateProductReqDto) throws Exception {
 		return productRepository.update(updateProductReqDto.toEntity()) > 0;
 	}
+	
+	@Override
+	public boolean updateUsersProduct(UpdateProductReqDto updateProductReqDto) throws Exception {
+		return productRepository.updateUserProduct(null);
+	}
 
 	@Override
 	public boolean removeProduct(int productCode) throws Exception {

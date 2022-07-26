@@ -11,6 +11,9 @@ public class UpdateProductReqDto {
 	private int price;
 	private String season;
 	private int growDay;
+	private int amount;
+	private int userCode;
+	private int purchasePrice;
 	
 	public Product toEntity() {
 		return Product.builder()
@@ -19,6 +22,9 @@ public class UpdateProductReqDto {
 				.price(price)
 				.season(season)
 				.grow_day(growDay)
+				.amount(amount)
+				.user_code(userCode)
+				.purchase_price(purchasePrice)
 				.build();
 	}
 }

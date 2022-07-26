@@ -19,5 +19,6 @@ public interface ProductService {
 	public List<ReadProductRespDto> getRecentlyProductList(String date) throws Exception;
 	public List<ReadPastAndNowProductInfoDto> getRecentlyModifiedProductList(String date) throws Exception;
 	public boolean modifyProductInfo(UpdateProductReqDto updateProductReqDto) throws Exception;
+	public boolean updateUsersProduct(UpdateProductReqDto updateProductReqDto) throws Exception;
 	public boolean removeProduct(int productCode) throws Exception;
 }
