@@ -49,6 +49,9 @@ let dtlProductFlag = false;
 let autoSearchFlag = false;
 let autoSearchValues = null;
 
+// 구매내용을 담을 객체
+let obj = null;
+
 let array = ["사과", "오렌지", "수박", "딸기", "사과탕후루", "사과탕", "참외", "귤"];
 
 // $(userMenu).fadeOut(0);
@@ -273,9 +276,9 @@ document.querySelector(".purchase-box button").onclick = () => {
         
     }
 
-    let obj = null;
+    obj = null;
 
-    obj = checkProduct(productNameInput.value)
+    checkProduct(productNameInput.value);
 
     if(purchaseFlag) {                          // 구매버튼
         if(obj == null) {
@@ -568,9 +571,11 @@ function errorMessage(request, status, error) {
 }
 
 function updateUserMoney(money, userCode) {
+    let flag = false;
 	$.ajax({
 		type: "put",
 		url: "/api/v1/user/money",
+        async: false,
 		data: {
 			money: money,
 			userCode: userCode
@@ -581,26 +586,38 @@ function updateUserMoney(money, userCode) {
 				alert("돈 업데이트 성공");
                 showMoneyBox.innerHTML = `보유금액: ${money}원`;
 
-                return true;
+                flag = true;
 			}else {
 				alert("돈 업데이트 실패");
 
-                return false;
+                flag = false;
 			}
 		},
 		error: errorMessage
 	});
+
+    if(flag) {
+        return true;
+    }else {
+        return false;
+    }
 }
 
 function checkProduct(productName) {
+
+    let flag = false;
+
     $.ajax({
         type: "get",
         url: `/api/v1/product/${productName}`,
+        async: false,
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
-                let obj = {};
-
+                alert("602 들어옴");
+                
+                obj = null;
+                
                 obj = {
                     productCode: response.data.product_code,
                     productName: response.data.product_name,
@@ -610,29 +627,36 @@ function checkProduct(productName) {
                     userCode: userCode,
                     purchasePrice: response.data.price
                 };
-
-                return obj;
             }else {
-                return null;
+                obj = null;
             }
         }
-    })
+    });
 }
 
 function checkUserProduct(productCode, userCode) {
+    let flag = false;
+
     $.ajax({
         type: "get",
         url: `/api/v1/product/users?productName=${productCode}&userCode=${userCode}`,
+        async: false,
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
-                return true;
+                flag = true;
             }else {
-                return false;
+                flag = false;
             }
         },
         error: errorMessage
-    })
+    });
+
+    if(flag) {
+        return true;
+    }else {
+        return false;
+    }
 }
 
 function updateUserProduct(obj) {
@@ -643,9 +667,7 @@ function updateUserProduct(obj) {
         $.ajax({
             type: "post",
             url: "/api/v1/product/users/new",
-            data: {
-                obj: obj
-            },
+            data: obj,
             dataType: "json",
             success: (response) => {
                 if(response.data != false) {
@@ -655,7 +677,6 @@ function updateUserProduct(obj) {
                 }
             },
             error: errorMessage
-
         });
     }
 }
