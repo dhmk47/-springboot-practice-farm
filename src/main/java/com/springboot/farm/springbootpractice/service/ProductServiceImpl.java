@@ -106,7 +106,7 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	public boolean updateUsersProduct(UpdateProductReqDto updateProductReqDto) throws Exception {
-		return productRepository.updateUserProduct(updateProductReqDto.toEntity()) > 0;
+		return productRepository.updateUserProduct(updateProductReqDto.toEntity()) > 0;	/////////////
 	}
 
 	@Override
