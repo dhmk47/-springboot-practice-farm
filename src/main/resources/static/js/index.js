@@ -662,6 +662,7 @@ function checkUserProduct(productCode, userCode) {
 function updateUserProduct(obj) {
     if(checkUserProduct(obj.productCode, userCode)) {   // 사용자에게 해당 농산물이 있다면 update
         alert("640 농산물 있음!");
+        
     }else { // 없다면 insert
         alert("642 농산물 없음!");
         $.ajax({
