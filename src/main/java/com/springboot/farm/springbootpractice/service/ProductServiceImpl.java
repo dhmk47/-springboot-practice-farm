@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService{
 	public ReadProductRespDto getUserProductByProductName(ReadProductReqDto readProductReqDto) throws Exception {
 		Product product = null;
 		
-		product = productRepository.readUserProductByProductCode(readProductReqDto.toEntity());
+		product = productRepository.readUserProductByProductName(readProductReqDto.toEntity());
 		
 		return product == null ? null : product.toReadRespDto();
 	}

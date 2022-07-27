@@ -183,6 +183,7 @@ public class ProductController {
 	public ResponseEntity<?> updateUserProduct(UpdateProductReqDto updateProductReqDto) {
 		boolean result = false;
 
+		System.out.println(updateProductReqDto);
 		try {
 			result = productService.updateUsersProduct(updateProductReqDto);
 		} catch (Exception e) {

@@ -35,6 +35,7 @@ let purchaseFlag = false;
 let userCode = null;
 let money = null;
 let amount = 0;
+let purchasePrice = 0;
 
 // 구매, 판매 박스
 const productInputItems = document.querySelectorAll(".purchase-box input");
@@ -279,7 +280,9 @@ document.querySelector(".purchase-box button").onclick = () => {
 
     obj = null;
 
-    checkProduct(productNameInput.value);
+    if(purchaseFlag || growFlag) {
+        checkProduct(productNameInput.value);
+    }
 
     if(purchaseFlag) {                          // 구매버튼
         if(obj == null) {
@@ -305,7 +308,7 @@ document.querySelector(".purchase-box button").onclick = () => {
 
                         if(result){
                             let flag = false;
-                            flag = checkUserProduct(obj.productCode, userCode);
+                            flag = checkUserProduct(obj.productName, userCode);
                             if(!flag) {
                                 let salesPrice = prompt("개당 얼마로 판매하시겠습니까?")
                                 obj.price = salesPrice;
@@ -327,6 +330,7 @@ document.querySelector(".purchase-box button").onclick = () => {
             error: errorMessage
         });
     }else if(!purchaseFlag && !growFlag) {      // 판매버튼
+        checkUserProduct(productNameInput.value, userCode);
 
     }else {                                     // 재배버튼
 
@@ -640,20 +644,44 @@ function checkProduct(productName) {
     });
 }
 
-function checkUserProduct(productCode, userCode) {
+function checkUserProduct(productName, userCode) {
     let flag = false;
 
     $.ajax({
         type: "get",
-        url: `/api/v1/product/users?productCode=${productCode}&userCode=${userCode}`,
+        url: `/api/v1/product/users?productName=${productName}&userCode=${userCode}`,
         async: false,
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
-                amount = response.data.amount;
-                flag = true;
+                if(purchaseFlag) {                  // 구매 버튼일때
+                    amount = response.data.amount;
+                    flag = true;
+
+                }else if(!purchaseFlag && !growFlag) {  // 판매 버튼일때
+                    amount = response.data.amount - productAmountInput.value;
+                    money = money + (response.data.price * productAmountInput.value);
+                    purchasePrice = response.data.purchasePrice;
+                    let result = false;
+
+                    result = confirm(`${productName}을 ${productAmountInput.value}개 판매하시겠습니까?\n판매 후 잔액: ${money}`);
+
+                    if(result) {
+                        if(updateUserMoney(money, userCode)) {
+                            updateUserProduct({productName: productName,
+                                            amount: amount,
+                                            purchasePrice: purchasePrice,
+                                            userCode: userCode}, true);
+                        }
+                    }
+                }
             }else {
-                flag = false;
+                if(purchaseFlag) {
+                    flag = false;
+
+                }else if(!purchaseFlag && !growFlag) {
+                    alert("사용자가 가지고 있지 않는 농산물입니다.");
+                }
             }
         },
         error: errorMessage
