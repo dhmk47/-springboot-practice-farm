@@ -71,7 +71,6 @@ public class ProductController {
 	@GetMapping("/users")
 	public ResponseEntity<?> getUserProductByProductName(ReadProductReqDto readProductReqDto) {
 		ReadProductRespDto readProductRespDto = null;
-		
 		try {
 			readProductRespDto = productService.getUserProductByProductName(readProductReqDto);
 		} catch (Exception e) {
@@ -178,6 +177,20 @@ public class ProductController {
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "품목 수정 성공", result));
+	}
+	
+	@PutMapping("/users/new")
+	public ResponseEntity<?> updateUserProduct(UpdateProductReqDto updateProductReqDto) {
+		boolean result = false;
+
+		try {
+			result = productService.updateUsersProduct(updateProductReqDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "사용자 품목 업데이트 실패", result));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "사용자 품목 업데이트 성공", result));
 	}
 	
 	@DeleteMapping("/remove")

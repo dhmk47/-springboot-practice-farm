@@ -148,7 +148,7 @@
   			purchase_price = #{purchase_price}
   		where
   			product_code = #{product_code}
-  			and user_cdoe = #{user_code}
+  			and user_code = #{user_code}
   	</update>
   	
   	<delete id="delete" parameterType="Integer">

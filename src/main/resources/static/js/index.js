@@ -34,6 +34,7 @@ let purchaseFlag = false;
 // 유저정보를 담을 임시 변수
 let userCode = null;
 let money = null;
+let amount = 0;
 
 // 구매, 판매 박스
 const productInputItems = document.querySelectorAll(".purchase-box input");
@@ -303,12 +304,18 @@ document.querySelector(".purchase-box button").onclick = () => {
                         result = confirm(`${productNameInput.value}을(를) ${productAmountInput.value}개 구매하시겠습니까?\n잔액: ${money - price}`);
 
                         if(result){
-                            let salesPrice = prompt("개당 얼마로 판매하시겠습니까?")
+                            let flag = false;
+                            flag = checkUserProduct(obj.productCode, userCode);
+                            if(!flag) {
+                                let salesPrice = prompt("개당 얼마로 판매하시겠습니까?")
+                                obj.price = salesPrice;
+                            }
                             money = money - price;
                             if(updateUserMoney(money, userCode)) {
-                                obj.amount = productAmountInput.value;
-                                obj.price = salesPrice;
-                                updateUserProduct(obj);
+                                amount += parseInt(productAmountInput.value);
+                                obj.amount = amount;
+                                alert("obj.amount: " + obj.amount);
+                                updateUserProduct(obj, flag);
                             }
                             
                         }
@@ -614,16 +621,15 @@ function checkProduct(productName) {
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
-                alert("602 들어옴");
                 
                 obj = null;
                 
                 obj = {
                     productCode: response.data.product_code,
                     productName: response.data.product_name,
-                    price: null,
+                    price: response.data.price,
                     season: response.data.season,
-                    amount: null,
+                    amount: 0,
                     userCode: userCode,
                     purchasePrice: response.data.price
                 };
@@ -639,11 +645,12 @@ function checkUserProduct(productCode, userCode) {
 
     $.ajax({
         type: "get",
-        url: `/api/v1/product/users?productName=${productCode}&userCode=${userCode}`,
+        url: `/api/v1/product/users?productCode=${productCode}&userCode=${userCode}`,
         async: false,
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
+                amount = response.data.amount;
                 flag = true;
             }else {
                 flag = false;
@@ -659,10 +666,29 @@ function checkUserProduct(productCode, userCode) {
     }
 }
 
-function updateUserProduct(obj) {
-    if(checkUserProduct(obj.productCode, userCode)) {   // 사용자에게 해당 농산물이 있다면 update
+function updateUserProduct(obj, flag) {
+    if(flag) {   // 사용자에게 해당 농산물이 있다면 update
         alert("640 농산물 있음!");
         
+        $.ajax({
+            type: "put",
+            url: "/api/v1/product/users/new",
+            data: obj,
+            dataType: "json",
+            success: (response) => {
+                if(response.data) {
+                    alert("사용자 농산물 새롭게 업데이트 성공");
+                    productInputItems.forEach(input => {
+                        input.value = "";
+                    })
+
+                }else {
+                    alert("사용자 농산물 새롭게 업데이트 실패");
+                }
+            },
+            error: errorMessage
+        });
+
     }else { // 없다면 insert
         alert("642 농산물 없음!");
         $.ajax({
