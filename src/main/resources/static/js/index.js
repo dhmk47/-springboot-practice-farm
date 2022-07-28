@@ -68,10 +68,11 @@ let delay = 200;
 
 searchInput.onkeyup = () => {
 	let keyCode = window.event.keyCode;
-    if(timeout) {
-        clearTimeout(timeout);
-    }
-    timeout = setTimeout(function() {
+    // if(timeout) {
+    //     clearTimeout(timeout);
+    // }
+    // timeout = 
+    setTimeout(function() {
         search(keyCode);
     }, delay);
     autoSearchFlag = true;

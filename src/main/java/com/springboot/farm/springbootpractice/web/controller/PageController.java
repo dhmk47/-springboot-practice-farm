@@ -21,4 +21,9 @@ public class PageController {
 	public String goAddProductPage() {
 		return "managementProduct";
 	}
+	
+	@GetMapping("/test")
+	public String goTest() {
+		return "test";
+	}
 }
