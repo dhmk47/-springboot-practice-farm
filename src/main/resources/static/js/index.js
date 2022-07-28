@@ -29,6 +29,10 @@ let boardMenuFlag = false;
 let adminFlag = false;
 
 // 구매하기인지 판매하기인지 구분짓는 flag
+
+// 재배중인지 확인하는 flag
+let growingFlag = false;
+
 let purchaseFlag = false;
 
 // 유저정보를 담을 임시 변수
@@ -266,6 +270,11 @@ userDtlMenuItems[2].onclick = () => {
 }
 
 document.querySelector(".purchase-box button").onclick = () => {
+    if(growingFlag) {
+        alert("이미 재배중입니다\n여러번 재배는 불가능합니다.");
+        return;
+    }
+
     if(!growFlag) {
         for(let i = 0; i < productInputItems.length; i++) {
             if(isEmpty(productInputItems[i].value)) {
@@ -283,13 +292,15 @@ document.querySelector(".purchase-box button").onclick = () => {
 
     if(purchaseFlag || growFlag) {
         checkProduct(productNameInput.value);
+
+        if(obj == null) {
+            alert("해당 농산물은 등록되어 있지 않습니다.");
+            return;
+        }
     }
 
     if(purchaseFlag) {                          // 구매버튼
-        if(obj == null) {
-            alert("해당 농산물은 구매할 수 없습니다.");
-            return;
-        }
+        
         
         $.ajax({
             type: "get",
@@ -311,7 +322,7 @@ document.querySelector(".purchase-box button").onclick = () => {
                             let flag = false;
                             flag = checkUserProduct(obj.productName, userCode);
                             if(!flag) {
-                                let salesPrice = prompt("개당 얼마로 판매하시겠습니까?")
+                                let salesPrice = prompt("개당 얼마로 판매하시겠습니까?");
                                 obj.price = salesPrice;
                             }
                             money = money - price;
@@ -334,7 +345,36 @@ document.querySelector(".purchase-box button").onclick = () => {
         checkUserProduct(productNameInput.value, userCode);
 
     }else {                                     // 재배버튼
+        let choice = false;
+        let delay = obj.growDay;
+        choice = confirm(obj.productName + "은(는) 재배 완료까지 " + delay + "초가 걸립니다.\n그래도 진행하시겠습니까?")
 
+        if(choice) {
+
+            // 1 ~ 10 사이의 난수 생성
+            let randAmount = Math.floor((Math.random() * 10) + 1);
+            
+            let checkProductFlag = checkUserProduct(obj.productName, userCode);
+            if(checkProductFlag) { // 해당 농산물이 존재한다면 개수만 update
+                obj.amount = amount + randAmount;
+
+            } else { // 없다면 가격 책정하고 개수 insert
+                let salesPrice = prompt("개당 얼마로 판매하시겠습니까?");
+                obj.price = salesPrice;
+                obj.amount = randAmount;
+            }
+            // growUserProduct(obj, checkProductFlag, randAmount);
+
+                
+            setTimeout(() => {
+                updateUserProduct(obj, checkProductFlag);
+                alert(obj.productName + "을(를) " + randAmount + "개 재배완료 했습니다.");
+                growingFlag = false;                    
+            }, delay * 1000);
+
+            growingFlag = true;
+
+        }
     }
 }
 
@@ -635,6 +675,7 @@ function checkProduct(productName) {
                     price: response.data.price,
                     season: response.data.season,
                     amount: 0,
+                    growDay: response.data.grow_day,
                     userCode: userCode,
                     purchasePrice: response.data.price
                 };
@@ -655,11 +696,11 @@ function checkUserProduct(productName, userCode) {
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
-                if(purchaseFlag) {                  // 구매 버튼일때
+                if(purchaseFlag || growFlag) {   // 구매, 재배버튼 일때
                     amount = response.data.amount;
                     flag = true;
 
-                }else if(!purchaseFlag && !growFlag) {  // 판매 버튼일때
+                }else if(!purchaseFlag && !growFlag) {  // 판매 버튼 일때
                     amount = response.data.amount - productAmountInput.value;
                     money = money + (response.data.price * productAmountInput.value);
                     purchasePrice = response.data.purchasePrice;
@@ -677,7 +718,7 @@ function checkUserProduct(productName, userCode) {
                     }
                 }
             }else {
-                if(purchaseFlag) {
+                if(purchaseFlag || growFlag) {
                     flag = false;
 
                 }else if(!purchaseFlag && !growFlag) {
@@ -695,6 +736,60 @@ function checkUserProduct(productName, userCode) {
     }
 }
 
+/* 여러번 재배 가능하게끔..
+function growUserProduct(obj, flag, randAmount) {
+    setTimeout(() => {
+        if(flag) {   // 사용자에게 해당 농산물이 있다면 update
+            alert("640 농산물 있음!");
+            
+            $.ajax({
+                type: "put",
+                url: "/api/v1/product/users/new",
+                data: obj,
+                dataType: "json",
+                success: (response) => {
+                    if(response.data) {
+                        alert("사용자 농산물 새롭게 업데이트 성공");
+                        productInputItems.forEach(input => {
+                            input.value = "";
+                        });
+
+                        alert(obj.productName + "을(를) " + randAmount + "개 재배완료 했습니다.");
+    
+                    }else {
+                        alert("사용자 농산물 새롭게 업데이트 실패");
+                    }
+                },
+                error: errorMessage
+            });
+    
+        }else { // 없다면 insert
+            alert("642 농산물 없음!");
+            $.ajax({
+                type: "post",
+                url: "/api/v1/product/users/new",
+                data: obj,
+                dataType: "json",
+                success: (response) => {
+                    if(response.data != false) {
+                        alert("사용자 농산물 추가 성공");
+                        productInputItems.forEach(input => {
+                            input.value = "";
+                        });
+
+                        alert(obj.productName + "을(를) " + randAmount + "개 재배완료 했습니다.");
+    
+                    }else {
+                        alert("사용자 농산물 추가 실패");
+                    }
+                },
+                error: errorMessage
+            });
+        }
+    }, obj.growDay * 1000);
+    
+}
+*/
 function updateUserProduct(obj, flag) {
     if(flag) {   // 사용자에게 해당 농산물이 있다면 update
         alert("640 농산물 있음!");
@@ -709,7 +804,7 @@ function updateUserProduct(obj, flag) {
                     alert("사용자 농산물 새롭게 업데이트 성공");
                     productInputItems.forEach(input => {
                         input.value = "";
-                    })
+                    });
 
                 }else {
                     alert("사용자 농산물 새롭게 업데이트 실패");
@@ -728,6 +823,10 @@ function updateUserProduct(obj, flag) {
             success: (response) => {
                 if(response.data != false) {
                     alert("사용자 농산물 추가 성공");
+                    productInputItems.forEach(input => {
+                        input.value = "";
+                    });
+
                 }else {
                     alert("사용자 농산물 추가 실패");
                 }
