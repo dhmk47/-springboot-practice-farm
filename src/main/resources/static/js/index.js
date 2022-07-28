@@ -540,14 +540,14 @@ function load(){
         url: "/api/v1/product/new/list",
         dataType: "json",
         success: (response) => {
-            if(response.data != null) {
+            if(response.data.length != 0) {
                 for(let i = 0; i < response.data.length; i++){
                     document.querySelector(".new-farm-product").innerHTML += 
                     `<span class="new-product"> ${response.data[i].product_name}</span>`;
                 }
             }else {
                 document.querySelector(".new-farm-product").innerHTML = 
-                "새롭게 추가된 농산물이 없습니다.";
+                `<span class="no-new-product">새롭게 추가된<br>농산물이 없습니다.</span?`;
             }
         },
         error: errorMessage
@@ -558,9 +558,10 @@ function load(){
         url: "/api/v1/product/modify/list",
         dataType: "json",
         success: (response) => {
-            if(response.data != null) {
 
-                const showProductInfoChangeBox = document.querySelector(".show-product-change");
+            const showProductInfoChangeBox = document.querySelector(".show-product-change");
+            
+            if(response.data.length != 0) {
 
                 let obj = null;
                 for(let i = 0; i < response.data.length; i++) {
@@ -588,7 +589,7 @@ function load(){
                 }
             }else {
                 showProductInfoChangeBox.innerHTML =
-                "변경된 농산물이 없습니다.";
+                `<span class="no-change-product">변경된 농산물이 없습니다.</span>`;
             }
         },
         error: errorMessage
