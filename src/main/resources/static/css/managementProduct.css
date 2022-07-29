@@ -176,7 +176,7 @@ section ul li {
     display: flex;
     align-items: center;
 
-    margin-top: 20px;
+    margin: 20px 0px 0px 60px;
 
     width: 400px;
 }

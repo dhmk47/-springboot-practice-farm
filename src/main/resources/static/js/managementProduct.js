@@ -71,6 +71,9 @@ let getProductGrowDay = null;
 // 위의 변수를 배열에 저장
 let getProductInfoList = new Array();
 
+// 삭제된 농산물 코드를 담을 배열
+let checkCode = new Array();
+
 // delay
 let timeout = true;
 let delay = 500;
@@ -339,7 +342,7 @@ customButtons[3].onclick = () => {
                         let obj = response.data[i];
 
                         sectionUlBox.innerHTML += 
-                            `<li class="product-list ${obj.product_code}"><input type="checkbox">
+                            `<li class="product-list deleted-${obj.product_code}"><input type="checkbox" onchange="checkBoxClick('${obj.product_code}')">
                             <span>${obj.product_name}</span>
                             <span>${obj.price}</span>
                             <span>${obj.season}</span>
@@ -357,7 +360,6 @@ customButtons[3].onclick = () => {
 
     }
 }
-
 
 // 농산물 체크 버튼
 checkButton.onclick = () => {
@@ -551,6 +553,18 @@ submitButton[1].onclick = () => {
     permissionFlag = false;
     checkedProductName = null;
     showProductDivFlag = false;
+}
+
+function checkBoxClick(index) {
+    if(document.querySelector(`.deleted-${index} input`).checked){  // 체크되었다면 배열에 추가
+        checkCode.push(index);
+    }else {
+        if(checkCode.indexOf(index) > -1) {     // 체크해제되었다면 배열에서 요소 제거
+            let searchIndex = checkCode.indexOf(index);
+            checkCode.splice(searchIndex, 1);
+
+        }
+    }
 }
 
 function inputItemsCheck(items) {
