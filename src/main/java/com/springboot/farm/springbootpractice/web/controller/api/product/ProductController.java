@@ -94,6 +94,7 @@ public class ProductController {
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "품목 불러오기 성공", readProductRespDto));
 	}
 	
+	// type에 따라 모든, 삭제 농산물 리스트 불러옴
 	@GetMapping("/list/{type}")
 	public ResponseEntity<?> getAllProductToList(@PathVariable String type) {
 		List<ReadProductRespDto> productList = null;

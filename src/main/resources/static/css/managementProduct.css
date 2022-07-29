@@ -154,6 +154,43 @@ main {
     height: 40px;
 }
 
+section {
+    display: none;
+
+    margin-top: 60px;
+
+    width: 400px;
+    height: 200px;
+}
+
+section ul {
+    display: flex;
+    flex-direction: column;
+}
+
+section ul li {
+    cursor: default;
+}
+
+.product-list {
+    display: flex;
+    align-items: center;
+
+    margin-top: 20px;
+
+    width: 400px;
+}
+
+.product-list span {
+    margin-left: 30px;
+
+    width: 40px;
+
+    font-size: 16px;
+    font-weight: 500;
+    color: black;
+}
+
 .main-button :last-child {
     display: none;
 }

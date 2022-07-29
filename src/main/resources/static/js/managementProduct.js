@@ -14,22 +14,34 @@ const userDtlMenuItems = document.querySelectorAll(".user-dtl-menu span");
 // main
 const customButtons = document.querySelectorAll(".custom-button-box button");
 const inputItems = document.querySelectorAll("main input");
+const mainBox = document.querySelector(".r-flex");
 const checkButton = document.querySelector(".r-flex button");
 const changeInputDivBoxes = document.querySelectorAll(".hideAndShowtoggle");
 const changeProductInfoBoxes = document.querySelectorAll(".show-product-info-box");
 const submitButton = document.querySelectorAll(".main-button button");
+
+// main section
+const sectionBox = document.querySelector("main section");
+const sectionUlBox = document.querySelector("main section ul")
+// const sectonButtonDivBox = document.querySelector("main section div");
+// const sectionButtons = document.querySelector("main section button");
 
 // 게시판 구분 짓는 플래그
 let userMenuFlag = false;
 let productMenuFlag = false;
 let boardMenuFlag = false;
 
+// main box display 확인 flag
+let mainBoxFlag = true;
 
 // 삭제버튼이면 input이 숨겨지기 때문에 flag 만들어서 if문 만들기
 let removeFlag = false;
 
 // 수정버튼이면 div박스 보여야 하기 때문에 구분 짓는 flag
 let modifyFlag = false;
+
+// 삭제된 농산물 다시 추가 버튼이면 section 보여야 하기 때문에 구분 짓는 flag
+let sectionFlag = false;
 
 // 해당 품목이 있는지 없는지 확인 하는 flag
 let permissionFlag = false;
@@ -198,6 +210,13 @@ customButtons[0].onclick = () => {
         toggleProductDivBox();
         showProductDivFlag = false;
     }
+    
+    if(!mainBoxFlag) {  // 삭제된 농산물 다시 추가였을때
+        mainBox.style.display = "flex";
+        mainBoxFlag = true;
+        sectionBox.style.display = "none";
+        sectionFlag = false;
+    }
 
     addProductFlag = true;
     removeFlag = false;
@@ -239,6 +258,13 @@ customButtons[1].onclick = () => {
     if(!modifyFlag) {
         modifyFlag = true;
     }
+
+    if(!mainBoxFlag) {  // 삭제된 농산물 다시 추가였을때
+        mainBox.style.display = "flex";
+        mainBoxFlag = true;
+        sectionBox.style.display = "none";
+        sectionFlag = false;
+    }
     
     inputItems[0].placeholder = "수정할 농선물 이름";
     inputItems[1].placeholder = "수정할 농선물 가격";
@@ -273,6 +299,14 @@ customButtons[2].onclick = () => {
         toggleProductDivBox();
         showProductDivFlag = false;
     }
+    
+    if(!mainBoxFlag) {  // 삭제된 농산물 다시 추가였을때
+        mainBox.style.display = "flex";
+        mainBoxFlag = true;
+        sectionBox.style.display = "none";
+        sectionFlag = false;
+    }
+
     submitButton[1].style.display = "none";
     modifyFlag = false;
     addProductFlag = false;
@@ -280,6 +314,50 @@ customButtons[2].onclick = () => {
     inputItems[0].placeholder = "삭제할 농선물 이름";
     submitButton[0].innerHTML = "제거하기"
 }
+
+// 삭제된 농산물 리스트 보여주는 버튼
+customButtons[3].onclick = () => {
+    if(mainBoxFlag) {
+        mainBox.style.display = "none";
+        mainBoxFlag = false;
+    }
+    if(!sectionFlag) {
+
+        sectionBox.style.display = "flex";
+        sectionFlag = true;
+
+        sectionUlBox.innerHTML = "";
+
+        $.ajax({
+            type: "get",
+            url: "/api/v1/product/list/delete",
+            dataType: "json",
+            success: (response) => {
+                if(response.data.length != 0) {
+                    
+                    for(let i = 0; i < response.data.length; i++) {
+                        let obj = response.data[i];
+
+                        sectionUlBox.innerHTML += 
+                            `<li class="product-list ${obj.product_code}"><input type="checkbox">
+                            <span>${obj.product_name}</span>
+                            <span>${obj.price}</span>
+                            <span>${obj.season}</span>
+                            <span>${obj.grow_day}</span>
+                            </li>`;
+                    }
+
+                }else {
+                    sectionUlBox.innerHTML += 
+                        `<li class="no-product-list">삭제된 농산물이 없습니다.</li>`;
+                }
+            },
+            error: errorMessage
+        });
+
+    }
+}
+
 
 // 농산물 체크 버튼
 checkButton.onclick = () => {
