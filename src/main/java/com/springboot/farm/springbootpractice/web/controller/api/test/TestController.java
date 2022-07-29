@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,12 +21,12 @@ public class TestController {
 
 	private final ProductService productService;
 	
-	@GetMapping("/list")
-	public ResponseEntity<?> getProductList() {
+	@GetMapping("/list/{type}")
+	public ResponseEntity<?> getProductList(@PathVariable String type) {
 		List<ReadProductRespDto> productList = null;
 		
 		try {
-			productList = productService.getAllProductList();
+			productList = productService.getAllProductList(type);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "모든 농산물 리스트로 불러오기 실패", productList));

@@ -52,10 +52,10 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
-	public List<ReadProductRespDto> getAllProductList() throws Exception {
+	public List<ReadProductRespDto> getAllProductList(String type) throws Exception {
 		List<ReadProductRespDto> productList = null;
 		
-		productList = productRepository.readAllProduct()
+		productList = productRepository.readAllProduct(type)
 				.stream()
 				.map(entity -> entity.toReadRespDto())
 				.collect(Collectors.toCollection(ArrayList::new));

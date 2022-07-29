@@ -34,7 +34,7 @@
   		)
   	</insert>
   	
-  	<select id="readAllProduct" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">
+  	<select id="readAllProduct" parameterType="String" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">
   		select
   			product_code,
   			product_name,
@@ -42,7 +42,14 @@
   			season,
   			grow_day
   		from
-  			product_kind
+  			<choose>
+  				<when test='type.equals("all")'>
+		  			product_kind
+  				</when>
+  				<otherwise>
+  					deleted_product
+  				</otherwise>
+  			</choose>
   	</select>
   	
   	<select id="readMyProductList" parameterType="Integer" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">

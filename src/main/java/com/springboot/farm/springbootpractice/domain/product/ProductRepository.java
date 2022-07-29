@@ -13,7 +13,7 @@ public interface ProductRepository {
 	public int addUserProduct(Product product);
 	public Product readUserProductByProductName(Product product);
 	public Product readProductByProductName(String productName);
-	public List<Product> readAllProduct();
+	public List<Product> readAllProduct(String type);
 	public List<Product> readMyProductList(int userCode);
 	public List<Product> readRecentlyProductLIst(String date);
 	public List<PastAndNowProductInfo> readModifiedProductList(String date);

@@ -396,7 +396,7 @@ document.querySelector(".show-product-button").onclick = () => {
     if(purchaseFlag) {  // 구매 가능한 품목 나타내기
         $.ajax({
             type: "get",
-            url: "/api/v1/product/list",
+            url: "/api/v1/product/list/all",
             dataType: "json",
             success: (response) => {
                 if(response.data.length != 0) {
@@ -419,7 +419,7 @@ document.querySelector(".show-product-button").onclick = () => {
     }else if(!purchaseFlag && !growFlag) {    // 판매 가능한 품목 나타내기
         $.ajax({
             type: "get",
-            url: `/api/v1/product/list/${userCode}`,
+            url: `/api/v1/product/list/user/${userCode}`,
             dataType: "json",
             success: (response) => {
                 if(response.data.length != 0) {
@@ -446,7 +446,7 @@ document.querySelector(".show-product-button").onclick = () => {
     }else if(growFlag) {        // 재배 가능한 품목 나타내기
         $.ajax({
             type: "get",
-            url: "/api/v1/product/list",
+            url: "/api/v1/product/list/all",
             dataType: "json",
             success: (response) => {
                 if(response.data.length != 0) {
