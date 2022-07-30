@@ -36,7 +36,7 @@ let growingFlag = false;
 let purchaseFlag = false;
 
 // 유저정보를 담을 임시 변수
-let userCode = null;
+let userCode = 0;
 let money = null;
 let amount = 0;
 let purchasePrice = 0;
@@ -533,6 +533,31 @@ function load(){
     }else {
         userMenu.style.display = "none";
         loginBox.style.visibility = "visible";
+    }
+
+    if(userCode != 0) {
+        $.ajax({
+            type: "get",
+            url: `/api/v1/product/deleted/list/user/${userCode}`,
+            dataType: "json",
+            success: (response) => {
+                if(response.data.length != 0) {
+                    let result = null;
+                     for(let i = 0; i < response.data.length; i++) {
+                        let obj = response.data[i];
+    
+                        result += i != response.data.length - 1 ?
+                        `${obj.productName} ${obj.amount}개가 삭제되었습니다. 모든 금액은 보상됩니다.\n개당 구매한 금액: ${obj.purchasePrice}원\n보상 금액: ${obj.totalPrice}\n\n`
+                        : `${obj.productName} ${obj.amount}개가 삭제되었습니다. 모든 금액은 보상됩니다.\n개당 구매한 금액: ${obj.purchasePrice}원\n보상 금액: ${obj.totalPrice}`;
+                     }
+    
+                     alert(result);
+                }else {
+                    alert("삭제된 농산물이 없습니다.");
+                }
+            },
+            error: errorMessage
+        });
     }
 
     $.ajax({

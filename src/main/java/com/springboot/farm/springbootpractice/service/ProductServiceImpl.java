@@ -12,6 +12,7 @@ import com.springboot.farm.springbootpractice.domain.product.ProductRepository;
 import com.springboot.farm.springbootpractice.web.dto.product.BuyProductDto;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductListReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
+import com.springboot.farm.springbootpractice.web.dto.product.ReadDeletedProductRespDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadPastAndNowProductInfoDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductRespDto;
@@ -110,6 +111,18 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
+	public List<ReadDeletedProductRespDto> getDeletedUsersProductList(int userCode) throws Exception {
+		List<ReadDeletedProductRespDto> productList = null;
+		
+		productList = productRepository.getDeletedProductListByUserCode(userCode)
+				.stream()
+				.map(entity -> entity.toDto())
+				.collect(Collectors.toCollection(ArrayList::new));
+		
+		return productList;
+	}
+	
+	@Override
 	public boolean modifyProductInfo(UpdateProductReqDto updateProductReqDto) throws Exception {
 		return productRepository.update(updateProductReqDto.toEntity()) > 0;
 	}
@@ -122,5 +135,10 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public boolean removeProduct(int productCode) throws Exception {
 		return productRepository.delete(productCode) > 0;
+	}
+	
+	@Override
+	public boolean removeDeletedUserProduct(int userCode) throws Exception {
+		return productRepository.deleteDeletedUserProduct(userCode) > 0;
 	}
 }

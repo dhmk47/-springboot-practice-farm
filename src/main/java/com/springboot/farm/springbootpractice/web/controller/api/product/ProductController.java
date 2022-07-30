@@ -40,14 +40,8 @@ public class ProductController {
 	public ResponseEntity<?> addDeletedProduct(@RequestBody CreateProductListReqDto createProductListReqDto) {
 		int result = 0;
 		
-		System.out.println(createProductListReqDto);
-		
-		System.out.println(createProductListReqDto.toEntity());
-
-		
 		try {
 			result = productService.addProductToList(createProductListReqDto);
-			System.out.println("결과: " + result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "삭제된 농산물 다시 등록 실패", result));
@@ -185,6 +179,27 @@ public class ProductController {
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "최근에 수정된 품목 불러오기 성공", productList));
+	}
+	
+	@GetMapping("/deleted/list/user/{userCode}")
+	public ResponseEntity<?> checkDeletedUserProduct(@PathVariable int userCode) {
+		List<?> deletedUserProductList = null;
+		
+		if(Util.deletedFlag) {
+			try {
+				deletedUserProductList = productService.getDeletedUsersProductList(userCode);
+				
+				if(deletedUserProductList.size() > 0) {
+					return productService.removeDeletedUserProduct(userCode) ? ResponseEntity.ok().body(new CMRespDto<>(1, "삭제된 사용자 품목 불러오기 성공", deletedUserProductList))
+							: ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "삭제된 사용자 품목 불러오기 실패", deletedUserProductList));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "삭제된 사용자 품목 불러오기 실패", deletedUserProductList));
+			}
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "삭제된 사용자 품목 불러오기 성공", deletedUserProductList));
 	}
 		
 	@PutMapping("/modify")

@@ -525,6 +525,7 @@ submitButton[0].onclick = () => {
 
         return;
     }
+    
     if(!permissionFlag) {
         alert("농산물 확인을 진행해 주세요.");
         return;

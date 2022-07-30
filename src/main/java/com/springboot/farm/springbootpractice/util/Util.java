@@ -9,5 +9,9 @@ public class Util {
 	public static boolean addProductFlag = true;
 	/* public static Map<Integer, Boolean> addProductFlag = new HashMap<Integer, Boolean>();*/
 	
+	// 수정된 품목이 있는지 확인 Flag
 	public static boolean modifyProductFlag = true;
+	
+	// 삭제된 품목중 사용자가 가지고 있는 품목이 있는지 확인 Flag
+	public static boolean deletedFlag = true;
 }

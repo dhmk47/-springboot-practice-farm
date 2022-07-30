@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.springboot.farm.springbootpractice.domain.entity.DeletedProduct;
 import com.springboot.farm.springbootpractice.domain.entity.PastAndNowProductInfo;
 import com.springboot.farm.springbootpractice.domain.entity.Product;
 
@@ -18,7 +19,9 @@ public interface ProductRepository {
 	public List<Product> readMyProductList(int userCode);
 	public List<Product> readRecentlyProductLIst(String date);
 	public List<PastAndNowProductInfo> readModifiedProductList(String date);
+	public List<DeletedProduct> getDeletedProductListByUserCode(int userCode);
 	public int update(Product product);
 	public int updateUserProduct(Product product);
 	public int delete(int productCode);
+	public int deleteDeletedUserProduct(int userCode);
 }
