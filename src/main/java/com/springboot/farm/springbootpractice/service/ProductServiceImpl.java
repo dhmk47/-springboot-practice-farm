@@ -10,6 +10,7 @@ import com.springboot.farm.springbootpractice.domain.entity.PastAndNowProductInf
 import com.springboot.farm.springbootpractice.domain.entity.Product;
 import com.springboot.farm.springbootpractice.domain.product.ProductRepository;
 import com.springboot.farm.springbootpractice.web.dto.product.BuyProductDto;
+import com.springboot.farm.springbootpractice.web.dto.product.CreateProductListReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadPastAndNowProductInfoDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductReqDto;
@@ -33,6 +34,15 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public boolean addUserProduct(BuyProductDto buyProductDto) throws Exception {
 		return productRepository.addUserProduct(buyProductDto.toEntity()) > 0;
+	}
+	
+	@Override
+	public int addProductToList(CreateProductListReqDto createProductListReqDto) throws Exception {
+		List<Product> productEntityList = new ArrayList<Product>();
+		
+		productEntityList = createProductListReqDto.toEntity();
+		
+		return productRepository.saveList(productEntityList);
 	}
 	
 	@Override

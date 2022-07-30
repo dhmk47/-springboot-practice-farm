@@ -74,6 +74,12 @@ let getProductInfoList = new Array();
 // 삭제된 농산물 코드를 담을 배열
 let checkCode = new Array();
 
+// 삭제된 정보를 key(code) value(object) 로 저장할 map
+let map = new Map();
+
+// 삭제된 농산물 추가를 누를때 모든 농산물의 object를 담을 배열
+let objList = new Array();
+
 // delay
 let timeout = true;
 let delay = 500;
@@ -337,10 +343,26 @@ customButtons[3].onclick = () => {
             dataType: "json",
             success: (response) => {
                 if(response.data.length != 0) {
+
+                    
                     
                     for(let i = 0; i < response.data.length; i++) {
                         let obj = response.data[i];
 
+                        let productObj = null;
+
+                        productObj = {
+                            productCode: obj.product_code,
+                            productName: obj.product_name,
+                            price: obj.price,
+                            season: obj.season,
+                            growDay: obj.grow_day
+                        };
+
+
+                        map.set(obj.product_code, productObj);
+
+                        
                         sectionUlBox.innerHTML += 
                             `<li class="product-list deleted-${obj.product_code}"><input type="checkbox" onchange="checkBoxClick('${obj.product_code}')">
                             <span>${obj.product_name}</span>
@@ -348,7 +370,7 @@ customButtons[3].onclick = () => {
                             <span>${obj.season}</span>
                             <span>${obj.grow_day}</span>
                             </li>`;
-                    }
+                        };
 
                 }else {
                     sectionUlBox.innerHTML += 
@@ -468,6 +490,34 @@ inputItems[3].onkeyup = () => {
 
 // 최종 submit버튼
 submitButton[0].onclick = () => {
+    if(sectionFlag) {
+        objList.splice(0, objList.length);
+
+        console.log("초기화후: " + objList);
+
+        checkCode.forEach(code => {
+            objList.push(map.get(code));
+        });
+
+        console.log("push후: " + objList);
+
+        let productObjList = {
+            objList: objList
+        };
+
+        $.ajax({
+            type: "post",
+            url: "/api/v1/product/deleted/new",
+            data: JSON.stringify(productObjList),
+            dataType: "json",
+            success: (response) => {
+
+            },
+            error: errorMessage
+        });
+
+        return;
+    }
     if(!permissionFlag) {
         alert("농산물 확인을 진행해 주세요.");
         return;

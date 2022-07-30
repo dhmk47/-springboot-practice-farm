@@ -4,6 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.springboot.farm.springbootpractice.domain.product.ProductRepository">
+  
+  	
   	<insert id="save" parameterType="com.springboot.farm.springbootpractice.domain.entity.Product">
   		insert into
   			product_kind
@@ -32,6 +34,23 @@
   			now(),
   			now()
   		)
+  	</insert>
+  	
+  	<insert id="saveList" parameterType="java.util.List">
+  		insert into
+  			product_kind
+  		values
+  		<foreach item="item" index="index"  collection="list" separator=",">
+  		(
+  			#{item.product_code},
+  			#{item.product_name},
+  			#{item.price},
+  			#{item.season},
+  			#{item.grow_day},
+  			now(),
+  			now()
+ 		)
+  		</foreach>
   	</insert>
   	
   	<select id="readAllProduct" parameterType="String" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">

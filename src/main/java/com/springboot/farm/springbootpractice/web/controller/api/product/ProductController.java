@@ -1,25 +1,26 @@
 package com.springboot.farm.springbootpractice.web.controller.api.product;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.farm.springbootpractice.domain.entity.Product;
+import com.springboot.farm.springbootpractice.domain.product.ProductRepository;
 import com.springboot.farm.springbootpractice.service.ProductService;
 import com.springboot.farm.springbootpractice.util.Util;
 import com.springboot.farm.springbootpractice.web.dto.CMRespDto;
 import com.springboot.farm.springbootpractice.web.dto.product.BuyProductDto;
+import com.springboot.farm.springbootpractice.web.dto.product.CreateProductListReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadPastAndNowProductInfoDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductReqDto;
@@ -34,6 +35,26 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 	
 	private final ProductService productService;
+	
+	@PostMapping("/deleted/new")
+	public ResponseEntity<?> addDeletedProduct(@RequestBody CreateProductListReqDto createProductListReqDto) {
+		int result = 0;
+		
+		System.out.println(createProductListReqDto);
+		
+		System.out.println(createProductListReqDto.toEntity());
+
+		
+		try {
+			result = productService.addProductToList(createProductListReqDto);
+			System.out.println("결과: " + result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "삭제된 농산물 다시 등록 실패", result));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "삭제된 농산물 다시 등록 성공", result));
+	}
 	
 	@PostMapping("/new")
 	public ResponseEntity<?> addProduct(CreateProductReqDto createProductReqDto) {

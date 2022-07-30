@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class CreateProductReqDto {
+	private int productCode;
 	private String productName;
 	private int price;
 	private String season;
@@ -13,6 +14,7 @@ public class CreateProductReqDto {
 	
 	public Product toEntity() {
 		return Product.builder()
+				.product_code(productCode)
 				.product_name(productName)
 				.price(price)
 				.season(season)
