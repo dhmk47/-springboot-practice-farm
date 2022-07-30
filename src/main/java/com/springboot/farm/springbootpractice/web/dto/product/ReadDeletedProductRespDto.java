@@ -9,7 +9,6 @@ public class ReadDeletedProductRespDto {
 	private String productName;
 	private int amount;
 	private int purchasePrice;
-	private int totalAmount;
-	private int totalPrice;
+	private int rewardMoney;
 
 }

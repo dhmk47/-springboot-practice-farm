@@ -1,5 +1,8 @@
 package com.springboot.farm.springbootpractice.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.springboot.farm.springbootpractice.domain.entity.User;
@@ -41,8 +44,12 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public boolean updateUserMoney(int money, int userCode) throws Exception {
-		return userRepository.updateUserMoney(money, userCode) > 0;
+	public boolean updateUserMoney(int money, int userCode, String type) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("money", money);
+		map.put("userCode", userCode);
+		map.put("type", type);
+		return userRepository.updateUserMoney(map) > 0;
 	}
 
 	@Override

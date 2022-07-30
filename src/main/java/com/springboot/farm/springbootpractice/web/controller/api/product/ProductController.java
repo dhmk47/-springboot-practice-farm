@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.farm.springbootpractice.domain.entity.Product;
-import com.springboot.farm.springbootpractice.domain.product.ProductRepository;
 import com.springboot.farm.springbootpractice.service.ProductService;
+import com.springboot.farm.springbootpractice.service.UserService;
 import com.springboot.farm.springbootpractice.util.Util;
 import com.springboot.farm.springbootpractice.web.dto.CMRespDto;
 import com.springboot.farm.springbootpractice.web.dto.product.BuyProductDto;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductListReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.CreateProductReqDto;
+import com.springboot.farm.springbootpractice.web.dto.product.ReadDeletedProductRespDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadPastAndNowProductInfoDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductReqDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductRespDto;
@@ -35,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 	
 	private final ProductService productService;
+	private final UserService userService;
 	
 	@PostMapping("/deleted/new")
 	public ResponseEntity<?> addDeletedProduct(@RequestBody CreateProductListReqDto createProductListReqDto) {
@@ -183,15 +184,27 @@ public class ProductController {
 	
 	@GetMapping("/deleted/list/user/{userCode}")
 	public ResponseEntity<?> checkDeletedUserProduct(@PathVariable int userCode) {
-		List<?> deletedUserProductList = null;
+		List<ReadDeletedProductRespDto> deletedUserProductList = null;
 		
 		if(Util.deletedFlag) {
 			try {
 				deletedUserProductList = productService.getDeletedUsersProductList(userCode);
 				
-				if(deletedUserProductList.size() > 0) {
-					return productService.removeDeletedUserProduct(userCode) ? ResponseEntity.ok().body(new CMRespDto<>(1, "삭제된 사용자 품목 불러오기 성공", deletedUserProductList))
-							: ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "삭제된 사용자 품목 불러오기 실패", deletedUserProductList));
+				if(deletedUserProductList.size() > 0) {	// 삭제된 품목이 하나라도 있다면
+					int money = 0;
+					
+					for(ReadDeletedProductRespDto product : deletedUserProductList) {
+						money += product.getAmount() * product.getPurchasePrice();
+					}
+					
+					deletedUserProductList.get(0).setRewardMoney(money);
+					
+					if(productService.removeDeletedUserProduct(userCode)) {	// deleted_user_product 테이블의 데이터를 삭제에 성공했다면
+						// 그 보상금액을 update에 성공했다면 or 실패했다면
+						String type = "reward";
+						return userService.updateUserMoney(money, userCode, type) ? ResponseEntity.ok().body(new CMRespDto<>(1, "삭제된 사용자 품목 불러오기(삭제, 금액보상) 성공", deletedUserProductList))
+								: ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "삭제된 사용자 품목 불러오기(삭제, 금액보상) 실패", deletedUserProductList));
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

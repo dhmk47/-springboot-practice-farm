@@ -74,9 +74,11 @@ public class UserController {
 	@PutMapping("/money")
 	public ResponseEntity<?> updateUserMoney(int money, int userCode) {
 		boolean result = false;
+		String type = null;
 		
 		try {
-			result = userService.updateUserMoney(money, userCode);
+			type = "notReword";
+			result = userService.updateUserMoney(money, userCode, type);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.ok().body(new CMRespDto<>(-1, "사용자 돈 업데이트 실패", result));

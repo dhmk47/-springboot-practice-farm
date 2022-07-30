@@ -10,6 +10,6 @@ public interface UserService {
 	public User getUser(String username) throws Exception;
 	public ReadUserRespDto readUserByUsername(String username) throws Exception;
 	public boolean modifyUser(CreateUserReqDto createUserReqDto) throws Exception;
-	public boolean updateUserMoney(int money, int userCode) throws Exception;
+	public boolean updateUserMoney(int money, int userCode, String type) throws Exception;
 	public boolean removeUser(CreateUserReqDto createUserReqDto) throws Exception;
 }

@@ -156,21 +156,11 @@
   	
   	<select id="getDeletedProductListByUserCode" parameterType="Integer" resultType="com.springboot.farm.springbootpractice.domain.entity.DeletedProduct">
   		SELECT
-			dup.product_name,
-			dup.amount,
-			dup.purchase_price,
-			
-			dup2.total_amount,
-			dup2.total_price
+			product_name,
+			amount,
+			purchase_price
 		FROM
-			deleted_user_product dup
-			LEFT OUTER JOIN (select
-										SUM(amount) AS total_amount,
-										SUM(purchase_price) AS total_price
-									from
-										deleted_user_product
-									where
-										user_code = #{userCode}) dup2 ON (1 = 1)
+			deleted_user_product
 		WHERE
 			user_code = #{userCode}
   	</select>

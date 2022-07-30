@@ -37,7 +37,7 @@ let purchaseFlag = false;
 
 // 유저정보를 담을 임시 변수
 let userCode = 0;
-let money = null;
+let money = 0;
 let amount = 0;
 let purchasePrice = 0;
 
@@ -547,8 +547,8 @@ function load(){
                         let obj = response.data[i];
     
                         result += i != response.data.length - 1 ?
-                        `${obj.productName} ${obj.amount}개가 삭제되었습니다. 모든 금액은 보상됩니다.\n개당 구매한 금액: ${obj.purchasePrice}원\n보상 금액: ${obj.totalPrice}\n\n`
-                        : `${obj.productName} ${obj.amount}개가 삭제되었습니다. 모든 금액은 보상됩니다.\n개당 구매한 금액: ${obj.purchasePrice}원\n보상 금액: ${obj.totalPrice}`;
+                        `${obj.productName} ${obj.amount}개가 삭제되었습니다.\n개당 구매한 금액: ${obj.purchasePrice}원\n보상 금액: ${obj.amount * obj.purchasePrice}\n\n`
+                        : `${obj.productName} ${obj.amount}개가 삭제되었습니다.\n개당 구매한 금액: ${obj.purchasePrice}원\n보상 금액: ${obj.amount * obj.purchasePrice}`;
                      }
     
                      alert(result);

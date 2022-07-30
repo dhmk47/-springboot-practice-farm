@@ -36,11 +36,18 @@
   			um.username = #{username}
   	</select>
   	
-  	<update id="updateUserMoney" parameterType="Integer">
+  	<update id="updateUserMoney" parameterType="HashMap">
   		update
   			user_dtl
   		set
-  			money = #{money}
+  			<choose>
+  				<when test='type.equals("reward")'>
+  					money = money + #{money}
+  				</when>
+  				<otherwise>
+		  			money = #{money}
+  				</otherwise>
+  			</choose>
   		where
   			usercode = #{userCode}
   	</update>
