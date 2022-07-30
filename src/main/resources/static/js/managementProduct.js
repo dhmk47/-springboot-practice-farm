@@ -496,8 +496,9 @@ submitButton[0].onclick = () => {
         console.log("초기화후: " + objList);
 
         checkCode.forEach(code => {
-            objList.push(map.get(code));
+            objList.push(map.get(parseInt(code)));
         });
+
 
         console.log("push후: " + objList);
 
@@ -509,9 +510,15 @@ submitButton[0].onclick = () => {
             type: "post",
             url: "/api/v1/product/deleted/new",
             data: JSON.stringify(productObjList),
+            contentType: "application/json",
             dataType: "json",
             success: (response) => {
-
+                if(response.data != 0) {
+                    alert(response.data + "개의 농산물 다시 등록 성공");
+                    location.replace("/api/v1/product/deleted/new");
+                }else {
+                    alert("농산물 다시 등록 실패");
+                }
             },
             error: errorMessage
         });
