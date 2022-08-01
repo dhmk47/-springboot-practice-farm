@@ -485,10 +485,11 @@ loginBoxButtons[0].onclick = () => {
     $.ajax({
         type: "post",
         url: "/api/v1/user/signin",
-        data: {
+        contentType: "application/json",
+        data: JSON.stringify({
             "username": loginInputItems[0].value,
             "password": loginInputItems[1].value
-        },
+        }),
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
@@ -667,12 +668,12 @@ function updateUserMoney(money, userCode) {
     let flag = false;
 	$.ajax({
 		type: "put",
-		url: "/api/v1/user/money",
+		url: `/api/v1/user/money/${userCode}`,
         async: false,
-		data: {
-			money: money,
-			userCode: userCode
-		},
+        contentType: "application/json",
+		data: JSON.stringify({
+			money: money
+		}),
 		dataType: "json",
 		success: (response) => {
 			if(response.data != false) {
@@ -838,7 +839,8 @@ function updateUserProduct(obj, flag) {
         $.ajax({
             type: "put",
             url: "/api/v1/product/users/new",
-            data: obj,
+            contentType: "application/json",
+            data: JSON.stringify(obj),
             dataType: "json",
             success: (response) => {
                 if(response.data) {
@@ -859,7 +861,8 @@ function updateUserProduct(obj, flag) {
         $.ajax({
             type: "post",
             url: "/api/v1/product/users/new",
-            data: obj,
+            contentType: "application/json",
+            data: JSON.stringify(obj),
             dataType: "json",
             success: (response) => {
                 if(response.data != false) {

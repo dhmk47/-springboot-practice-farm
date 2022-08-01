@@ -52,7 +52,7 @@ public class ProductController {
 	}
 	
 	@PostMapping("/new")
-	public ResponseEntity<?> addProduct(CreateProductReqDto createProductReqDto) {
+	public ResponseEntity<?> addProduct(@RequestBody CreateProductReqDto createProductReqDto) {
 		boolean result = false;
 		
 		try {
@@ -71,7 +71,7 @@ public class ProductController {
 	}
 	
 	@PostMapping("/users/new")
-	public ResponseEntity<?> addUserProduct(BuyProductDto buyProductDto) {
+	public ResponseEntity<?> addUserProduct(@RequestBody BuyProductDto buyProductDto) {
 		boolean result = false;
 		
 		try {
@@ -215,9 +215,11 @@ public class ProductController {
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "삭제된 사용자 품목 불러오기 성공", deletedUserProductList));
 	}
 		
-	@PutMapping("/modify")
-	public ResponseEntity<?> modifyProduct(UpdateProductReqDto updateProductReqDto) {
+	@PutMapping("/modify/{productCode}")
+	public ResponseEntity<?> modifyProduct(@PathVariable int productCode, @RequestBody UpdateProductReqDto updateProductReqDto) {
 		boolean result = false;
+		
+		updateProductReqDto.setProductCode(productCode);
 		
 		try {
 			result = productService.modifyProductInfo(updateProductReqDto);
@@ -232,7 +234,6 @@ public class ProductController {
 	@PutMapping("/users/new")
 	public ResponseEntity<?> updateUserProduct(UpdateProductReqDto updateProductReqDto) {
 		boolean result = false;
-
 		try {
 			result = productService.updateUsersProduct(updateProductReqDto);
 		} catch (Exception e) {
@@ -243,8 +244,8 @@ public class ProductController {
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "사용자 품목 업데이트 성공", result));
 	}
 	
-	@DeleteMapping("/remove")
-	public ResponseEntity<?> removeProduct(int productCode) {
+	@DeleteMapping("/remove/{productCode}")
+	public ResponseEntity<?> removeProduct(@PathVariable int productCode) {
 		boolean result = false;
 		
 		try {

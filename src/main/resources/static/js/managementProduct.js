@@ -536,12 +536,13 @@ submitButton[0].onclick = () => {
             $.ajax({
                 type: "post",
                 url: "/api/v1/product/new",
-                data: {
+                contentType: "application/json",
+                data: JSON.stringify({
                     productName: inputItems[0].value,
                     price: inputItems[1].value,
                     season: inputItems[2].value,
                     growDay: inputItems[3].value
-                },
+                }),
                 dataType: "json",
                 success: (response) => {
                     if(response.data != null) {
@@ -559,14 +560,14 @@ submitButton[0].onclick = () => {
         if(inputItemsCheck(inputItems)) {
             $.ajax({
                 type: "put",
-                url: "/api/v1/product/modify",
-                data: {
-                    productCode: productCode,
+                url: `/api/v1/product/modify/${productCode}`,
+                contentType: "application/json",
+                data: JSON.stringify({
                     productName: inputItems[0].value,
                     price: inputItems[1].value,
                     season: inputItems[2].value,
                     growDay: inputItems[3].value
-                },
+                }),
                 dataType: "json",
                 success: (response) => {
                     if(response.data != null) {
@@ -583,10 +584,7 @@ submitButton[0].onclick = () => {
         if(inputItemsCheck(inputItems[0])){
             $.ajax({
                 type: "delete",
-                url: "/api/v1/product/remove",
-                data: {
-                    productCode: productCode
-                },
+                url: `/api/v1/product/remove/${productCode}`,
                 dataType: "json",
                 success: (response) => {
                     if(response.data != null) {

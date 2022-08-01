@@ -80,12 +80,13 @@ buttons[1].onclick = () => {
         $.ajax({
             type: "post",
             url: "api/v1/user/signup",
-            data: {
+            contentType: "application/json",
+            data: JSON.stringify({
                 name: inputItems[0].value,
                 username: inputItems[1].value,
                 password: inputItems[2].value,
                 email: email 
-            },
+            }),
             dataType: "json",
             success: (response) => {
                 alert("회원가입 성공");

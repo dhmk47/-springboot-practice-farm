@@ -48,6 +48,8 @@
 		  			money = #{money}
   				</otherwise>
   			</choose>
+  			,
+  			update_date = now()
   		where
   			usercode = #{userCode}
   	</update>
