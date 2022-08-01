@@ -120,17 +120,20 @@ function search(keyCode) {
     autoSearchValues = document.querySelectorAll(".auto-search-list li");
 }
 
-// 마우스가 위에 있을 때 회색으로 처리, 입력창에 값 대입
+// 마우스가 위에 있을 때 회색으로 처리
 function objOver(obj){
-    searchInput.value = obj.textContent;
+    // searchInput.value = obj.textContent;
     obj.style.backgroundColor = "gray";
 }
 
 function objOut(obj){
-    obj.style.backgroundColor = "white";
+    obj.style.backgroundColor = "bisque";
 }
 
+// 클릭시 입력창에 값 대입
 function add(value) {
+    searchInput.value = value;
+    searchInput.focus();
     // location.href = "/index";
 }
 

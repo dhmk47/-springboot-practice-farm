@@ -22,6 +22,11 @@ public class PageController {
 		return "managementProduct";
 	}
 	
+	@GetMapping("/notice")
+	public String goNotice() {
+		return "/board/notice";
+	}
+	
 	@GetMapping("/test")
 	public String goTest() {
 		return "test";
