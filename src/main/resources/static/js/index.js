@@ -16,6 +16,8 @@ const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box but
 const customButtons = document.querySelectorAll(".custom-button-box button");
 const showMoneyBox = document.querySelector(".show-money");
 
+const rewardInfoBox = document.querySelector(".show-reward-info-box");
+
 const searchInput = document.querySelector(".search-farm-product input");
 const autoSearchBox = document.querySelector(".auto-search");
 
@@ -389,6 +391,10 @@ document.querySelector(".xmark2").onclick = () => {
     toggleProductDtlBox();
 }
 
+document.querySelector(".xmark3").onclick = () => {
+    rewardInfoBox.style.display = "none";
+}
+
 document.querySelector(".show-product-button").onclick = () => {
     $(dtlProductMenu).fadeIn(20);
     dtlProductFlag = true;
@@ -423,8 +429,6 @@ document.querySelector(".show-product-button").onclick = () => {
             dataType: "json",
             success: (response) => {
                 if(response.data.length != 0) {
-
-                    console.log(response.data);
                     
                     showProductList.innerHTML = "";
 
@@ -524,6 +528,14 @@ loginInputItems[1].onfocus = () => {
         autoSearchBox.style.display = "none";
         autoSearchFlag = false;
     }
+
+}
+
+// 비밀번호 입력창에서 Enter키 누르면 로그인 버튼 클릭
+loginInputItems[1].onkeypress = () => {
+    if(window.event.keyCode == 13) {
+        loginBoxButtons[0].click();
+    }
 }
 
 function load(){
@@ -542,16 +554,19 @@ function load(){
             dataType: "json",
             success: (response) => {
                 if(response.data.length != 0) {
-                    let result = null;
+                    
+                    document.querySelector(".show-reward-info-box div").innerHTML = "";
+
+                    rewardInfoBox.style.display = "block";
+
                      for(let i = 0; i < response.data.length; i++) {
                         let obj = response.data[i];
     
-                        result += i != response.data.length - 1 ?
-                        `${obj.productName} ${obj.amount}개가 삭제되었습니다.\n개당 구매한 금액: ${obj.purchasePrice}원\n보상 금액: ${obj.amount * obj.purchasePrice}\n\n`
-                        : `${obj.productName} ${obj.amount}개가 삭제되었습니다.\n개당 구매한 금액: ${obj.purchasePrice}원\n보상 금액: ${obj.amount * obj.purchasePrice}`;
+                        document.querySelector(".show-reward-info-box div").innerHTML += i != response.data.length - 1 ?
+                        `<span class="show-reward-info-span">${obj.productName} ${obj.amount}개가 삭제되었습니다.<br>개당 구매한 금액: ${obj.purchasePrice}원<br>보상 금액: ${obj.amount * obj.purchasePrice}<br></span>`
+                        : `<span class="show-reward-info-span">${obj.productName} ${obj.amount}개가 삭제되었습니다.<br>개당 구매한 금액: ${obj.purchasePrice}원<br>보상 금액: ${obj.amount * obj.purchasePrice}</span>`;
                      }
     
-                     alert(result);
                 }else {
                     alert("삭제된 농산물이 없습니다.");
                 }

@@ -175,6 +175,29 @@ header span {
     height: 50px;
 }
 
+.show-reward-info-box {
+    display: none;
+    position: absolute;
+    right: 800px;
+
+    width: 400px;
+    height: 300px;
+
+    overflow: auto;
+
+    background-color: aqua;
+}
+
+.show-reward-info-box div {
+    display: flex;
+    flex-direction: column;
+}
+
+.show-reward-info-span {
+    margin: 30px 0px 10px 120px;
+    font-weight: 500;
+}
+
 .login-box {
     display: flex;
     align-items: center;
