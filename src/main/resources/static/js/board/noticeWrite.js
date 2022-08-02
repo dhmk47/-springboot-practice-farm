@@ -6,6 +6,8 @@ const userDtlMenu = document.querySelector(".user-dtl-menu");
 const userDtlMenuItems = document.querySelectorAll(".user-dtl-menu span");
 
 //main
+const titleInput = document.querySelector(".title-input input");
+const contentInput = document.querySelector(".content-input textarea");
 
 // 게시판 구분짓는 flag
 let userMenuFlag = false;
@@ -68,6 +70,36 @@ document.querySelector("main").onmouseover = () => {
         userMenuFlag = false;
     }
 }
+
+
+/*  main  */
+
+document.querySelector("article button").onclick = () => {
+    let title = titleInput.value;
+    let content = contentInput.value;
+
+    $.ajax({
+        type: "post",
+        url: "/api/v1/board/new",
+        data: JSON.stringify({
+            boardTitle: title,
+            boardContent: content,
+            userCode: 20,
+            boardType: 1
+        }),
+        contentType: "application/json",
+        dataType: "json",
+        success: (response) => {
+            if(response.data != null) {
+                alert("게시글 작성 성공\n게시글 코드: " + response.data.boardCode);
+            }else {
+                alert("게시글 작성 실패!");
+            }
+        },
+        error: errorMessage
+    });
+}
+
 
 function errorMessage(request, status, error) {
     alert("요청실패");
