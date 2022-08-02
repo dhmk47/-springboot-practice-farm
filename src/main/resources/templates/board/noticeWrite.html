@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공지사항</title>
+    <title>공지사항 작성</title>
     <script src="https://kit.fontawesome.com/87ed282d9d.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/board/notice.css">
+    <link rel="stylesheet" href="/static/css/board/noticeWrite.css">
 </head>
 <body>
     <div id="container">
@@ -34,32 +34,17 @@
             </div>
         </header>
         <main>
-            <div class="login-box">
-                <div class="input-box">
-                    <div>
-                        <input type="text" placeholder="아이디">
-                    </div>
-                    <div>
-                        <input type="password" placeholder="비밀번호">
-                    </div>
-                </div>
-                <div class="signin-signup-button-box">
-                    <button type="button">로그인</button>
-                    <button type="button">회원가입</button>
-                </div>
-            </div>
             <article>
-                <section>
-                    <div class="board-content-list">
-
-                    </div>
-                    <div class="write-button">
-                        <button type="button">작성하기</button>
-                    </div>
+                <section class="title-input">
+                    <input type="text" placeholder="제목을 입력하세요.">
                 </section>
+                <section class="content-input">
+                    <textarea name="" id="" placeholder="내용을 입력하세요."></textarea>
+                </section>
+                <button type="button">작성하기</button>
             </article>
         </main>
     </div>
-    <script src="/static/js/board/notice.js"></script>
+    <script src="/static/js/board/noticeWrite.js"></script>
 </body>
 </html>

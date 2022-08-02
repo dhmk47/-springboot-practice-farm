@@ -2,12 +2,8 @@
 const headerNavItems = document.querySelectorAll(".header-nav-box li");
 const userMenu = document.querySelector(".user-menu");
 const userMenuBtn = document.querySelector(".fa-caret-down");
-const productDtlMenu = document.querySelector(".farm-product-dtl-menu");
-const boardDtlMenu = document.querySelector(".board-dtl-menu");
 const userDtlMenu = document.querySelector(".user-dtl-menu");
 const userDtlMenuItems = document.querySelectorAll(".user-dtl-menu span");
-
-const productAdminmenu = document.querySelectorAll(".farm-product-dtl-menu span");
 
 //main
 const loginBox = document.querySelector(".login-box");
@@ -18,8 +14,6 @@ let signinFlag = false;
 
 // 게시판 구분짓는 flag
 let userMenuFlag = false;
-let productMenuFlag = false;
-let boardMenuFlag = false;
 
 let adminFlag = false;
 
@@ -32,46 +26,17 @@ document.querySelector("header h1").onclick = () => {
     location.href = "/index";
 }
 
-// 헤더 매뉴
+// 헤더 매뉴 -공지사항 -자유게시판 -QnA
 headerNavItems[0].onclick = () => {
-    if(productMenuFlag){
-        $(productDtlMenu).fadeOut(200);
-        productMenuFlag = false;
-    }else {
-        if(boardMenuFlag){
-            headerNavItems[1].click();
-        }else if(userMenuFlag) {
-            userMenuBtn.click();
-        }
-        $(productDtlMenu).fadeIn(200);
-        productDtlMenu.style.display = "flex";
-        productMenuFlag = true;
-    }
-    
+    location.href = "/notice";
 }
 
 headerNavItems[1].onclick = () => {
-    if(boardMenuFlag){
-        $(boardDtlMenu).fadeOut(200);
-        boardMenuFlag = false;
-    }else {
-        if(productMenuFlag){
-            headerNavItems[0].click();
-        }else if(userMenuFlag) {
-            userMenuBtn.click();
-        }
-        $(boardDtlMenu).fadeIn(200);
-        boardDtlMenu.style.display = "flex";
-        boardMenuFlag = true;
-    }
+    location.href = "/board";
 }
 
 headerNavItems[2].onclick = () => {
-    if(signinFlag) {
-
-    }else {
-        alert("먼저 로그인을 진행해 주세요.")
-    }
+    location.href = "/QnA";
 }
 
 userMenuBtn.onclick = () => {
@@ -79,11 +44,6 @@ userMenuBtn.onclick = () => {
         $(userDtlMenu).fadeOut(200);
         userMenuFlag = false;
     }else {
-        if(boardMenuFlag) {
-            headerNavItems[1].click();
-        }else if(productMenuFlag){
-            headerNavItems[0].click();
-        }
         $(userDtlMenu).fadeIn(200);
         userMenuFlag = true;
     }
@@ -108,54 +68,9 @@ userDtlMenuItems[2].onclick = () => {
 
 // 헤더 메뉴 활성화시에 main 부분에 마우스 올라갈시 헤더 메뉴 접기
 document.querySelector("main").onmouseover = () => {
-    if(productMenuFlag){
-        $(productDtlMenu).fadeOut(200);
-        productMenuFlag = false;
-    }else if(boardMenuFlag){
-        $(boardDtlMenu).fadeOut(200);
-        boardMenuFlag = false;
-    }else if(userMenuFlag) {
+   if(userMenuFlag) {
         $(userDtlMenu).fadeOut(200);
         userMenuFlag = false;
-    }
-}
-
-// 헤더 메뉴 안의 기능
-productAdminmenu[0].onclick = () => {   // 농산물 품목 전체 보기
-    
-}
-
-productAdminmenu[1].onclick = () => {   // 농산물 관리
-    location.href = "/product/management";
-}
-
-document.querySelector("main").onmouseover = () => {
-    if(productMenuFlag){
-        $(productDtlMenu).fadeOut(200);
-        productMenuFlag = false;
-    }else if(boardMenuFlag){
-        $(boardDtlMenu).fadeOut(200);
-        boardMenuFlag = false;
-    }else if(userMenuFlag) {
-        $(userDtlMenu).fadeOut(200);
-        userMenuFlag = false;
-    }
-}
-
-productAdminmenu[0].onclick = () => {
-    
-}
-
-productAdminmenu[1].onclick = () => {
-    if(adminFlag) { // 관리자일 경우 새로운 getMapping 요청
-        location.href = "/product/management";
-    }else {
-        if(!signinFlag) {
-            alert("로그인을 먼저 진행해 주세요.");
-            return;
-        }
-        toggleDtlBox();
-        customButtons[0].click();
     }
 }
 
@@ -164,6 +79,7 @@ userDtlMenuItems[0].onclick = () => {
 
 }
 
+// 로그아웃
 userDtlMenuItems[1].onclick = () => {
     alert("로그아웃");
     signinFlag = false;
@@ -222,6 +138,10 @@ loginInputItems[1].onkeypress = () => {
     if(window.event.keyCode == 13) {
         loginBoxButtons[0].click();
     }
+}
+
+document.querySelector(".write-button button").onclick = () => {
+    location.href = "/notice/write";
 }
 
 

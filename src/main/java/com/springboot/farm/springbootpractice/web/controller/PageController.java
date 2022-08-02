@@ -22,10 +22,43 @@ public class PageController {
 		return "managementProduct";
 	}
 	
+	// 공지사항
+	
 	@GetMapping("/notice")
 	public String goNotice() {
 		return "/board/notice";
 	}
+	
+	@GetMapping("/notice/write")
+	public String goNoticeWrite() {
+		return "/board/noticeWrite";
+	}
+
+	// 자유게시판
+	
+	@GetMapping("/board")
+	public String goBoard() {
+		return "/board/freeBoard";
+	}
+	
+	@GetMapping("/board/write")
+	public String goBoardWrite() {
+		return "/board/boardWrite";
+	}
+
+	// QnA
+	
+	@GetMapping("/QnA")
+	public String goQnA() {
+		return "/board/QnA";
+	}
+	
+	@GetMapping("/QnA/write")
+	public String goQnAWrite() {
+		return "/board/QnAWrite";
+	}
+	
+	
 	
 	@GetMapping("/test")
 	public String goTest() {
