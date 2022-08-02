@@ -114,10 +114,52 @@ article {
 section {
     position: relative;
 
-    width: 1100px;
+    width: 1200px;
     height: 500px;
 
     background-color: aqua;
+
+    overflow: auto;
+}
+
+section ul li {
+    display: flex;
+    align-items: center;
+    margin: 15px 0px;
+    border-bottom: 1px solid #a5a3a3;
+
+    position: relative;
+
+    height: 40px;
+}
+
+section ul li span {
+    margin: 15px 20px 25px 0px;
+    padding-left: 15px;
+}
+
+.board-code {
+    width: 60px;
+}
+
+.board-type {
+    width: 80px;
+}
+
+.board-title {
+    width: 700px;
+}
+
+.writer-span {
+    width: 100px;
+    position: absolute;
+    right: 230px;
+}
+
+.date-span {
+    width: 90px;
+    position: absolute;
+    right: 100px;
 }
 
 .write-button {

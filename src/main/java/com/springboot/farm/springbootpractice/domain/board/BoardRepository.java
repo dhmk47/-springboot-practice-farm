@@ -1,5 +1,8 @@
 package com.springboot.farm.springbootpractice.domain.board;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.springboot.farm.springbootpractice.domain.entity.Board;
@@ -8,6 +11,7 @@ import com.springboot.farm.springbootpractice.domain.entity.Board;
 public interface BoardRepository {
 	public int save(Board board);
 	public Board getBoardByBoardCode(int board_code);
+	public List<Board> getBoardList(Map<String, Object> map);
 	public int updateBoardByBoardCode(int board_code);
 	public int deleteBoradByBoardCode(int board_code);
 }

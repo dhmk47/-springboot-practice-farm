@@ -3,6 +3,7 @@ package com.springboot.farm.springbootpractice.domain.entity;
 import java.time.LocalDateTime;
 
 import com.springboot.farm.springbootpractice.web.dto.board.CreateBoardRespDto;
+import com.springboot.farm.springbootpractice.web.dto.board.ReadBoardRespDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +25,18 @@ public class Board {
 	
 	public CreateBoardRespDto toCreateBoardRespDto() {
 		return CreateBoardRespDto.builder()
+				.boardCode(board_code)
+				.boardTitle(board_title)
+				.boardContent(board_content)
+				.userCode(user_code)
+				.boardType(board_type)
+				.createDate(create_date)
+				.updateDate(update_date)
+				.build();
+	}
+	
+	public ReadBoardRespDto toReadBoardRespDto() {
+		return ReadBoardRespDto.builder()
 				.boardCode(board_code)
 				.boardTitle(board_title)
 				.boardContent(board_content)

@@ -1,7 +1,10 @@
 package com.springboot.farm.springbootpractice.web.controller.api.board;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +14,7 @@ import com.springboot.farm.springbootpractice.service.BoardService;
 import com.springboot.farm.springbootpractice.web.dto.CMRespDto;
 import com.springboot.farm.springbootpractice.web.dto.board.CreateBoardReqDto;
 import com.springboot.farm.springbootpractice.web.dto.board.CreateBoardRespDto;
+import com.springboot.farm.springbootpractice.web.dto.board.ReadBoardRespDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,5 +37,19 @@ public class BoardController {
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "게시글 작성 성공", createBoardRespDto));
+	}
+	
+	@GetMapping("/{type}/{boardCode}")
+	public ResponseEntity<?> getAllBoardList(@PathVariable String type, @PathVariable String boardCode) {
+		List<ReadBoardRespDto> boardList = null;
+		
+		try {
+			boardList = boardService.getBoardList(type, boardCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "게시글 불러오기 실패", boardList));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "게시글 불러오기 성공", boardList));
 	}
 }

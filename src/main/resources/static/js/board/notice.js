@@ -10,6 +10,8 @@ const loginBox = document.querySelector(".login-box");
 const loginInputItems = document.querySelectorAll(".login-box input");
 const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box button");
 
+const boardList = document.querySelector(".board-content-list");
+
 let signinFlag = false;
 
 // 게시판 구분짓는 flag
@@ -20,6 +22,8 @@ let adminFlag = false;
 let userCode = 0;
 
 $(userDtlMenu).fadeOut(0);
+
+load();
 
 // 로고 클릭시 홈페이지 이동
 document.querySelector("header h1").onclick = () => {
@@ -153,6 +157,37 @@ function load() {
         userMenu.style.display = "none";
         loginBox.style.visibility = "visible";
     }
+
+    boardLoad();
+}
+
+function boardLoad() {
+    $.ajax({
+        type: "get",
+        url: "/api/v1/board/notice/all",
+        dataType: "json",
+        success: (response) => {
+            if(response.data.length != 0) {
+
+
+                for(board of response.data) {
+                    boardList.innerHTML +=
+                    `<ul class="board-content-list">
+                        <li>
+                            <span class="board-code">${board.boardCode}</span>
+                            <span class="board-type">${board.boardType == 1 ? "[공지사항]" : board.boardType == 2 ? "[자유게시판]" : "[QnA]"}</span>
+                            <span class="board-title">${board.boardTitle}</span>
+                            <span class="writer-span">${board.userCode}</span>
+                            <span class="date-span">2${board.updateDate}</span>
+                        </li>
+                    </ul>`;
+                }
+            }else {
+                alert("게시글 불러오기 실패");
+            }
+        },
+        error: errorMessage
+    });
 }
 
 function errorMessage(request, status, error) {

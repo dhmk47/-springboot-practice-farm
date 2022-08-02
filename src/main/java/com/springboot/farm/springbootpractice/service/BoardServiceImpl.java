@@ -1,5 +1,11 @@
 package com.springboot.farm.springbootpractice.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.springboot.farm.springbootpractice.domain.board.BoardRepository;
@@ -28,6 +34,22 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public ReadBoardRespDto getBoardByBoardCode(int boardCode) throws Exception {
 		return null;
+	}
+	
+	@Override
+	public List<ReadBoardRespDto> getBoardList(String type, String boardCode) throws Exception {
+		List<ReadBoardRespDto> boardList = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("type", type);
+		map.put("boardCode", boardCode);
+		
+		boardList = boardRepository.getBoardList(map)
+				.stream()
+				.map(entity -> entity.toReadBoardRespDto())
+				.collect(Collectors.toCollection(ArrayList::new));
+		
+		return boardList;
 	}
 
 	@Override

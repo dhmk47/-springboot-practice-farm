@@ -18,4 +18,23 @@
   			now()
   		)
   	</insert>
+  	
+  	<select id="getBoardList" parameterType="HashMap" resultType="com.springboot.farm.springbootpractice.domain.entity.Board">
+  		select
+  			board_code,
+  			board_title,
+  			board_content,
+  			user_code,
+  			board_type,
+  			create_date,
+  			update_date
+  		from
+  			board_mst
+  		where
+  			<choose>
+  				<when test='type.equals("notice")'>
+  					board_type = 1
+  				</when>
+  			</choose>
+  	</select>
   </mapper>
