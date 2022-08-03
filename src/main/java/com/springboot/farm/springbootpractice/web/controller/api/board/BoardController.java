@@ -43,9 +43,6 @@ public class BoardController {
 	public ResponseEntity<?> getAllBoardList(@PathVariable String type, @PathVariable String boardCode, int page, int totalCount) {
 		List<ReadBoardRespDto> boardList = null;
 		
-		System.out.println(page);
-		System.out.println(totalCount);
-		
 		try {
 			boardList = boardService.getBoardList(type, boardCode, page, totalCount);
 		} catch (Exception e) {

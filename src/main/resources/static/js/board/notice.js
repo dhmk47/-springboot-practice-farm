@@ -32,7 +32,7 @@ let totalCount = 0;
 $(userDtlMenu).fadeOut(0);
 
 load();
-setPageButton();
+setPageButton("next");
 
 // 로고 클릭시 홈페이지 이동
 document.querySelector("header h1").onclick = () => {
@@ -155,14 +155,23 @@ loginInputItems[1].onkeypress = () => {
 
 // 이전 버튼
 document.querySelector(".pre-button").onclick = () => {
-    if(page > 5 && page < 11) {
-        page = 6;
+    let result = page % 5;
+
+    if(result == 1) {
+        page -= 1;
+    }else if(result == 2) {
+        page -= 2;
+    }else if(result == 3) {
+        page -= 3;
+    }else if(result == 4) {
+        page -= 4;
+    }else if(result == 5) {
+        page -= 5;
     }
 
-    if(page > 5) {
-        page -= 5;
+    if(page > 0) {
         load();
-        setPageButton();
+        setPageButton("pre");
     }
 }
 
@@ -172,26 +181,22 @@ document.querySelector(".select-page-button").onclick = () => {
 
 // 다음 버튼
 document.querySelector(".next-button").onclick = () => {
+    let result = page % 5;
 
-    
-
-    if(totalPage > (page - 1) + 5) {  // 6보다 크면
-        let result = page % 5;
-
-        if(result == 1) {
-            page += 5;
-        }else if(result == 2) {
-            page += 4;
-        }else if(result == 3) {
-            page += 3;
-        }else if(result == 4) {
-            page += 2;
-        }else if(result == 5) {
-            page += 1;
-        }
-
+    if(result == 1) {
+        page += 5;
+    }else if(result == 2) {
+        page += 4;
+    }else if(result == 3) {
+        page += 3;
+    }else if(result == 4) {
+        page += 2;
+    }else if(result == 5) {
+        page += 1;
+    }
+    if(totalPage > page - 1) {
         load();
-        setPageButton();
+        setPageButton("next");
     }
 }
 
@@ -217,36 +222,6 @@ function load() {
 
     
 }
-
-function setPage(index, obj) {
-    pageList = document.querySelectorAll(".page-list div");
-    page = index;
-    
-    pageList.forEach(page => page.style.backgroundColor = "white");
-
-    obj.style.backgroundColor = "gray";
-    load();
-}
-
-function setColor(obj) {
-    obj.classList.toggle("set-color");
-}
-
-function setPageButton() {
-    pageButtonBox[0].innerHTML = "";
-
-    for(let i = 0; i < totalPage; i++) {
-        if(i < 5 && page + i < totalPage + 1) {
-            
-            pageButtonBox[0].innerHTML += `<div class="page${page + i}" onmouseover="setColor(this)" onmouseout="setColor(this)" onclick="setPage(${page + i}, this)">${page + i}</div>`;
-        }else{
-            break;
-        }
-    }
-
-    
-}
-
 
 function boardLoad() {
     $.ajax({
@@ -285,6 +260,49 @@ function boardLoad() {
         },
         error: errorMessage
     });
+}
+
+function setPage(index, obj) {
+    pageList = document.querySelectorAll(".page-list div");
+    page = index;
+    
+    pageList.forEach(page => {
+        page.classList.remove("set-color");
+        page.style.backgroundColor = "";
+    });
+
+    obj.style.backgroundColor = "gray";
+    load();
+}
+
+function setColor(obj) {
+    obj.classList.toggle("set-color");
+}
+
+function setPageButton(type) {
+    pageButtonBox[0].innerHTML = "";
+    
+    let pageIndex = 0;
+    for(let i = 0; i < totalPage; i++) {
+        if(type == "pre" && i < 5) {
+            pageIndex = page - 4 + i;
+        }else if(i < 5 && page + i < totalPage + 1) {
+            pageIndex = page - (page % 5 - 1) + i;
+
+        }else{
+            break;
+        }
+        pageButtonBox[0].innerHTML += `<div class="page${pageIndex}" onmouseover="setColor(this)" onmouseout="setColor(this)" onclick="setPage(${pageIndex}, this)">${pageIndex}</div>`;
+    }
+
+    if(type == "pre") {
+        pageButtonBox[0].querySelectorAll("div")[4].click();
+
+    }else {
+        pageButtonBox[0].querySelectorAll("div")[0].click();
+
+    }
+    
 }
 
 function errorMessage(request, status, error) {
