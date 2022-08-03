@@ -11,6 +11,7 @@ const loginInputItems = document.querySelectorAll(".login-box input");
 const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box button");
 
 const boardList = document.querySelector(".board-content-list");
+const pageButtonBox = document.querySelectorAll(".page-button-box");
 
 let signinFlag = false;
 
@@ -21,9 +22,15 @@ let adminFlag = false;
 
 let userCode = 0;
 
+// 페이징 처리
+let page = 1;
+let totalPage = 1;
+let totalCount = 0;
+
 $(userDtlMenu).fadeOut(0);
 
 load();
+setPageButton();
 
 // 로고 클릭시 홈페이지 이동
 document.querySelector("header h1").onclick = () => {
@@ -144,6 +151,18 @@ loginInputItems[1].onkeypress = () => {
     }
 }
 
+document.querySelector(".select-page-button").onclick = () => {
+
+}
+
+document.querySelector(".next-button").onclick = () => {
+    if(totalPage > page - 1 + 5) {  // 6보다 크면
+        page += 5;
+        load();
+        setPageButton();
+    }
+}
+
 document.querySelector(".write-button button").onclick = () => {
     location.href = "/notice/write";
 }
@@ -159,28 +178,61 @@ function load() {
     }
 
     boardLoad();
+
+    // alert("totalCount: " + totalCount);
+    // alert("totalPage: " + totalPage);
+
+    
 }
+
+function setPage(index) {
+    page = index;
+    load();
+}
+
+function setPageButton() {
+    pageButtonBox[0].innerHTML = "";
+
+    for(let i = 0; i < totalPage; i++) {
+        if(i < 5 && page + i < totalPage + 1) {
+            pageButtonBox[0].innerHTML += `<div onclick="setPage(${page + i})">${page + i}</div>`;
+        }else{
+            break;
+        }
+    }
+}
+
 
 function boardLoad() {
     $.ajax({
         type: "get",
         url: "/api/v1/board/notice/all",
+        async: false,
+        data: {
+            page: page,
+            totalCount: 8
+        },
         dataType: "json",
         success: (response) => {
             if(response.data.length != 0) {
 
+                boardList.innerHTML = "";
+
+                totalCount = response.data[0].totalCount;
+
+                totalPage = totalCount % 8 == 0 ? totalPage : Math.floor(totalCount / 8) + 1;
 
                 for(board of response.data) {
                     boardList.innerHTML +=
-                    `<ul class="board-content-list">
-                        <li>
-                            <span class="board-code">${board.boardCode}</span>
-                            <span class="board-type">${board.boardType == 1 ? "[공지사항]" : board.boardType == 2 ? "[자유게시판]" : "[QnA]"}</span>
-                            <span class="board-title">${board.boardTitle}</span>
-                            <span class="writer-span">${board.userCode}</span>
-                            <span class="date-span">2${board.updateDate}</span>
-                        </li>
-                    </ul>`;
+                    `
+                    <li>
+                        <span class="board-code">${board.boardCode}</span>
+                        <span class="board-type">${board.boardType == 1 ? "[공지사항]" : board.boardType == 2 ? "[자유게시판]" : "[QnA]"}</span>
+                        <span class="board-title">${board.boardTitle}</span>
+                        <span class="writer-span">${board.userCode}</span>
+                        <span class="date-span">2${board.updateDate}</span>
+                    </li>
+                    `;
                 }
             }else {
                 alert("게시글 불러오기 실패");

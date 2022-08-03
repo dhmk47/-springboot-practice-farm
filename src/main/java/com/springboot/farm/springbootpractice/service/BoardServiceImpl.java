@@ -37,12 +37,14 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
-	public List<ReadBoardRespDto> getBoardList(String type, String boardCode) throws Exception {
+	public List<ReadBoardRespDto> getBoardList(String type, String boardCode, int page, int totalCount) throws Exception {
 		List<ReadBoardRespDto> boardList = null;
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("type", type);
 		map.put("boardCode", boardCode);
+		map.put("page", (page - 1) * totalCount);
+		map.put("totalCount", totalCount);
 		
 		boardList = boardRepository.getBoardList(map)
 				.stream()

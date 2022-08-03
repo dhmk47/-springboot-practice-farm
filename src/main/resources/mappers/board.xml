@@ -21,20 +21,30 @@
   	
   	<select id="getBoardList" parameterType="HashMap" resultType="com.springboot.farm.springbootpractice.domain.entity.Board">
   		select
-  			board_code,
-  			board_title,
-  			board_content,
-  			user_code,
-  			board_type,
-  			create_date,
-  			update_date
-  		from
-  			board_mst
+  			bm.board_code,
+			bm.board_title,
+			bm.board_content,
+			bm.user_code,
+			bm.board_type,
+			
+			bm2.total_count,
+			
+			bm.create_date,
+			bm.update_date
+  		FROM
+			board_mst bm
+			LEFT OUTER JOIN (select
+											COUNT(*) AS total_count
+										FROM
+											board_mst) bm2 ON (1 = 1)
   		where
-  			<choose>
-  				<when test='type.equals("notice")'>
-  					board_type = 1
-  				</when>
-  			</choose>
+			<choose>
+				<when test='type.equals("notice")'>
+					board_type = 1
+				</when>
+			</choose>
+		ORDER BY
+			board_code desc
+		LIMIT #{page},  #{totalCount}
   	</select>
   </mapper>

@@ -119,23 +119,30 @@ section {
 
     background-color: aqua;
 
-    overflow: auto;
+    overflow: hidden;
 }
 
 section ul li {
     display: flex;
     align-items: center;
-    margin: 15px 0px;
-    border-bottom: 1px solid #a5a3a3;
+    margin: 14px 0px 10px;
 
     position: relative;
 
     height: 40px;
 }
 
+section ul li:not(:last-of-type) {
+    border-bottom: 1px solid #a5a3a3;
+}
+
 section ul li span {
     margin: 15px 20px 25px 0px;
     padding-left: 15px;
+}
+
+.board-header-list {
+    border-bottom: 1px solid #a5a3a3;
 }
 
 .board-code {
@@ -164,6 +171,27 @@ section ul li span {
 
 .write-button {
     position: absolute;
-    right: 0px;
-    bottom: -30px;
+    right: 360px;
+    bottom: 40px;
+}
+
+.page-button-main-box {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-button-box {
+    display: flex;
+}
+
+.page-button-box div {
+    margin: 20px 0px 0px 0px;
+
+    width: 38px;
+    height: 28px;
+
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
 }

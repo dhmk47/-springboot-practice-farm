@@ -20,6 +20,7 @@ public class Board {
 	private String board_content;
 	private int user_code;
 	private int board_type;		// 1 -> 공지사항	2 -> 자유게시판		3 -> QnA
+	private int total_count;
 	private LocalDateTime create_date;
 	private LocalDateTime update_date;
 	
@@ -42,6 +43,7 @@ public class Board {
 				.boardContent(board_content)
 				.userCode(user_code)
 				.boardType(board_type)
+				.totalCount(total_count)
 				.createDate(create_date)
 				.updateDate(update_date)
 				.build();
