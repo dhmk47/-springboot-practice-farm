@@ -13,6 +13,8 @@ const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box but
 const boardList = document.querySelector(".board-content-list");
 const pageButtonBox = document.querySelectorAll(".page-button-box");
 
+let pageList = document.querySelectorAll(".page-list div");
+
 let signinFlag = false;
 
 // 게시판 구분짓는 flag
@@ -151,13 +153,43 @@ loginInputItems[1].onkeypress = () => {
     }
 }
 
+// 이전 버튼
+document.querySelector(".pre-button").onclick = () => {
+    if(page > 5 && page < 11) {
+        page = 6;
+    }
+
+    if(page > 5) {
+        page -= 5;
+        load();
+        setPageButton();
+    }
+}
+
 document.querySelector(".select-page-button").onclick = () => {
 
 }
 
+// 다음 버튼
 document.querySelector(".next-button").onclick = () => {
-    if(totalPage > page - 1 + 5) {  // 6보다 크면
-        page += 5;
+
+    
+
+    if(totalPage > (page - 1) + 5) {  // 6보다 크면
+        let result = page % 5;
+
+        if(result == 1) {
+            page += 5;
+        }else if(result == 2) {
+            page += 4;
+        }else if(result == 3) {
+            page += 3;
+        }else if(result == 4) {
+            page += 2;
+        }else if(result == 5) {
+            page += 1;
+        }
+
         load();
         setPageButton();
     }
@@ -179,15 +211,25 @@ function load() {
 
     boardLoad();
 
+
     // alert("totalCount: " + totalCount);
     // alert("totalPage: " + totalPage);
 
     
 }
 
-function setPage(index) {
+function setPage(index, obj) {
+    pageList = document.querySelectorAll(".page-list div");
     page = index;
+    
+    pageList.forEach(page => page.style.backgroundColor = "white");
+
+    obj.style.backgroundColor = "gray";
     load();
+}
+
+function setColor(obj) {
+    obj.classList.toggle("set-color");
 }
 
 function setPageButton() {
@@ -195,11 +237,14 @@ function setPageButton() {
 
     for(let i = 0; i < totalPage; i++) {
         if(i < 5 && page + i < totalPage + 1) {
-            pageButtonBox[0].innerHTML += `<div onclick="setPage(${page + i})">${page + i}</div>`;
+            
+            pageButtonBox[0].innerHTML += `<div class="page${page + i}" onmouseover="setColor(this)" onmouseout="setColor(this)" onclick="setPage(${page + i}, this)">${page + i}</div>`;
         }else{
             break;
         }
     }
+
+    
 }
 
 
