@@ -176,7 +176,13 @@ document.querySelector(".pre-button").onclick = () => {
 }
 
 document.querySelector(".select-page-button").onclick = () => {
+    document.querySelector(".select-page-box").classList.toggle("visible");
+}
 
+document.querySelector(".select-page-box button").onclick = () => {
+    page = parseInt(document.querySelector(".select-page-input").value);
+    load();
+    setPageButton("setPage");
 }
 
 // 다음 버튼
@@ -242,6 +248,9 @@ function boardLoad() {
 
                 totalPage = totalCount % 8 == 0 ? totalPage : Math.floor(totalCount / 8) + 1;
 
+                document.querySelector(".select-page-box div").innerHTML = 
+                `<input class="select-page-input" type="text"> / ${totalPage}`;
+
                 for(board of response.data) {
                     boardList.innerHTML +=
                     `
@@ -281,9 +290,13 @@ function setColor(obj) {
 
 function setPageButton(type) {
     pageButtonBox[0].innerHTML = "";
+
+    // console.log("setPageButton page: " + page);
+    // console.log("setPageButton totalPage: " + totalPage);
     
     let pageIndex = 0;
     for(let i = 0; i < totalPage; i++) {
+
         if(type == "pre" && i < 5) {
             pageIndex = page - 4 + i;
         }else if(i < 5 && page + i < totalPage + 1) {
@@ -298,6 +311,8 @@ function setPageButton(type) {
     if(type == "pre") {
         pageButtonBox[0].querySelectorAll("div")[4].click();
 
+    }else if(type == "setPage") {
+        pageButtonBox[0].querySelectorAll("div")[page % 5 - 1].click();
     }else {
         pageButtonBox[0].querySelectorAll("div")[0].click();
 

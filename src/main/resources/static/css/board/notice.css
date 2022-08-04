@@ -108,7 +108,7 @@ article {
     display: flex;
     justify-content: center;
 
-    margin-top: 150px;
+    margin-top: 100px;
 }
 
 section {
@@ -179,6 +179,10 @@ section ul li span {
 	display: flex;
     justify-content: center;
     align-items: center;
+    
+    margin-top: 50px;
+
+    position: relative;
 }
 
 .page-button-box {
@@ -196,6 +200,32 @@ section ul li span {
     cursor: pointer;
 }
 
+.select-page-box {
+	display: flex;
+	align-items: center;
+	
+    position: absolute;
+    top: -20px;
+    right: 800px;
+}
+
+.select-page-input {
+	padding: 10px;
+    width: 40px;
+    height: 25px;
+    
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.select-page-box button {
+	margin-left: 10px;
+}
+
 .set-color {
     background-color: gray;
+}
+
+.visible {
+    display: none;
 }
