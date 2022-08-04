@@ -13,6 +13,9 @@ const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box but
 const boardList = document.querySelector(".board-content-list");
 const pageButtonBox = document.querySelectorAll(".page-button-box");
 
+const preButton = document.querySelector(".pre-button");
+const nextButton = document.querySelector(".next-button");
+
 let pageList = document.querySelectorAll(".page-list div");
 
 let signinFlag = false;
@@ -154,22 +157,24 @@ loginInputItems[1].onkeypress = () => {
 }
 
 // 이전 버튼
-document.querySelector(".pre-button").onclick = () => {
+preButton.onclick = () => {
     let result = page % 5;
+    let index = page;
 
     if(result == 1) {
-        page -= 1;
+        index -= 1;
     }else if(result == 2) {
-        page -= 2;
+        index -= 2;
     }else if(result == 3) {
-        page -= 3;
+        index -= 3;
     }else if(result == 4) {
-        page -= 4;
-    }else if(result == 5) {
-        page -= 5;
+        index -= 4;
+    }else {
+        index -= 5;
     }
 
-    if(page > 0) {
+    if(index > 0) {
+        page = index;
         load();
         setPageButton("pre");
     }
@@ -181,26 +186,18 @@ document.querySelector(".select-page-button").onclick = () => {
 
 document.querySelector(".select-page-box button").onclick = () => {
     page = parseInt(document.querySelector(".select-page-input").value);
+
     load();
     setPageButton("setPage");
 }
 
 // 다음 버튼
-document.querySelector(".next-button").onclick = () => {
-    let result = page % 5;
+nextButton.onclick = () => {
 
-    if(result == 1) {
-        page += 5;
-    }else if(result == 2) {
-        page += 4;
-    }else if(result == 3) {
-        page += 3;
-    }else if(result == 4) {
-        page += 2;
-    }else if(result == 5) {
-        page += 1;
-    }
-    if(totalPage > page - 1) {
+    let index = checkNextPage();
+
+    if(totalPage > index - 1) {
+        page = index;
         load();
         setPageButton("next");
     }
@@ -299,12 +296,13 @@ function setPageButton(type) {
 
         if(type == "pre" && i < 5) {
             pageIndex = page - 4 + i;
-        }else if(i < 5 && page + i < totalPage + 1) {
-            pageIndex = page - (page % 5 - 1) + i;
+        }else if(i < 5 && pageIndex + 1 < totalPage + 1) {
+            pageIndex = page - ((page - 1) % 5) + i;
 
         }else{
             break;
         }
+        console.log(pageIndex);
         pageButtonBox[0].innerHTML += `<div class="page${pageIndex}" onmouseover="setColor(this)" onmouseout="setColor(this)" onclick="setPage(${pageIndex}, this)">${pageIndex}</div>`;
     }
 
@@ -312,12 +310,43 @@ function setPageButton(type) {
         pageButtonBox[0].querySelectorAll("div")[4].click();
 
     }else if(type == "setPage") {
-        pageButtonBox[0].querySelectorAll("div")[page % 5 - 1].click();
+        pageButtonBox[0].querySelectorAll("div")[page % 5 == 0 ? 4 : page % 5 - 1].click();
     }else {
         pageButtonBox[0].querySelectorAll("div")[0].click();
 
     }
+
+    if(page < 6) {
+        preButton.classList.add("set-disable");
+    }else {
+        preButton.classList.remove("set-disable");
+    }
+
+    if(checkNextPage() < totalPage + 1) {
+        nextButton.classList.remove("set-disable");
+    }else {
+        nextButton.classList.add("set-disable");
+    }
     
+}
+
+function checkNextPage() {
+    let result = page % 5;
+    let index = page;
+
+    if(result == 1) {
+        index += 5;
+    }else if(result == 2) {
+        index += 4;
+    }else if(result == 3) {
+        index += 3;
+    }else if(result == 4) {
+        index += 2;
+    }else {
+        index += 1;
+    }
+    
+    return index;
 }
 
 function errorMessage(request, status, error) {

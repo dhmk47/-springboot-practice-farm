@@ -229,3 +229,8 @@ section ul li span {
 .visible {
     display: none;
 }
+
+.set-disable {
+    cursor: default !important;
+    color: dimgrey;
+}
