@@ -229,7 +229,7 @@ function load() {
 function boardLoad() {
     $.ajax({
         type: "get",
-        url: "/api/v1/board/notice/all",
+        url: "/api/v1/board/QnA/all",
         async: false,
         data: {
             page: page,
@@ -260,8 +260,6 @@ function boardLoad() {
                     </li>
                     `;
                 }
-            }else {
-                alert("게시글 불러오기 실패");
             }
         },
         error: errorMessage

@@ -26,14 +26,27 @@ public class BoardServiceImpl implements BoardService{
 	public CreateBoardRespDto createBoard(CreateBoardReqDto createBoardReqDto) throws Exception {
 		Board board = createBoardReqDto.toEntity();
 		
+		String title = board.getBoard_title();
+		String content = board.getBoard_content();
+		for(int i = 0; i < 50; i++) {
+			board.setBoard_title(title + (i + 1));
+			board.setBoard_content(content + (i + 1));
+			boardRepository.save(board);
+		}
+		
 		boardRepository.save(board);
 		
 		return board != null ? board.toCreateBoardRespDto() : null;
 	}
 
 	@Override
-	public ReadBoardRespDto getBoardByBoardCode(int boardCode) throws Exception {
-		return null;
+	public ReadBoardRespDto getBoardByBoardCode(int boardCode, String board_type) throws Exception {
+		Board board = null;
+		int boardType = board_type.equals("notice") ? 1 : board_type.equals("freeBoard") ? 2 : 3;
+		
+		board = boardRepository.getBoardByBoardCode(boardCode, boardType);
+		
+		return board == null ? null : board.toReadBoardRespDto();
 	}
 	
 	@Override
@@ -41,7 +54,7 @@ public class BoardServiceImpl implements BoardService{
 		List<ReadBoardRespDto> boardList = null;
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		map.put("type", type);
+		map.put("type", type.equals("notice") ? 1 : type.equals("freeBoard") ? 2 : 3);
 		map.put("boardCode", boardCode);
 		map.put("page", (page - 1) * totalCount);
 		map.put("totalCount", totalCount);

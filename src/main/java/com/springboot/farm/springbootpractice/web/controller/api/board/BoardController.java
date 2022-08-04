@@ -39,7 +39,7 @@ public class BoardController {
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "게시글 작성 성공", createBoardRespDto));
 	}
 	
-	@GetMapping("/{type}/{boardCode}")
+	@GetMapping("/{type}/list/{boardCode}")
 	public ResponseEntity<?> getAllBoardList(@PathVariable String type, @PathVariable String boardCode, int page, int totalCount) {
 		List<ReadBoardRespDto> boardList = null;
 		
@@ -51,5 +51,19 @@ public class BoardController {
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "게시글 불러오기 성공", boardList));
+	}
+	
+	@GetMapping("/{boardType}/{boardCode}")
+	public ResponseEntity<?> getBoardByBoardCode(@PathVariable String boardType, @PathVariable int boardCode) {
+		ReadBoardRespDto readBoardRespDto = null;
+		
+		try {
+			readBoardRespDto = boardService.getBoardByBoardCode(boardCode, boardType);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, boardType + " " + boardCode + "번 게시글 불러오기 실패", readBoardRespDto));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, boardType + " " + boardCode + "번 게시글 불러오기 성공", readBoardRespDto));
 	}
 }

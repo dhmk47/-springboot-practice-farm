@@ -50,7 +50,7 @@ public class PageController {
 	
 	@GetMapping("/QnA")
 	public String goQnA() {
-		return "/board/QnA";
+		return "/board/QnABoard";
 	}
 	
 	@GetMapping("/QnA/write")

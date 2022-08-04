@@ -27,24 +27,55 @@
 			bm.user_code,
 			bm.board_type,
 			
+			um.name,
+			
 			bm2.total_count,
 			
 			bm.create_date,
 			bm.update_date
   		FROM
 			board_mst bm
+			left outer join user_mst um on (um.usercode = bm.user_code)
 			LEFT OUTER JOIN (select
 											COUNT(*) AS total_count
 										FROM
-											board_mst) bm2 ON (1 = 1)
+											board_mst
+										where
+											board_type = #{type}) bm2 ON (1 = 1)
   		where
 			<choose>
-				<when test='type.equals("notice")'>
+				<when test='type == 1'>
 					board_type = 1
 				</when>
+				<when test='type == 2'>
+					board_type = 2
+				</when>
+				<otherwise>
+					board_type = 3
+				</otherwise>
 			</choose>
 		ORDER BY
 			board_code desc
 		LIMIT #{page},  #{totalCount}
+  	</select>
+  	
+  	<select id="getBoardByBoardCode" parameterType="Integer" resultType="com.springboot.farm.springbootpractice.domain.entity.Board">
+  		select
+  			bm.board_code,
+			bm.board_title,
+			bm.board_content,
+			bm.user_code,
+			bm.board_type,
+			
+			um.name,
+			
+			bm.create_date,
+			bm.update_date
+		from
+			board_mst bm
+			left outer join user_mst um on (um.usercode = bm.user_code)
+		where
+			board_code = #{board_code}
+			and board_type = #{board_type}
   	</select>
   </mapper>
