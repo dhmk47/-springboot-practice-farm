@@ -15,6 +15,7 @@ public class ReadBoardRespDto {
 	private int boardType;		// 1 -> 공지사항	2 -> 자유게시판		3 -> QnA
 	private int totalCount;
 	private String name;
+	private int views;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
 }

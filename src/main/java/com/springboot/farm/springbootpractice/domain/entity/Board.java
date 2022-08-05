@@ -22,6 +22,7 @@ public class Board {
 	private int board_type;		// 1 -> 공지사항	2 -> 자유게시판		3 -> QnA
 	private int total_count;
 	private String name;
+	private int views;
 	private LocalDateTime create_date;
 	private LocalDateTime update_date;
 	
@@ -33,6 +34,7 @@ public class Board {
 				.userCode(user_code)
 				.boardType(board_type)
 				.name(name)
+				.views(views)
 				.createDate(create_date)
 				.updateDate(update_date)
 				.build();
@@ -47,6 +49,7 @@ public class Board {
 				.boardType(board_type)
 				.totalCount(total_count)
 				.name(name)
+				.views(views)
 				.createDate(create_date)
 				.updateDate(update_date)
 				.build();

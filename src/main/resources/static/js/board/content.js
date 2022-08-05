@@ -10,9 +10,10 @@ const loginBox = document.querySelector(".login-box");
 const loginInputItems = document.querySelectorAll(".login-box input");
 const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box button");
 
-// 제목, 내용 박스
+// 제목, 내용 박스, 게시글 정보
 const titleText = document.querySelector(".title-text");
 const contentText = document.querySelector(".content-text");
+const boardInfoBox = document.querySelectorAll(".board-info-box span");
 
 
 // 페이징 처리를 위한 Controller에서 받아온 값
@@ -176,6 +177,8 @@ function load() {
 function enterContent(data) {
     titleText.innerHTML = `${data.boardTitle}`;
     contentText.innerHTML = `${data.boardContent}`;
+    boardInfoBox[0].innerHTML += `${data.name}`;
+    boardInfoBox[1].innerHTML += `${data.views}회`;
 }
 
 function errorMessage(request, status, error) {

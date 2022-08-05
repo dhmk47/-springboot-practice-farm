@@ -112,6 +112,14 @@ article {
     position: relative;
 }
 
+.board-info-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 700px;
+}
+
 .user-board-menu {
     display: flex;
     justify-content: flex-end;

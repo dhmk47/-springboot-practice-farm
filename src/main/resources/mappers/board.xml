@@ -69,13 +69,16 @@
 			
 			um.name,
 			
+			bd.views,
+			
 			bm.create_date,
 			bm.update_date
 		from
 			board_mst bm
 			left outer join user_mst um on (um.usercode = bm.user_code)
+			left outer join board_dtl bd on (bd.board_code = bm.board_code)
 		where
-			board_code = #{board_code}
+			bm.board_code = #{board_code}
 			and board_type = #{board_type}
   	</select>
   </mapper>

@@ -42,7 +42,7 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public ReadBoardRespDto getBoardByBoardCode(int boardCode, String board_type) throws Exception {
 		Board board = null;
-		int boardType = board_type.equals("notice") ? 1 : board_type.equals("freeBoard") ? 2 : 3;
+		int boardType = board_type.equals("notice") ? 1 : board_type.equals("free") ? 2 : 3;
 		
 		board = boardRepository.getBoardByBoardCode(boardCode, boardType);
 		
