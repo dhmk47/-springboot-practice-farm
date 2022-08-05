@@ -169,6 +169,10 @@ section ul li span {
     right: 100px;
 }
 
+.type-span {
+    display: none;
+}
+
 .page-span {
     display: none;
 }

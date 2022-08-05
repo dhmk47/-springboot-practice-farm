@@ -39,12 +39,12 @@ public class BoardController {
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "게시글 작성 성공", createBoardRespDto));
 	}
 	
-	@GetMapping("/{type}/list/{boardCode}")
-	public ResponseEntity<?> getAllBoardList(@PathVariable String type, @PathVariable String boardCode, int page, int totalCount) {
+	@GetMapping("/{type}/list")
+	public ResponseEntity<?> getAllBoardList(@PathVariable String type, int page, int totalCount) {
 		List<ReadBoardRespDto> boardList = null;
 		
 		try {
-			boardList = boardService.getBoardList(type, boardCode, page, totalCount);
+			boardList = boardService.getBoardList(type, page, totalCount);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "게시글 불러오기 실패", boardList));

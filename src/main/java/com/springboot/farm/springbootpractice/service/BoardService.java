@@ -9,7 +9,7 @@ import com.springboot.farm.springbootpractice.web.dto.board.ReadBoardRespDto;
 public interface BoardService {
 	public CreateBoardRespDto createBoard(CreateBoardReqDto createBoardReqDto) throws Exception;
 	public ReadBoardRespDto getBoardByBoardCode(int boardCode, String board_type) throws Exception;
-	public List<ReadBoardRespDto> getBoardList(String type, String boardCode, int page, int totalCount) throws Exception;
+	public List<ReadBoardRespDto> getBoardList(String type, int page, int totalCount) throws Exception;
 	public int updateBoardByBoardCode(int boardCode) throws Exception;
 	public int deleteBoardByBoardCode(int boardCode) throws Exception;
 }

@@ -17,6 +17,7 @@ const preButton = document.querySelector(".pre-button");
 const nextButton = document.querySelector(".next-button");
 
 // 페이징 처리를 위한 Controller에서 받아온 값
+const typeSpan = document.querySelector(".type-span");
 const pageSpan = document.querySelector(".page-span");
 
 let pageList = document.querySelectorAll(".page-list div");
@@ -31,6 +32,7 @@ let adminFlag = false;
 let userCode = 0;
 
 // 페이징 처리
+let type = typeSpan.textContent;
 let page = parseInt(pageSpan.textContent);
 let totalPage = 1;
 let totalCount = 0;
@@ -47,15 +49,15 @@ document.querySelector("header h1").onclick = () => {
 
 // 헤더 매뉴 -공지사항 -자유게시판 -QnA
 headerNavItems[0].onclick = () => {
-    location.href = "/notice";
+    location.href = "/board?type=notice&page=1";
 }
 
 headerNavItems[1].onclick = () => {
-    location.href = "/board";
+    location.href = "/board?type=free&page=1";
 }
 
 headerNavItems[2].onclick = () => {
-    location.href = "/QnA";
+    location.href = "/board?type=question&page=1";
 }
 
 userMenuBtn.onclick = () => {
@@ -230,7 +232,7 @@ function load() {
 function boardLoad() {
     $.ajax({
         type: "get",
-        url: "/api/v1/board/notice/list/all",
+        url: `/api/v1/board/${type}/list`,
         async: false,
         data: {
             page: page,
@@ -280,7 +282,7 @@ function setPage(index) {
 
     // obj.style.backgroundColor = "gray";
 
-    location.href = `/notice?page=${page}`;
+    location.href = `/board?type=${type}&page=${page}`;
     // load();
 }
 
