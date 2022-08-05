@@ -257,7 +257,7 @@ function boardLoad() {
                     <li>
                         <span class="board-code">${board.boardCode}</span>
                         <span class="board-type">${board.boardType == 1 ? "[공지사항]" : board.boardType == 2 ? "[자유게시판]" : "[QnA]"}</span>
-                        <span class="board-title">${board.boardTitle}</span>
+                        <span class="board-title" onclick="showContent(${board.boardType}, ${board.boardCode})">${board.boardTitle}</span>
                         <span class="writer-span">${board.name}</span>
                         <span class="date-span">2${board.updateDate}</span>
                     </li>
@@ -269,6 +269,10 @@ function boardLoad() {
         },
         error: errorMessage
     });
+}
+
+function showContent(boardType, boardCode) {
+    location.href = `/content?type=${boardType == 1 ? "notice" : boardType == 2 ? "free" : "question"}&number=${boardCode}`;
 }
 
 function setPage(index) {

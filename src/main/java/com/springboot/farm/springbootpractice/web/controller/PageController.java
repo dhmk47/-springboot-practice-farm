@@ -37,6 +37,12 @@ public class PageController {
 		return "/board/boardWrite";
 	}
 	
+	@GetMapping("/content")
+	public String goContent(Model model, @RequestParam String type, @RequestParam int number) {
+		model.addAttribute("type", type);
+		model.addAttribute("boardCode", number);
+		return "/board/content";
+	}
 	
 	@GetMapping("/test")
 	public String goTest() {

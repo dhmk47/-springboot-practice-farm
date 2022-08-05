@@ -1,0 +1,168 @@
+header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding-top: 70px;
+    width: 1920px;
+    height: 120px;
+
+    background-color: darkseagreen;
+}
+
+header div {
+    margin-left: 50px;
+    width: 200px;
+    height: 150px;
+}
+
+header h1 {
+    cursor: pointer;
+    padding-left: 20px;
+    font-size: 80px;
+}
+
+.header-nav-box {
+    margin-left: 400px;
+    width: 700px;
+    height: 100px;
+}
+
+.header-nav-box li {
+    font-size: 20px;
+    font-weight: 500;
+    color: black;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header span {
+    cursor: pointer;
+}
+
+.user-menu {
+    display: none;
+    margin-left: 250px;
+    height: 100px;
+}
+
+.fa-caret-down {
+    cursor: pointer;
+    padding-right: 5px;
+    font-size: 16px;
+}
+
+.user-menu > span {
+    cursor: default;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.user-dtl-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+    position: absolute;
+    top: 120px;
+    right: 110px;
+    padding-left: 20px;
+
+    height: 300px;
+    background-color: aquamarine;
+}
+
+/* main */
+
+.login-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 50px 20px 0px 0px;
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-box input {
+    height: 50px;
+}
+
+.signin-signup-button-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.signin-signup-button-box button {
+    width: 100px;
+    height: 50px;
+}
+
+article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    position: relative;
+}
+
+.user-board-menu {
+    display: flex;
+    justify-content: flex-end;
+
+    width: 700px;
+}
+
+.title-text, article textarea {
+    padding: 10px;
+    font-size: 16px;
+    outline: 0px;
+}
+
+.title-text {
+    border: 1px solid #141414;
+    width: 700px;
+    height: 50px;
+}
+
+.content-text {
+    border: 1px solid #141414;
+    width: 700px;
+    height: 600px;
+
+    resize: none;
+}
+
+.reply-box {
+    position: relative;
+}
+
+.reply-box input {
+    width: 700px;
+    height: 70px;
+}
+
+.reply-box button {
+    width: 100px;
+    height: 36px;
+
+    position: absolute;
+    right: 0px;
+    top: 80px;
+
+}
+
+section ul {
+    margin-top: 50px;
+}
+
+
+.visible {
+    display: none;
+}

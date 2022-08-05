@@ -23,3 +23,7 @@ ul li {
 input {
     padding: 15px;
 }
+
+textarea {
+    resize: none;
+}
