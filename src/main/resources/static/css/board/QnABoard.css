@@ -169,6 +169,10 @@ section ul li span {
     right: 100px;
 }
 
+.page-span {
+    display: none;
+}
+
 .write-button {
     position: absolute;
     right: 360px;

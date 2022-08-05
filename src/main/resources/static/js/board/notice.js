@@ -16,6 +16,9 @@ const pageButtonBox = document.querySelectorAll(".page-button-box");
 const preButton = document.querySelector(".pre-button");
 const nextButton = document.querySelector(".next-button");
 
+// 페이징 처리를 위한 Controller에서 받아온 값
+const pageSpan = document.querySelector(".page-span");
+
 let pageList = document.querySelectorAll(".page-list div");
 
 let signinFlag = false;
@@ -28,14 +31,14 @@ let adminFlag = false;
 let userCode = 0;
 
 // 페이징 처리
-let page = 1;
+let page = parseInt(pageSpan.textContent);
 let totalPage = 1;
 let totalCount = 0;
 
 $(userDtlMenu).fadeOut(0);
 
 load();
-setPageButton("next");
+setPageButton();
 
 // 로고 클릭시 홈페이지 이동
 document.querySelector("header h1").onclick = () => {
@@ -175,8 +178,9 @@ preButton.onclick = () => {
 
     if(index > 0) {
         page = index;
-        load();
-        setPageButton("pre");
+        setPage(page);
+        // load();
+        // setPageButton("pre");
     }
 }
 
@@ -188,7 +192,8 @@ document.querySelector(".select-page-box button").onclick = () => {
     page = parseInt(document.querySelector(".select-page-input").value);
 
     load();
-    setPageButton("setPage");
+    setPage(page);
+    // setPageButton("setPage");
 }
 
 // 다음 버튼
@@ -198,8 +203,9 @@ nextButton.onclick = () => {
 
     if(totalPage > index - 1) {
         page = index;
-        load();
-        setPageButton("next");
+        setPage(page);
+        // load();
+        // setPageButton("next");
     }
 }
 
@@ -209,6 +215,7 @@ document.querySelector(".write-button button").onclick = () => {
 
 
 function load() {
+
     if(signinFlag) {
         userMenu.style.display = "block";
         loginBox.style.visibility = "hidden";
@@ -218,18 +225,12 @@ function load() {
     }
 
     boardLoad();
-
-
-    // alert("totalCount: " + totalCount);
-    // alert("totalPage: " + totalPage);
-
-    
 }
 
 function boardLoad() {
     $.ajax({
         type: "get",
-        url: "/api/v1/board/notice/all",
+        url: "/api/v1/board/notice/list/all",
         async: false,
         data: {
             page: page,
@@ -268,53 +269,60 @@ function boardLoad() {
     });
 }
 
-function setPage(index, obj) {
-    pageList = document.querySelectorAll(".page-list div");
+function setPage(index) {
+    // pageList = document.querySelectorAll(".page-list div");
     page = index;
     
-    pageList.forEach(page => {
-        page.classList.remove("set-color");
-        page.style.backgroundColor = "";
-    });
+    // pageList.forEach(page => {
+    //     page.classList.remove("set-color");
+    //     page.style.backgroundColor = "";
+    // });
 
-    obj.style.backgroundColor = "gray";
-    load();
+    // obj.style.backgroundColor = "gray";
+
+    location.href = `/notice?page=${page}`;
+    // load();
 }
 
 function setColor(obj) {
     obj.classList.toggle("set-color");
 }
 
-function setPageButton(type) {
+function setPageButton() {
     pageButtonBox[0].innerHTML = "";
-
-    // console.log("setPageButton page: " + page);
-    // console.log("setPageButton totalPage: " + totalPage);
     
     let pageIndex = 0;
     for(let i = 0; i < totalPage; i++) {
 
-        if(type == "pre" && i < 5) {
-            pageIndex = page - 4 + i;
-        }else if(i < 5 && pageIndex + 1 < totalPage + 1) {
+        if(i < 5 && pageIndex + 1 < totalPage + 1) {
             pageIndex = page - ((page - 1) % 5) + i;
-
-        }else{
+        }else {
             break;
         }
-        console.log(pageIndex);
+
+        // if(type == "pre" && i < 5) {
+        //     pageIndex = page - 4 + i;
+        // }else if(i < 5 && pageIndex + 1 < totalPage + 1) {
+        //     pageIndex = page - ((page - 1) % 5) + i;
+
+        // }else{
+        //     break;
+        // }
+        
         pageButtonBox[0].innerHTML += `<div class="page${pageIndex}" onmouseover="setColor(this)" onmouseout="setColor(this)" onclick="setPage(${pageIndex}, this)">${pageIndex}</div>`;
     }
 
-    if(type == "pre") {
-        pageButtonBox[0].querySelectorAll("div")[4].click();
+    // if(type == "pre") {
+    //     pageButtonBox[0].querySelectorAll("div")[4].click();
 
-    }else if(type == "setPage") {
-        pageButtonBox[0].querySelectorAll("div")[page % 5 == 0 ? 4 : page % 5 - 1].click();
-    }else {
-        pageButtonBox[0].querySelectorAll("div")[0].click();
+    // }else if(type == "setPage") {
+    //     pageButtonBox[0].querySelectorAll("div")[page % 5 == 0 ? 4 : page % 5 - 1].click();
+    // }else {
+    //     pageButtonBox[0].querySelectorAll("div")[0].click();
 
-    }
+    // }
+
+    document.querySelector(`.page${page}`).style.backgroundColor = "gray";
 
     if(page < 6) {
         preButton.classList.add("set-disable");
