@@ -257,8 +257,11 @@ function boardLoad() {
                     <li>
                         <span class="board-code">${board.boardCode}</span>
                         <span class="board-type">${board.boardType == 1 ? "[공지사항]" : board.boardType == 2 ? "[자유게시판]" : "[QnA]"}</span>
-                        <span class="board-title" onclick="showContent(${board.boardType}, ${board.boardCode})">${board.boardTitle}</span>
+                        <span class="board-title" onclick="showContent(${board.boardType}, ${board.boardCode})">
+                        ${board.boardTitle} <span class="board-reply-count">${board.totalReply != 0 ? "["+board.totalReply+"]" : ""}</span>
+                        </span>
                         <span class="writer-span">${board.name}</span>
+                        <span class="views-span">${board.views}</span>
                         <span class="date-span">2${board.updateDate}</span>
                     </li>
                     `;

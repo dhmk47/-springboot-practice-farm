@@ -23,6 +23,8 @@ public class Board {
 	private int total_count;
 	private String name;
 	private int views;
+	private int total_reply;
+	private String reply;
 	private LocalDateTime create_date;
 	private LocalDateTime update_date;
 	
@@ -35,6 +37,7 @@ public class Board {
 				.boardType(board_type)
 				.name(name)
 				.views(views)
+				.reply(reply)
 				.createDate(create_date)
 				.updateDate(update_date)
 				.build();
@@ -50,6 +53,8 @@ public class Board {
 				.totalCount(total_count)
 				.name(name)
 				.views(views)
+				.totalReply(total_reply)
+				.reply(reply)
 				.createDate(create_date)
 				.updateDate(update_date)
 				.build();

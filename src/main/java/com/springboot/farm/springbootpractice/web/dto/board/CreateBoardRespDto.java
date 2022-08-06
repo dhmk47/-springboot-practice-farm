@@ -19,6 +19,7 @@ public class CreateBoardRespDto {
 	private int boardType;
 	private String name;
 	private int views;
+	private String reply;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
 }

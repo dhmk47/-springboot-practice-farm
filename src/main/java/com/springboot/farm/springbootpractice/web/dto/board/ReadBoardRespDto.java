@@ -16,6 +16,8 @@ public class ReadBoardRespDto {
 	private int totalCount;
 	private String name;
 	private int views;
+	private int totalReply;
+	private String reply;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
 }

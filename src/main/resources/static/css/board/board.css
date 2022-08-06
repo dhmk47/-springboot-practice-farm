@@ -157,16 +157,26 @@ section ul li span {
     width: 700px;
 }
 
+.board-reply-count {
+    color: red;
+}
+
 .writer-span {
     width: 100px;
     position: absolute;
     right: 230px;
 }
 
+.views-span {
+    width: 100px;
+    position: absolute;
+    right: 140px;
+}
+
 .date-span {
     width: 90px;
     position: absolute;
-    right: 100px;
+    right: 50px;
 }
 
 .type-span {

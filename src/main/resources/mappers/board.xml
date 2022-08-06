@@ -29,6 +29,10 @@
 			
 			um.name,
 			
+			COUNT(rm.reply) AS total_reply,
+			
+			bd.views,
+			
 			bm2.total_count,
 			
 			bm.create_date,
@@ -36,10 +40,14 @@
   		FROM
 			board_mst bm
 			left outer join user_mst um on (um.usercode = bm.user_code)
+			LEFT OUTER JOIN reply_mst rm ON (rm.board_code = bm.board_code)
+			left outer join board_dtl bd on (bd.board_code = bm.board_code)
 			LEFT OUTER JOIN (select
-											COUNT(*) AS total_count
+											COUNT(bm.board_code) AS total_count,
+											COUNT(rm.reply_code) AS total_reply
 										FROM
-											board_mst
+											board_mst bm
+											LEFT OUTER JOIN reply_mst rm on (rm.board_code = bm.board_code)
 										where
 											board_type = #{type}) bm2 ON (1 = 1)
   		where
@@ -54,6 +62,9 @@
 					board_type = 3
 				</otherwise>
 			</choose>
+		
+		GROUP BY
+			board_code
 		ORDER BY
 			board_code desc
 		LIMIT #{page},  #{totalCount}
