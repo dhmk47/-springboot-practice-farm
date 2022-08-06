@@ -15,6 +15,13 @@ const titleText = document.querySelector(".title-text");
 const contentText = document.querySelector(".content-text");
 const boardInfoBox = document.querySelectorAll(".board-info-box span");
 
+// 댓글
+const replyInput = document.querySelector(".reply-input");
+
+// 버튼
+const modifyAndDeleteButtons = document.querySelectorAll(".user-board-menu button");
+const replySubmitButton = document.querySelector(".reply-submit-button");
+
 
 // 페이징 처리를 위한 Controller에서 받아온 값
 const typeSpan = document.querySelector(".type-span");
@@ -25,11 +32,12 @@ let signinFlag = false;
 // 게시판 구분짓는 flag
 let adminFlag = false;
 
-let userCode = 0;
-
 // 페이징 처리
 let type = typeSpan.textContent;
 let boardCode = parseInt(boardCodeSpan.textContent);
+
+// 임시로 사용할 userCode
+let userCode = 2;
 
 $(userDtlMenu).fadeOut(0);
 
@@ -154,6 +162,25 @@ loginInputItems[1].onkeypress = () => {
     }
 }
 
+// 게시글 수정버튼
+modifyAndDeleteButtons[0].onclick = () => {
+
+}
+
+// 게시글 삭제 버튼
+modifyAndDeleteButtons[1].onclick = () => {
+
+}
+
+// 댓글 작성 버튼 -> HashMap 이용해서 board_code를 key로 잡고 댓글을 value로 잡아서
+// 계속해서 db 접근을 막을 수 있지만 현재 라이브 서버가 아니라서 서버가 재실행 될 때마다
+// HashMap의 요소들이 초기화 되어서 우선은 db 접근
+replySubmitButton.onclick = () => {
+    addReply();
+}
+
+
+
 function load() {
     let data = null;
 
@@ -179,6 +206,26 @@ function enterContent(data) {
     contentText.innerHTML = `${data.boardContent}`;
     boardInfoBox[0].innerHTML += `${data.name}`;
     boardInfoBox[1].innerHTML += `${data.views}회`;
+}
+
+function addReply() {
+    $.ajax({
+        type: "post",
+        url: "/api/v1/board/reply",
+        contentType: "application/json",
+        data: JSON.stringify({
+            boardCode: boardCode,
+            reply: replyInput.value,
+            userCode: userCode
+        }),
+        dataType: "json",
+        success: (response) => {
+            if(response.data) {
+                location.replace(`content?type=${type}&number=${boardCode}`);
+            }
+        },
+        error: errorMessage
+    });
 }
 
 function errorMessage(request, status, error) {
