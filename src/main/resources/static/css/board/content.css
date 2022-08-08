@@ -170,6 +170,29 @@ section ul {
     margin-top: 50px;
 }
 
+section ul li {
+    display: flex;
+    flex-direction: column;
+}
+
+.reply-writer-box {
+    display: flex;
+    align-items: center;
+}
+
+.writer-span {
+    margin-right: 30px;
+    font-weight: 500;
+}
+
+.reply-info-box {
+    margin-top: 10px;
+
+    height: 30px;
+
+    border-bottom: 1px solid #dbdbdb70;
+}
+
 
 .visible {
     display: none;

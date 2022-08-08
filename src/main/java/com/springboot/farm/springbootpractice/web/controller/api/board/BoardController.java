@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.farm.springbootpractice.service.BoardService;
-import com.springboot.farm.springbootpractice.service.ReplyService;
 import com.springboot.farm.springbootpractice.web.dto.CMRespDto;
 import com.springboot.farm.springbootpractice.web.dto.board.CreateBoardReqDto;
 import com.springboot.farm.springbootpractice.web.dto.board.CreateBoardRespDto;
 import com.springboot.farm.springbootpractice.web.dto.board.ReadBoardRespDto;
-import com.springboot.farm.springbootpractice.web.dto.reply.CreateReplyReqDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 public class BoardController {
 	
 	private final BoardService boardService;
-	private final ReplyService replyService;
 	
 	@PostMapping("/new")
 	public ResponseEntity<?> insertBoard(@RequestBody CreateBoardReqDto createBoardReqDto) {
@@ -40,20 +37,6 @@ public class BoardController {
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "게시글 작성 성공", createBoardRespDto));
-	}
-	
-	@PostMapping("/reply")
-	public ResponseEntity<?> insertReply(@RequestBody CreateReplyReqDto createReplyReqDto) {
-		boolean result = false;
-		
-		try {
-			result = replyService.addReply(createReplyReqDto);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "댓글 작성 실패", result));
-		}
-		
-		return ResponseEntity.ok().body(new CMRespDto<>(1, "댓글 작성 성공", result));
 	}
 	
 	@GetMapping("/{type}/list")

@@ -18,6 +18,9 @@ const boardInfoBox = document.querySelectorAll(".board-info-box span");
 // 댓글
 const replyInput = document.querySelector(".reply-input");
 
+// 댓글 리스트
+const replyUl = document.querySelector("section ul");
+
 // 버튼
 const modifyAndDeleteButtons = document.querySelectorAll(".user-board-menu button");
 const replySubmitButton = document.querySelector(".reply-submit-button");
@@ -42,6 +45,7 @@ let userCode = 2;
 $(userDtlMenu).fadeOut(0);
 
 enterContent(load());
+enterReply();
 
 // 로고 클릭시 홈페이지 이동
 document.querySelector("header h1").onclick = () => {
@@ -183,6 +187,7 @@ replySubmitButton.onclick = () => {
 
 function load() {
     let data = null;
+    replyUl.innerHTML = "";
 
     $.ajax({
         type: "get",
@@ -201,6 +206,7 @@ function load() {
     return data;
 }
 
+// 게시글 내용 set
 function enterContent(data) {
     titleText.innerHTML = `${data.boardTitle}`;
     contentText.innerHTML = `${data.boardContent}`;
@@ -208,10 +214,50 @@ function enterContent(data) {
     boardInfoBox[1].innerHTML += `${data.views}회`;
 }
 
+// 댓글 불러오기
+function getReplyList() {
+    let replyList = null;
+
+    $.ajax({
+        type: "get",
+        url: `/api/v1/content/reply/${boardCode}`,
+        dataType: "json",
+        async: false,
+        success: (response) => {
+            if(response.data.length != 0) {
+                replyList = response.data;
+            }
+        },
+        error: errorMessage
+    });
+
+    return replyList;
+}
+
+// 댓글 set
+function enterReply() {
+    let replyList = getReplyList();
+
+    for(replyObj of replyList) {
+        replyUl.innerHTML += `
+        <li>
+            <div class="reply-writer-box">
+                <span class="writer-span">${replyObj.name}</span>
+                <span>${replyObj.updateDate}</span>
+            </div>
+            <div class="reply-info-box">
+                <span>${replyObj.reply}</span>
+            </div>
+        </li>
+        `
+    }
+}
+
+// 댓글 작성
 function addReply() {
     $.ajax({
         type: "post",
-        url: "/api/v1/board/reply",
+        url: "/api/v1/content/reply",
         contentType: "application/json",
         data: JSON.stringify({
             boardCode: boardCode,

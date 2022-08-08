@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 public class ReadReplyRespDto {
 	private int boardCode;
 	private String reply;
-	private int userCode;
+	private String name;
+	private String roles;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
 	
