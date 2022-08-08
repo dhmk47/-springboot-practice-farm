@@ -17,7 +17,7 @@
 		)
 	</insert>
 	
-	<select id="getReplyListByBoardCode" parameterType="Integer" resultType="com.springboot.farm.springbootpractice.domain.entity.Reply">
+	<select id="getReplyListByBoardCode" parameterType="HashMap" resultType="com.springboot.farm.springbootpractice.domain.entity.Reply">
 		SELECT
 			rm.reply_code,
 			rm.reply,
@@ -25,12 +25,20 @@
 			rm.update_date,
 			
 			um.name,
-			um.roles
+			um.roles,
 			
+			rm2.total_reply_count
 		FROM
 			reply_mst rm
 			left outer join user_mst um ON (um.usercode = rm.user_code)
+			LEFT OUTER JOIN (SELECT
+										COUNT(*) AS total_reply_count
+									FROM
+										reply_mst
+									where
+										board_code = #{board_code}) rm2 ON (1 = 1)
 		WHERE
 			board_code = #{board_code}
+		limit #{page}, #{index}
 	</select>
 </mapper>

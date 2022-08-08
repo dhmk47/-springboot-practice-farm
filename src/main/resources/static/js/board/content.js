@@ -21,6 +21,12 @@ const replyInput = document.querySelector(".reply-input");
 // 댓글 리스트
 const replyUl = document.querySelector("section ul");
 
+// 댓글 리스트 더 불러오기 위한 변수
+const showMoreReplyBox = document.querySelector(".show-more-reply-box");
+let page = 1;
+let index = 8;
+let totalIndex = 0;
+
 // 버튼
 const modifyAndDeleteButtons = document.querySelectorAll(".user-board-menu button");
 const replySubmitButton = document.querySelector(".reply-submit-button");
@@ -34,6 +40,8 @@ let signinFlag = false;
 
 // 게시판 구분짓는 flag
 let adminFlag = false;
+
+let userMenuFlag = false;
 
 // 페이징 처리
 let type = typeSpan.textContent;
@@ -190,7 +198,16 @@ replySubmitButton.onclick = () => {
     addReply();
 }
 
+// 댓글 더보기 클릭
+showMoreReplyBox.onclick = () => {
+    if(page < totalIndex) {
+        page++;
+        enterReply();
 
+    }else {
+        return;
+    }
+}
 
 function load() {
     let data = null;
@@ -228,12 +245,16 @@ function getReplyList() {
 
     $.ajax({
         type: "get",
-        url: `/api/v1/content/reply/${boardCode}`,
+        url: `/api/v1/content/reply/${boardCode}?page=${page}&index=${index}`,
         dataType: "json",
         async: false,
         success: (response) => {
             if(response.data.length != 0) {
                 replyList = response.data;
+
+                let totalCount = response.data[0].totalReplyCount;
+
+                totalIndex = totalCount % 8 == 0 ? totalCount / 8 : Math.floor(totalCount / 8) + 1;
             }
         },
         error: errorMessage
@@ -246,19 +267,43 @@ function getReplyList() {
 function enterReply() {
     let replyList = getReplyList();
 
-    for(replyObj of replyList) {
-        replyUl.innerHTML += `
-        <li>
-            <div class="reply-writer-box">
-                <span class="writer-span">${replyObj.name}</span>
-                <span>${replyObj.time}</span>
-            </div>
-            <div class="reply-info-box">
-                <span>${replyObj.reply}</span>
-            </div>
-        </li>
-        `
+    if(replyList != null) {
+        for(replyObj of replyList) {
+            replyUl.innerHTML += `
+            <li>
+                <div class="reply-writer-box">
+                    <span class="writer-span">${replyObj.name}</span>
+                    <span>${replyObj.time}</span>
+                </div>
+                <div class="reply-info-box">
+                    <span>${replyObj.reply}</span>
+                </div>
+            </li>
+            `
+        }
+    
+        setTotalIndex(totalIndex);
+        toggleVisible();
     }
+
+    
+}
+
+// 현재페이지가 종합페이지보다 작은지 확인
+function checkPage() {
+    return page < totalIndex;
+}
+
+function toggleVisible() {
+    if(checkPage()) {
+        showMoreReplyBox.classList.remove("visible");
+    }else {
+        showMoreReplyBox.classList.add("visible");
+    }
+}
+
+function setTotalIndex(data) {
+    totalIndex = data;
 }
 
 // 댓글 작성

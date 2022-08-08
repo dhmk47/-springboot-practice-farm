@@ -19,6 +19,7 @@ public class Reply {
 	private String name;
 	private String roles;
 	private int user_code;
+	private int total_reply_count;
 	private LocalDateTime create_date;
 	private LocalDateTime update_date;
 	
@@ -28,6 +29,7 @@ public class Reply {
 				.reply(reply)
 				.name(name)
 				.roles(roles)
+				.totalReplyCount(total_reply_count)
 				.createDate(create_date)
 				.updateDate(update_date)
 				.build();

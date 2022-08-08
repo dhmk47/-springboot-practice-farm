@@ -3,7 +3,9 @@ package com.springboot.farm.springbootpractice.service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -26,10 +28,15 @@ public class ReplyServiceImpl implements ReplyService{
 	}
 
 	@Override
-	public List<ReadReplyRespDto> getContentReplyListByBoardCode(int boardCode) throws Exception {
+	public List<ReadReplyRespDto> getContentReplyListByBoardCode(int boardCode, int page, int index) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
 		List<ReadReplyRespDto> list = null;
 		
-		list = replyRepository.getReplyListByBoardCode(boardCode)
+		map.put("board_code", boardCode);
+		map.put("page", (page -1) * index);
+		map.put("index", index);
+		
+		list = replyRepository.getReplyListByBoardCode(map)
 				.stream()
 				.map(entity -> entity.toDto())
 				.collect(Collectors.toCollection(ArrayList::new));

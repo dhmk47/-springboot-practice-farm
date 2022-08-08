@@ -41,11 +41,11 @@ public class ReplyController {
 	}
 	
 	@GetMapping("/reply/{boardCode}")
-	public ResponseEntity<?> getContentReply(@PathVariable int boardCode) {
+	public ResponseEntity<?> getContentReply(@PathVariable int boardCode, int page, int index) {
 		List<ReadReplyRespDto> replyList = null;
 		
 		try {
-			replyList = replyService.getContentReplyListByBoardCode(boardCode);
+			replyList = replyService.getContentReplyListByBoardCode(boardCode, page, index);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

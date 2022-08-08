@@ -196,6 +196,24 @@ section ul li {
     border-bottom: 1px solid #dbdbdb70;
 }
 
+.show-more-reply-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 700px;
+    height: 50px;
+
+    background-color: navy;
+
+    cursor: pointer;
+}
+
+.show-more-reply-box span {
+    font-weight: 500;
+    font-size: 16px;
+    color: white;
+}
 
 .visible {
     display: none;

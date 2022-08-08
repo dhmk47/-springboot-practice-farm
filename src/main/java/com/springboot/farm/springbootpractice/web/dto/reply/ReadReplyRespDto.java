@@ -17,6 +17,7 @@ public class ReadReplyRespDto {
 	private String name;
 	private String roles;
 	private Object time;
+	private int totalReplyCount;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
 	

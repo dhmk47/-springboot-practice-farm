@@ -18,6 +18,11 @@ public class PageController {
 		return "signup";
 	}
 	
+	@GetMapping("/signin")
+	public String goSigninPage() {
+		return "signin";
+	}
+	
 	@GetMapping("/product/management")
 	public String goAddProductPage() {
 		return "managementProduct";
