@@ -1,5 +1,7 @@
 package com.springboot.farm.springbootpractice.web.controller.api.reply;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -44,6 +46,7 @@ public class ReplyController {
 		
 		try {
 			replyList = replyService.getContentReplyListByBoardCode(boardCode);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "댓글 리스트 불러오기 실패", replyList));

@@ -243,7 +243,7 @@ function enterReply() {
         <li>
             <div class="reply-writer-box">
                 <span class="writer-span">${replyObj.name}</span>
-                <span>${replyObj.updateDate}</span>
+                <span>${replyObj.time}</span>
             </div>
             <div class="reply-info-box">
                 <span>${replyObj.reply}</span>

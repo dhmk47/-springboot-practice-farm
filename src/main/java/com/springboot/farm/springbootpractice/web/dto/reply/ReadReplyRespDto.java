@@ -16,6 +16,7 @@ public class ReadReplyRespDto {
 	private String reply;
 	private String name;
 	private String roles;
+	private Object time;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
 	
