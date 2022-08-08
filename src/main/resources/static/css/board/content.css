@@ -173,6 +173,9 @@ section ul {
 section ul li {
     display: flex;
     flex-direction: column;
+
+    color: black;
+    cursor: default;
 }
 
 .reply-writer-box {

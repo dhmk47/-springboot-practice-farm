@@ -130,6 +130,9 @@ section ul li {
     position: relative;
 
     height: 40px;
+    
+    color: black;
+    cursor: default;
 }
 
 section ul li:not(:last-of-type) {
@@ -154,11 +157,15 @@ section ul li span {
 }
 
 .board-title {
-    width: 700px;
+    margin-right: 0px;
+    cursor: pointer;
 }
 
 .board-reply-count {
+    padding-left: 0px;
+    margin-left: 15px;
     color: red;
+    cursor: pointer;
 }
 
 .writer-span {

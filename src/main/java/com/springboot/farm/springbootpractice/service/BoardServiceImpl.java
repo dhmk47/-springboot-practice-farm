@@ -1,5 +1,7 @@
 package com.springboot.farm.springbootpractice.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +48,13 @@ public class BoardServiceImpl implements BoardService{
 		
 		board = boardRepository.getBoardByBoardCode(boardCode, boardType);
 		
-		return board == null ? null : board.toReadBoardRespDto();
+		ReadBoardRespDto readBoardRespDto = board == null ? null : board.toReadBoardRespDto();
+
+		if(readBoardRespDto != null) {
+			readBoardRespDto.setTime(readBoardRespDto.getUpdateDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd___HH:mm:ss")));
+		}
+		
+		return readBoardRespDto;
 	}
 	
 	@Override
@@ -62,6 +70,28 @@ public class BoardServiceImpl implements BoardService{
 				.stream()
 				.map(entity -> entity.toReadBoardRespDto())
 				.collect(Collectors.toCollection(ArrayList::new));
+		
+		boardList.forEach(board -> {
+			LocalDateTime now = LocalDateTime.now();
+			
+			String localDateTime = board.getUpdateDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			int yearResult = now.getYear() - board.getUpdateDate().getYear();
+			int dayResult = now.getDayOfYear() - board.getUpdateDate().getDayOfYear();
+			
+			Object result = null;
+			
+			if(dayResult == 0) {
+				result = localDateTime.substring(11);
+			}else {
+				if(yearResult == 0) {
+					result = localDateTime.substring(5);
+				}else {
+					result = localDateTime;
+				}
+			}
+			
+			board.setTime(result);
+		});
 		
 		return boardList;
 	}

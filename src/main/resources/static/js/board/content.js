@@ -176,6 +176,13 @@ modifyAndDeleteButtons[1].onclick = () => {
 
 }
 
+// input focus 중 Enter 입력시 댓글 추가
+replyInput.onkeypress = () => {
+    if(window.event.keyCode == 13) {
+        replySubmitButton.click();
+    }
+}
+
 // 댓글 작성 버튼 -> HashMap 이용해서 board_code를 key로 잡고 댓글을 value로 잡아서
 // 계속해서 db 접근을 막을 수 있지만 현재 라이브 서버가 아니라서 서버가 재실행 될 때마다
 // HashMap의 요소들이 초기화 되어서 우선은 db 접근
@@ -212,6 +219,7 @@ function enterContent(data) {
     contentText.innerHTML = `${data.boardContent}`;
     boardInfoBox[0].innerHTML += `${data.name}`;
     boardInfoBox[1].innerHTML += `${data.views}회`;
+    boardInfoBox[2].innerHTML += `${data.time}`;
 }
 
 // 댓글 불러오기

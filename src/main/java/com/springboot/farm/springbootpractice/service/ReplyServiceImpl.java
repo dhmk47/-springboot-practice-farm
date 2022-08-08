@@ -47,7 +47,7 @@ public class ReplyServiceImpl implements ReplyService{
 			
 			Object result = null;
 			
-			if(yearResult != 0 || dayResult > 6 && dayResult > -358 && (dayResult != 7 || hourResult > -1)) {
+			if((yearResult != 0 || dayResult > 6) && dayResult > -358 && (dayResult != 7 || hourResult > -1)) {
 //				System.out.println(localDateTime);
 				
 				result = localDateTime;
