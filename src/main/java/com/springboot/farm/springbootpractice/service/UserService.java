@@ -1,14 +1,11 @@
 package com.springboot.farm.springbootpractice.service;
 
 import com.springboot.farm.springbootpractice.domain.entity.User;
-import com.springboot.farm.springbootpractice.web.dto.user.CreateUserReqDto;
-import com.springboot.farm.springbootpractice.web.dto.user.CreateUserRespDto;
-import com.springboot.farm.springbootpractice.web.dto.user.ReadUserRespDto;
+import com.springboot.farm.springbootpractice.web.dto.auth.CheckUsernameReqDto;
+import com.springboot.farm.springbootpractice.web.dto.auth.CreateUserReqDto;
 
 public interface UserService {
-	public CreateUserRespDto signupUser(CreateUserReqDto createUserReqDto) throws Exception;
-	public User getUser(String username) throws Exception;
-	public ReadUserRespDto readUserByUsername(String username) throws Exception;
+	public User getUser(CheckUsernameReqDto checkUsernameReqDto) throws Exception;
 	public boolean modifyUser(CreateUserReqDto createUserReqDto) throws Exception;
 	public boolean updateUserMoney(int money, int userCode, String type) throws Exception;
 	public boolean removeUser(CreateUserReqDto createUserReqDto) throws Exception;

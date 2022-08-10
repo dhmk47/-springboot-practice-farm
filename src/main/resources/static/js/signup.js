@@ -46,10 +46,11 @@ buttons[0].onclick = () => {
 
     $.ajax({
         type: "get",
-        url: `api/v1/user/check/${username}`,
+        url: `api/v1/auth/user/signup/validation/username`,
+        data: {"username": username},
         dataType: "json",
         success: (response) => {
-            if(response.data != null){
+            if(!response.data){
                 alert("이미 중복된 아이디입니다.")
                 usernameFlag = false;
             }else {
@@ -57,7 +58,14 @@ buttons[0].onclick = () => {
                 usernameFlag = true;
             }
         },
-        error: errorMessage
+        error: (error) => {
+            if(error.status == 400) {
+                alert(JSON.stringify(error.responseJSON.data));
+            }else {
+                console.log("요청실패");
+                console.log(error);
+            }
+        }
     })
 }
 
@@ -79,7 +87,7 @@ buttons[1].onclick = () => {
     if(checkUsername() && checkPassword() && passwordValueCheck() && checkEmail() && usernameFlag){
         $.ajax({
             type: "post",
-            url: "api/v1/user/signup",
+            url: "api/v1/auth/user/signup",
             contentType: "application/json",
             data: JSON.stringify({
                 name: inputItems[0].value,
@@ -92,7 +100,14 @@ buttons[1].onclick = () => {
                 alert("회원가입 성공");
                 location.replace("/index");
             },
-            error: errorMessage
+            error: (error) => {
+                if(error.status == 400) {
+                    alert(JSON.stringify(error.responseJSON.data));
+                }else {
+                    console.log("요청실패");
+                    console.log(error);
+                }
+            }
         });
     }else {
         if(!usernameFlag) {

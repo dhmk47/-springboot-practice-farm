@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.farm.springbootpractice.service.UserService;
 import com.springboot.farm.springbootpractice.util.Util;
 import com.springboot.farm.springbootpractice.web.dto.CMRespDto;
-import com.springboot.farm.springbootpractice.web.dto.user.CreateUserReqDto;
+import com.springboot.farm.springbootpractice.web.dto.auth.CreateUserReqDto;
 import com.springboot.farm.springbootpractice.web.dto.user.CreateUserRespDto;
 import com.springboot.farm.springbootpractice.web.dto.user.ReadUserRespDto;
 
@@ -27,53 +27,24 @@ public class UserController {
 	
 	private final UserService userService;
 	
-	@PostMapping("/signup")
-	public ResponseEntity<?> signupUser(@RequestBody CreateUserReqDto createUserReqDto) {
-		CreateUserRespDto createUserRespDto = null;
-		
-		try {
-			createUserRespDto = userService.signupUser(createUserReqDto);
-			/*Util.addProductFlag.put(createUserRespDto.getUsercode(), true);*/
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.ok().body(new CMRespDto<>(-1, "회원가입 실패", createUserRespDto));
-		}
-		
-		return ResponseEntity.ok().body(new CMRespDto<>(1, "회원가입 성공", createUserRespDto));
-	}
-	
-	@GetMapping("/check/{username}")
-	public ResponseEntity<?> checkUser(@PathVariable String username){
-		ReadUserRespDto readUserRespDto = null;
-		
-		try {
-			readUserRespDto = userService.readUserByUsername(username);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.ok().body(new CMRespDto<>(-1, "유저불러오기 실패", readUserRespDto));
-		}
-		
-		return ResponseEntity.ok().body(new CMRespDto<>(1, "유저불러오기 성공", readUserRespDto));
-	}
-	
-	@PostMapping("/signin")
-	public ResponseEntity<?> signinUser(@RequestBody Map<String, String> loginMap){
-		ReadUserRespDto readUserRespDto = null;
-		System.out.println(loginMap);
-		try {
-			readUserRespDto = userService.readUserByUsername(loginMap.get("username"));
-			if(readUserRespDto != null) {
-				if(readUserRespDto.getPassword().equals(loginMap.get("password"))) {
-					return ResponseEntity.ok().body(new CMRespDto<>(1, "로그인 요청 성공", readUserRespDto));
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.ok().body(new CMRespDto<>(-1, "로그인 요청 실패", readUserRespDto));
-		}
-		
-		return ResponseEntity.ok().body(new CMRespDto<>(1, "로그인 요청 성공", null));
-	}
+//	@PostMapping("/signin")
+//	public ResponseEntity<?> signinUser(@RequestBody Map<String, String> loginMap){
+//		ReadUserRespDto readUserRespDto = null;
+//		System.out.println(loginMap);
+//		try {
+//			readUserRespDto = userService.readUserByUsername(loginMap.get("username"));
+//			if(readUserRespDto != null) {
+//				if(readUserRespDto.getPassword().equals(loginMap.get("password"))) {
+//					return ResponseEntity.ok().body(new CMRespDto<>(1, "로그인 요청 성공", readUserRespDto));
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return ResponseEntity.ok().body(new CMRespDto<>(-1, "로그인 요청 실패", readUserRespDto));
+//		}
+//		
+//		return ResponseEntity.ok().body(new CMRespDto<>(1, "로그인 요청 성공", null));
+//	}
 	
 	@PutMapping("/money/{userCode}")
 	public ResponseEntity<?> updateUserMoney(@PathVariable int userCode, @RequestBody Map<String, Integer> map) {

@@ -245,7 +245,7 @@ function setUserInfo(obj) {
 function loadUser() {
     $.ajax({
         type: "get",
-        url: "/api/v1/user/auth/check",
+        url: "/api/v1/auth/user/principal/load",
         async: false,
         dataType: "json",
         success: (response) => {
