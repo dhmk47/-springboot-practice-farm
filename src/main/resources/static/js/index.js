@@ -3,8 +3,12 @@ const headerNavItems = document.querySelectorAll(".header-nav-box li");
 const userMenu = document.querySelector(".user-menu");
 const usernameBox = document.querySelector(".username-box");
 const userMenuBtn = document.querySelector(".fa-caret-down");
+
 const productDtlMenu = document.querySelector(".farm-product-dtl-menu");
+
 const boardDtlMenu = document.querySelector(".board-dtl-menu");
+const boardDtlMenuSpan = document.querySelectorAll(".board-dtl-menu span")
+
 const userDtlMenu = document.querySelector(".user-dtl-menu");
 const userDtlMenuItems = document.querySelectorAll(".user-dtl-menu span");
 
@@ -231,6 +235,19 @@ productAdminmenu[1].onclick = () => {
         customButtons[0].click();
     }
 }
+
+boardDtlMenuSpan[0].onclick = () => {
+    location.href = `/board?type=notice&page=1`
+}
+
+boardDtlMenuSpan[1].onclick = () => {
+    location.href = `/board?type=free&page=1`
+}
+
+boardDtlMenuSpan[2].onclick = () => {
+    location.href = `/board?type=QnA&page=1`
+}
+
 
 customButtons[0].onclick = () => {
     $(dtlProductMenu).fadeOut(0);
@@ -768,7 +785,8 @@ function checkProduct(productName) {
                 obj = null;
                 alert("else문");
             }
-        }
+        },
+        error: errorMessage
     });
 }
 

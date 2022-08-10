@@ -4,6 +4,7 @@ const userMenu = document.querySelector(".user-menu");
 const userMenuBtn = document.querySelector(".fa-caret-down");
 const userDtlMenu = document.querySelector(".user-dtl-menu");
 const userDtlMenuItems = document.querySelectorAll(".user-dtl-menu span");
+const usernameBox = document.querySelector(".username-box");
 
 //main
 const loginBox = document.querySelector(".login-box");
@@ -22,14 +23,19 @@ const pageSpan = document.querySelector(".page-span");
 
 let pageList = document.querySelectorAll(".page-list div");
 
-let signinFlag = false;
 
 // 게시판 구분짓는 flag
 let userMenuFlag = false;
 
+// 유저 정보
+let userCode = 0;
+let name = null;
+let userFlag = false;
+let managerflag = false;
 let adminFlag = false;
 
-let userCode = 0;
+
+let signinFlag = false;
 
 // 페이징 처리
 let type = typeSpan.textContent;
@@ -41,6 +47,7 @@ $(userDtlMenu).fadeOut(0);
 
 load();
 setPageButton();
+
 
 // 로고 클릭시 홈페이지 이동
 document.querySelector("header h1").onclick = () => {
@@ -113,41 +120,43 @@ userDtlMenuItems[2].onclick = () => {
     
 }
 
+
+
 loginBoxButtons[0].onclick = () => {
     for(let i = 0; i < loginInputItems.length; i++){
         if(isEmpty(loginInputItems[i].value)){
             alert((i == 0 ? "아이디를"
             : "비밀번호를") + " 입력해 주세요.");
-            return;
+            return false;
         }
     }
 
-    $.ajax({
-        type: "post",
-        url: "/api/v1/user/signin",
-        contentType: "application/json",
-        data: JSON.stringify({
-            "username": loginInputItems[0].value,
-            "password": loginInputItems[1].value
-        }),
-        dataType: "json",
-        success: (response) => {
-            if(response.data != null) {
-                alert("로그인 성공");
-                signinFlag = true;
-                if(response.data.roles.includes("ADMIN")){
-                    adminFlag = true;
-                }else {
-                    userCode = response.data.userCode;
-                }
-                // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
-                load();
-            }else {
-                alert("회원정보가 옳바르지 않습니다.");
-            }
-        },
-        error: errorMessage
-    });
+    // $.ajax({
+    //     type: "post",
+    //     url: "/api/v1/user/signin",
+    //     contentType: "application/json",
+    //     data: JSON.stringify({
+    //         "username": loginInputItems[0].value,
+    //         "password": loginInputItems[1].value
+    //     }),
+    //     dataType: "json",
+    //     success: (response) => {
+    //         if(response.data != null) {
+    //             alert("로그인 성공");
+    //             signinFlag = true;
+    //             if(response.data.roles.includes("ADMIN")){
+    //                 adminFlag = true;
+    //             }else {
+    //                 userCode = response.data.userCode;
+    //             }
+    //             // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
+    //             load();
+    //         }else {
+    //             alert("회원정보가 옳바르지 않습니다.");
+    //         }
+    //     },
+    //     error: errorMessage
+    // });
 }
 
 loginBoxButtons[1].onclick = () => {
@@ -212,11 +221,44 @@ nextButton.onclick = () => {
 }
 
 document.querySelector(".write-button button").onclick = () => {
-    location.href = "/notice/write";
+    location.href = `/${type}/write`;
+}
+
+function setUserInfo(obj) {
+    if(obj != null) {
+        if(obj.roles.includes("USER")) {
+            userFlag = true;
+        }else if(obj.roles.includes("MANAGER")) {
+            managerFlag = true;
+        }else {
+            adminFlag = true;
+        }
+
+        userCode = obj.usercode;
+        name = obj.name;
+        signinFlag = true;
+
+        usernameBox.innerHTML = `${name}님 환영합니다.`
+    }
+}
+
+function loadUser() {
+    $.ajax({
+        type: "get",
+        url: "/api/v1/user/auth/check",
+        async: false,
+        dataType: "json",
+        success: (response) => {
+            setUserInfo(response.data);
+        },
+        error: errorMessage
+    });
 }
 
 
 function load() {
+
+    loadUser();
 
     if(signinFlag) {
         userMenu.style.display = "block";

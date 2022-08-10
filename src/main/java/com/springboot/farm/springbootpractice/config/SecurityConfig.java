@@ -30,6 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/v1/product/auth/**")
 			.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
 			
+			.antMatchers("/notice/write")
+			.access("hasRole('ROLE_ADMIN')")
+			
 //			.antMatchers("/", "/index")
 //			.authenticated()
 			.anyRequest()

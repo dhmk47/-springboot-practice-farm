@@ -109,6 +109,8 @@ article {
     justify-content: center;
 
     margin-top: 100px;
+
+    position: relative;
 }
 
 section {
@@ -197,7 +199,9 @@ section ul li span {
 .write-button {
     position: absolute;
     right: 360px;
-    bottom: 40px;
+    bottom: -40px;
+
+    cursor: pointer;
 }
 
 .page-button-main-box {

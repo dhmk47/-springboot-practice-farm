@@ -25,15 +25,15 @@ document.querySelector("header h1").onclick = () => {
 
 // 헤더 매뉴 -공지사항 -자유게시판 -QnA
 headerNavItems[0].onclick = () => {
-    location.href = "/notice";
+    location.href = "/board?type=notice&page=1";
 }
 
 headerNavItems[1].onclick = () => {
-    location.href = "/board";
+    location.href = "/board?type=free&page=1";
 }
 
 headerNavItems[2].onclick = () => {
-    location.href = "/QnA";
+    location.href = "/board?type=question&page=1";
 }
 
 userMenuBtn.onclick = () => {

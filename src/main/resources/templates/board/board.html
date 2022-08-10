@@ -25,7 +25,9 @@
             </nav>
             <div class="user-menu">
                 <i class="fa-solid fa-caret-down"></i>
-                <span>~~~님 환영합니다.</span>
+                <span class="username-box">
+                    
+                </span>
                 <div class="user-dtl-menu">
                     <span>내 정보 보기</span>
                     <span>로그아웃</span>
@@ -34,20 +36,20 @@
             </div>
         </header>
         <main>
-            <div class="login-box">
+            <form method="post" action="/auth/signin" class="login-box">
                 <div class="input-box">
                     <div>
-                        <input type="text" placeholder="아이디">
+                        <input type="text" name="username" placeholder="아이디">
                     </div>
                     <div>
-                        <input type="password" placeholder="비밀번호">
+                        <input type="password" name="password" placeholder="비밀번호">
                     </div>
                 </div>
                 <div class="signin-signup-button-box">
-                    <button type="button">로그인</button>
+                    <button type="submit">로그인</button>
                     <button type="button">회원가입</button>
                 </div>
-            </div>
+            </form>
             <article>
                 <section>
                     <ul class="board-header-list">

@@ -3,6 +3,7 @@ package com.springboot.farm.springbootpractice.web.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -37,8 +38,8 @@ public class PageController {
 		return "/board/board";
 	}
 	
-	@GetMapping("/board/write")
-	public String goNoticeWrite() {
+	@GetMapping("/{type}/write")
+	public String goNoticeWrite(@PathVariable String type) {
 		return "/board/boardWrite";
 	}
 	
