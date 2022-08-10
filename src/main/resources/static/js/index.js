@@ -1,6 +1,7 @@
 // header
 const headerNavItems = document.querySelectorAll(".header-nav-box li");
 const userMenu = document.querySelector(".user-menu");
+const usernameBox = document.querySelector(".username-box");
 const userMenuBtn = document.querySelector(".fa-caret-down");
 const productDtlMenu = document.querySelector(".farm-product-dtl-menu");
 const boardDtlMenu = document.querySelector(".board-dtl-menu");
@@ -28,7 +29,6 @@ let userMenuFlag = false;
 let productMenuFlag = false;
 let boardMenuFlag = false;
 
-let adminFlag = false;
 
 // 구매하기인지 판매하기인지 구분짓는 flag
 
@@ -39,9 +39,14 @@ let purchaseFlag = false;
 
 // 유저정보를 담을 임시 변수
 let userCode = 0;
+let name = null;
 let money = 0;
 let amount = 0;
 let purchasePrice = 0;
+
+let userFlag = false;
+let managerFlag = false;
+let adminFlag = false;
 
 // 구매, 판매 박스
 const productInputItems = document.querySelectorAll(".purchase-box input");
@@ -178,7 +183,7 @@ headerNavItems[2].onclick = () => {
     if(signinFlag) {
 
     }else {
-        alert("먼저 로그인을 진행해 주세요.")
+        alert("미완성");
     }
 }
 
@@ -218,10 +223,10 @@ productAdminmenu[1].onclick = () => {
     if(adminFlag) { // 관리자일 경우 새로운 getMapping 요청
         location.href = "/product/management";
     }else {
-        if(!signinFlag) {
-            alert("로그인을 먼저 진행해 주세요.");
-            return;
-        }
+        // if(!signinFlag) {
+        //     alert("로그인을 먼저 진행해 주세요.");
+        //     return;
+        // }
         toggleDtlBox();
         customButtons[0].click();
     }
@@ -266,7 +271,8 @@ userDtlMenuItems[1].onclick = () => {
     alert("로그아웃");
     signinFlag = false;
     adminFlag = false;
-    location.replace("/index");
+    // location.replace("/index");
+    location.replace("/logout");
 }
 
 // 회원탈퇴
@@ -309,7 +315,7 @@ document.querySelector(".purchase-box button").onclick = () => {
         
         $.ajax({
             type: "get",
-            url: `/api/v1/product/${productNameInput.value}`,
+            url: `/api/v1/product/auth/${productNameInput.value}`,
             dataType: "json",
             success: (response) => {
                 if(response.data.length != 0) {
@@ -476,44 +482,44 @@ document.querySelector(".show-product-button").onclick = () => {
     }
 }
 
-loginBoxButtons[0].onclick = () => {
-    for(let i = 0; i < loginInputItems.length; i++){
-        if(isEmpty(loginInputItems[i].value)){
-            alert((i == 0 ? "아이디를"
-            : "비밀번호를") + " 입력해 주세요.");
-            return;
-        }
-    }
+// loginBoxButtons[0].onclick = () => {
+//     for(let i = 0; i < loginInputItems.length; i++){
+//         if(isEmpty(loginInputItems[i].value)){
+//             alert((i == 0 ? "아이디를"
+//             : "비밀번호를") + " 입력해 주세요.");
+//             return;
+//         }
+//     }
 
-    $.ajax({
-        type: "post",
-        url: "/api/v1/user/signin",
-        contentType: "application/json",
-        data: JSON.stringify({
-            "username": loginInputItems[0].value,
-            "password": loginInputItems[1].value
-        }),
-        dataType: "json",
-        success: (response) => {
-            if(response.data != null) {
-                alert("로그인 성공");
-                signinFlag = true;
-                if(response.data.roles.includes("ADMIN")){
-                    adminFlag = true;
-                }else {
-                    userCode = response.data.userCode;
-                    money = response.data.money;
-                    showMoneyBox.innerHTML = `보유금액: ${money}원`;
-                }
-                // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
-                load();
-            }else {
-                alert("회원정보가 옳바르지 않습니다.");
-            }
-        },
-        error: errorMessage
-    });
-}
+//     $.ajax({
+//         type: "post",
+//         url: "/api/v1/user/signin",
+//         contentType: "application/json",
+//         data: JSON.stringify({
+//             "username": loginInputItems[0].value,
+//             "password": loginInputItems[1].value
+//         }),
+//         dataType: "json",
+//         success: (response) => {
+//             if(response.data != null) {
+//                 alert("로그인 성공");
+//                 signinFlag = true;
+//                 if(response.data.roles.includes("ADMIN")){
+//                     adminFlag = true;
+//                 }else {
+//                     userCode = response.data.userCode;
+//                     money = response.data.money;
+//                     showMoneyBox.innerHTML = `보유금액: ${money}원`;
+//                 }
+//                 // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
+//                 load();
+//             }else {
+//                 alert("회원정보가 옳바르지 않습니다.");
+//             }
+//         },
+//         error: errorMessage
+//     });
+// }
 
 loginBoxButtons[1].onclick = () => {
     location.href = "/signup";
@@ -542,7 +548,42 @@ loginInputItems[1].onkeypress = () => {
     }
 }
 
+function setUserInfo(obj) {
+    if(obj != null) {
+        if(obj.roles.includes("USER")) {
+            userFlag = true;
+        }else if(obj.roles.includes("MANAGER")) {
+            managerFlag = true;
+        }else {
+            adminFlag = true;
+        }
+
+        userCode = obj.usercode;
+        name = obj.name;
+        money = obj.money;
+        signinFlag = true;
+
+        usernameBox.innerHTML = `${name}님 환영합니다.`
+    }
+}
+
+function loadUser() {
+    $.ajax({
+        type: "get",
+        url: "/api/v1/user/auth/check",
+        async: false,
+        dataType: "json",
+        success: (response) => {
+            setUserInfo(response.data);
+        },
+        error: errorMessage
+    });
+}
+
 function load(){
+
+    loadUser();
+
     if(signinFlag) {
         userMenu.style.display = "block";
         loginBox.style.visibility = "hidden";
@@ -571,8 +612,6 @@ function load(){
                         : `<span class="show-reward-info-span">${obj.productName} ${obj.amount}개가 삭제되었습니다.<br>개당 구매한 금액: ${obj.purchasePrice}원<br>보상 금액: ${obj.amount * obj.purchasePrice}</span>`;
                      }
     
-                }else {
-                    alert("삭제된 농산물이 없습니다.");
                 }
             },
             error: errorMessage
@@ -703,15 +742,16 @@ function updateUserMoney(money, userCode) {
 function checkProduct(productName) {
 
     let flag = false;
+    alert("들어옴");
 
     $.ajax({
         type: "get",
-        url: `/api/v1/product/${productName}`,
+        url: `/api/v1/product/auth/${productName}`,
         async: false,
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
-                
+                alert("if문");
                 obj = null;
                 
                 obj = {
@@ -726,6 +766,7 @@ function checkProduct(productName) {
                 };
             }else {
                 obj = null;
+                alert("else문");
             }
         }
     });

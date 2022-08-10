@@ -59,6 +59,7 @@ public class UserController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> signinUser(@RequestBody Map<String, String> loginMap){
 		ReadUserRespDto readUserRespDto = null;
+		System.out.println(loginMap);
 		try {
 			readUserRespDto = userService.readUserByUsername(loginMap.get("username"));
 			if(readUserRespDto != null) {

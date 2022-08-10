@@ -3,6 +3,7 @@ package com.springboot.farm.springbootpractice.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.springboot.farm.springbootpractice.domain.entity.User;
@@ -18,9 +19,11 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService{
 	
 	private final UserRepository userRepository;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
 	public CreateUserRespDto signupUser(CreateUserReqDto createUserReqDto) throws Exception{
+		createUserReqDto.setPassword(bCryptPasswordEncoder.encode(createUserReqDto.getPassword()));
 		User user = createUserReqDto.toEntity();
 		int result = userRepository.insertUser(user);
 		return user.toCreateUserDto();

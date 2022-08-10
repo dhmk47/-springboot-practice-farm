@@ -1,6 +1,8 @@
 package com.springboot.farm.springbootpractice.domain.entity;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import com.springboot.farm.springbootpractice.web.dto.user.CreateUserRespDto;
 import com.springboot.farm.springbootpractice.web.dto.user.ReadUserRespDto;
@@ -51,5 +53,9 @@ public class User {
 				.create_date(create_date)
 				.update_date(update_date)
 				.build();
+	}
+	
+	public List<String> getRolesToList() {
+		return Arrays.asList(roles.replaceAll(" ", "").split(","));
 	}
 }

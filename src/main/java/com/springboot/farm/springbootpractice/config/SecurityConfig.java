@@ -24,14 +24,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 		
 		http.authorizeRequests()
+			.antMatchers("/product/management")
+			.access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+			
+			.antMatchers("/api/v1/product/auth/**")
+			.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+			
 //			.antMatchers("/", "/index")
 //			.authenticated()
 			.anyRequest()
 			.permitAll()
 			.and()
 			.formLogin()
-//			.loginPage("/signin")
-			.loginProcessingUrl("/signin")
+//			.loginPage("/index")
+			.loginProcessingUrl("/auth/signin")
 			.failureHandler(new AuthFailureHandler())
 			.defaultSuccessUrl("/");
 		

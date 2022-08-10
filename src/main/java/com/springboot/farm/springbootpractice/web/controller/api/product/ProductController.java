@@ -97,8 +97,9 @@ public class ProductController {
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "사용자 농산물 불러오기 성공", readProductRespDto));
 	}
 	
-	@GetMapping("/{productName}")
+	@GetMapping("/auth/{productName}")
 	public ResponseEntity<?> getProductByProductName(@PathVariable String productName) {
+		System.out.println("요청이 들어왔습니다.");
 		ReadProductRespDto readProductRespDto = null;
 		try {
 			readProductRespDto = productService.getProductByProductName(productName);

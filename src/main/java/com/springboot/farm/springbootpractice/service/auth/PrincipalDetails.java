@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.springboot.farm.springbootpractice.domain.entity.User;
 
+import lombok.Data;
+
+@Data
 public class PrincipalDetails implements UserDetails {
 	
 	private static final long serialVersionUID = 1L;
@@ -19,16 +22,12 @@ public class PrincipalDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Collection<GrantedAuthority> collection = new ArrayList<GrantedAuthority>();
-		collection.add(new GrantedAuthority() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String getAuthority() {
-				return user.getRoles();
-			}
+		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		user.getRolesToList().forEach(role -> {
+			authorities.add(() -> role);
 		});
-		return collection;
+		
+		return authorities;
 	}
 
 	@Override
