@@ -114,3 +114,7 @@ article button {
     bottom: -30px;
     right: 610px;
 }
+
+.visible {
+	display: none;
+}

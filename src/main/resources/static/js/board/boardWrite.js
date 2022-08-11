@@ -12,11 +12,20 @@ const contentInput = document.querySelector(".content-input textarea");
 // 게시판 구분짓는 flag
 let userMenuFlag = false;
 
+let userFlag
+let managerFlag
 let adminFlag = false;
 
 let userCode = 0;
+let name = null;
+
+// 게시판 구분
+let boardType = document.querySelector(".type-span").textContent;
+let boardTypeNumber = boardType == "notice" ? 1 : boardType == "free" ? 2 : 3;
 
 $(userDtlMenu).fadeOut(0);
+
+load();
 
 // 로고 클릭시 홈페이지 이동
 document.querySelector("header h1").onclick = () => {
@@ -84,8 +93,8 @@ document.querySelector("article button").onclick = () => {
         data: JSON.stringify({
             boardTitle: title,
             boardContent: content,
-            userCode: 20,
-            boardType: 1
+            "userCode": userCode,
+            boardType: boardTypeNumber
         }),
         contentType: "application/json",
         dataType: "json",
@@ -100,6 +109,42 @@ document.querySelector("article button").onclick = () => {
     });
 }
 
+function setUserInfo(obj) {
+    if(obj != null) {
+        if(obj.roles.includes("USER")) {
+            userFlag = true;
+        }else if(obj.roles.includes("MANAGER")) {
+            managerFlag = true;
+        }else {
+            adminFlag = true;
+        }
+
+        userCode = obj.userCode;
+        name = obj.name;
+        signinFlag = true;
+
+        userMenu.style.display = "flex";
+
+        document.querySelector(".username-box").textContent = `${name}님 환영합니다.`;
+    }
+}
+
+function loadUser() {
+    $.ajax({
+        type: "get",
+        url: "/api/v1/auth/user/principal/load",
+        async: false,
+        dataType: "json",
+        success: (response) => {
+            setUserInfo(response.data);
+        },
+        error: errorMessage
+    });
+}
+
+function load() {
+    loadUser();
+}
 
 function errorMessage(request, status, error) {
     alert("요청실패");

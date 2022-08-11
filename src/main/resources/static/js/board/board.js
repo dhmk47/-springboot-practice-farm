@@ -288,7 +288,7 @@ function boardLoad() {
 
                 totalCount = response.data[0].totalCount;
 
-                totalPage = totalCount % 8 == 0 ? totalPage : Math.floor(totalCount / 8) + 1;
+                totalPage = totalCount % 8 == 0 ? totalCount / 8 : Math.floor(totalCount / 8) + 1;
 
                 document.querySelector(".select-page-box div").innerHTML = 
                 `<input class="select-page-input" type="text"> / ${totalPage}`;

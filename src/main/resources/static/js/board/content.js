@@ -48,7 +48,7 @@ let type = typeSpan.textContent;
 let boardCode = parseInt(boardCodeSpan.textContent);
 
 // 임시로 사용할 userCode
-let userCode = 2;
+let userCode = 0;
 
 $(userDtlMenu).fadeOut(0);
 

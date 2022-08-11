@@ -39,7 +39,8 @@ public class PageController {
 	}
 	
 	@GetMapping("/{type}/write")
-	public String goNoticeWrite(@PathVariable String type) {
+	public String goNoticeWrite(@PathVariable String type, Model model) {
+		model.addAttribute("type", type);
 		return "/board/boardWrite";
 	}
 	

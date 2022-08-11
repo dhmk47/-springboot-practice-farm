@@ -575,11 +575,11 @@ function setUserInfo(obj) {
             adminFlag = true;
         }
 
-        userCode = obj.usercode;
+        userCode = obj.userCode;
         name = obj.name;
         money = obj.money;
         signinFlag = true;
-
+        showMoneyBox.innerHTML = `보유금액: ${money}원`;
         usernameBox.innerHTML = `${name}님 환영합니다.`
     }
 }
@@ -717,10 +717,16 @@ function toggleProductDtlBox() {
 }
 
 function errorMessage(request, status, error) {
-    alert("요청실패");
-    console.log(request.status);
-    console.log(request.responseText);
-    console.log(error);
+    if(request.status == 403) {
+        alert("권한이 없습니다.");
+        location.replace("/index");
+    }else {
+        alert("요청실패");
+        console.log(request.status);
+        console.log(request.responseText);
+        console.log(error);
+    }
+    return;
 }
 
 function updateUserMoney(money, userCode) {
@@ -768,6 +774,7 @@ function checkProduct(productName) {
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
+                console.log(response.data);
                 alert("if문");
                 obj = null;
                 

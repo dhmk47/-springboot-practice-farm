@@ -88,10 +88,11 @@ public class AuthUserContorller {
 
 	@GetMapping("/principal/load")
 	public ResponseEntity<?> checkLoginUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-		User user = null;
+		ReadUserRespDto readUserRespDto = null;
 		if(principalDetails != null) {
-			user = principalDetails.getUser();
+			System.out.println(principalDetails.getUser());
+			readUserRespDto = principalDetails.getUser().toReadUserDto();
 		}
-		return ResponseEntity.ok().body(new CMRespDto<>(1, "유저 불러오기 성공", user));
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "유저 불러오기 성공", readUserRespDto));
 	}
 }

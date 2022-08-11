@@ -28,14 +28,14 @@ public class BoardServiceImpl implements BoardService{
 	public CreateBoardRespDto createBoard(CreateBoardReqDto createBoardReqDto) throws Exception {
 		Board board = createBoardReqDto.toEntity();
 		
-		String title = board.getBoard_title();
-		String content = board.getBoard_content();
-		for(int i = 0; i < 50; i++) {
-			board.setBoard_title(title + (i + 1));
-			board.setBoard_content(content + (i + 1));
-			boardRepository.save(board);
-		}
-		
+//		String title = board.getBoard_title();
+//		String content = board.getBoard_content();
+//		for(int i = 0; i < 50; i++) {
+//			board.setBoard_title(title + (i + 1));
+//			board.setBoard_content(content + (i + 1));
+//			boardRepository.save(board);
+//		}
+		System.out.println(board);
 		boardRepository.save(board);
 		
 		return board != null ? board.toCreateBoardRespDto() : null;

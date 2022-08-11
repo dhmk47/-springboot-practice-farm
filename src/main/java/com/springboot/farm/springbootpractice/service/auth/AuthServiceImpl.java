@@ -8,7 +8,6 @@ import com.springboot.farm.springbootpractice.domain.user.UserRepository;
 import com.springboot.farm.springbootpractice.web.dto.auth.CheckUsernameReqDto;
 import com.springboot.farm.springbootpractice.web.dto.auth.CreateUserReqDto;
 import com.springboot.farm.springbootpractice.web.dto.user.CreateUserRespDto;
-import com.springboot.farm.springbootpractice.web.dto.user.ReadUserRespDto;
 
 import lombok.RequiredArgsConstructor;
 
