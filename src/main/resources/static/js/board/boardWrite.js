@@ -42,7 +42,7 @@ headerNavItems[1].onclick = () => {
 }
 
 headerNavItems[2].onclick = () => {
-    location.href = "/board?type=question&page=1";
+    location.href = "/board?type=QnA&page=1";
 }
 
 userMenuBtn.onclick = () => {
@@ -102,7 +102,7 @@ document.querySelector("article button").onclick = () => {
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
-                alert("게시글 작성 성공\n게시글 코드: " + response.data.boardCode);
+                history.back();
             }else {
                 alert("게시글 작성 실패!");
             }
@@ -144,8 +144,16 @@ function loadUser() {
     });
 }
 
+function toggleImportanceBox() {
+    if(boardTypeNumber == 1) {
+        document.querySelector(".botton-box span").classList.toggle("visible");
+        document.querySelector(".importance-label").classList.toggle("visible");
+    }
+}
+
 function load() {
     loadUser();
+    toggleImportanceBox();
 }
 
 function errorMessage(request, status, error) {

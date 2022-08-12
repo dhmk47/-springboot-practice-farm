@@ -40,6 +40,8 @@ let signinFlag = false;
 
 // 게시판 구분짓는 flag
 let adminFlag = false;
+let managerFlag = false;
+let userFlag = false;
 
 let userMenuFlag = false;
 
@@ -146,15 +148,7 @@ loginBoxButtons[0].onclick = () => {
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
-                alert("로그인 성공");
-                signinFlag = true;
-                if(response.data.roles.includes("ADMIN")){
-                    adminFlag = true;
-                }else {
-                    userCode = response.data.userCode;
-                }
-                // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
-                load();
+                location.replace(`content?type=${type}&number=${boardCode}`);
             }else {
                 alert("회원정보가 옳바르지 않습니다.");
             }
@@ -176,7 +170,7 @@ loginInputItems[1].onkeypress = () => {
 
 // 게시글 수정버튼
 modifyAndDeleteButtons[0].onclick = () => {
-
+    location.href = `/${type}/write`;
 }
 
 // 게시글 삭제 버튼
@@ -209,7 +203,51 @@ showMoreReplyBox.onclick = () => {
     }
 }
 
+function setUserInfo(obj) {
+    if(obj != null) {
+        if(obj.roles.includes("ADMIN")) {
+            adminFlag = true;
+        }else if(obj.roles.includes("MANAGER")) {
+            managerFlag = true;
+        }else {
+            userFlag = true;
+        }
+
+        userCode = obj.userCode;
+        name = obj.name;
+        signinFlag = true;
+
+        userMenu.style.display = "flex";
+
+        document.querySelector(".username-box").textContent = `${name}님 환영합니다.`;
+    }
+}
+
+function loadUser() {
+    $.ajax({
+        type: "get",
+        url: "/api/v1/auth/user/principal/load",
+        async: false,
+        dataType: "json",
+        success: (response) => {
+            setUserInfo(response.data);
+        },
+        error: errorMessage
+    });
+}
+
 function load() {
+
+    loadUser();
+
+    if(signinFlag) {
+        userMenu.style.display = "block";
+        loginBox.style.visibility = "hidden";
+    }else {
+        userMenu.style.display = "none";
+        loginBox.style.visibility = "visible";
+    }
+
     let data = null;
     replyUl.innerHTML = "";
 
@@ -230,6 +268,18 @@ function load() {
     return data;
 }
 
+// 수정, 삭제 버튼 보여주기
+function showBtnMenu() {
+    const userBoardMenu = document.querySelector(".user-board-menu");
+
+    userBoardMenu.classList.remove("visible");
+}
+
+// 작성자와 로그인한 유저가 같은지 확인
+function checkUser(writerCode) {
+    return (userCode == writerCode) || (adminFlag || managerFlag);
+}
+
 // 게시글 내용 set
 function enterContent(data) {
     titleText.innerHTML = `${data.boardTitle}`;
@@ -237,6 +287,30 @@ function enterContent(data) {
     boardInfoBox[0].innerHTML += `${data.name}`;
     boardInfoBox[1].innerHTML += `${data.views}회`;
     boardInfoBox[2].innerHTML += `${data.time}`;
+
+    saveContent(data);
+
+    if(checkUser(data.userCode)) {
+        showBtnMenu();
+    }
+}
+
+
+function saveContent(data) {
+    $.ajax({
+        type: "post",
+        url: "",
+        contentType: "application/json",
+        data: JSON.stringify({
+            boardTitle: data.boardTitle,
+            boardContent: data.boardContent,
+            boardCode: data.boardCode
+        }),
+        dataType: "json",
+        success: (response) => {
+        },
+        error: errorMessage
+    });
 }
 
 // 댓글 불러오기

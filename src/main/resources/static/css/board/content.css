@@ -112,6 +112,14 @@ article {
     position: relative;
 }
 
+section {
+    width: 700px;
+}
+
+.board-info {
+    display: flex;
+}
+
 .board-info-box {
     display: flex;
     flex-direction: column;
@@ -123,8 +131,10 @@ article {
 .user-board-menu {
     display: flex;
     justify-content: flex-end;
+    align-items: flex-end;
 
-    width: 700px;
+    width: 140px;
+    height: 60px;
 }
 
 .title-text, article textarea {
