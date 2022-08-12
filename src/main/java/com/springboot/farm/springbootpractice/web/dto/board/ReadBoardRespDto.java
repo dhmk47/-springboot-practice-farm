@@ -18,6 +18,7 @@ public class ReadBoardRespDto {
 	private int views;
 	private int totalReply;
 	private String reply;
+	private boolean importanceFlag;
 	private Object time;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;

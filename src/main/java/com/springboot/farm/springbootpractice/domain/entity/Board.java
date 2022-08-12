@@ -25,6 +25,7 @@ public class Board {
 	private int views;
 	private int total_reply;
 	private String reply;
+	private int importance_flag;
 	private LocalDateTime create_date;
 	private LocalDateTime update_date;
 	
@@ -38,6 +39,7 @@ public class Board {
 				.name(name)
 				.views(views)
 				.reply(reply)
+				.importanceFlag(importance_flag == 1 ? true : false)
 				.createDate(create_date)
 				.updateDate(update_date)
 				.build();
@@ -55,6 +57,7 @@ public class Board {
 				.views(views)
 				.totalReply(total_reply)
 				.reply(reply)
+				.importanceFlag(importance_flag == 1 ? true : false)
 				.createDate(create_date)
 				.updateDate(update_date)
 				.build();

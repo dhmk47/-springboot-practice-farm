@@ -70,7 +70,7 @@ headerNavItems[1].onclick = () => {
 }
 
 headerNavItems[2].onclick = () => {
-    location.href = "/board?type=question&page=1";
+    location.href = "/board?type=QnA&page=1";
 }
 
 userMenuBtn.onclick = () => {

@@ -14,6 +14,7 @@
   			#{board_content},
   			#{user_code},
   			#{board_type},
+  			#{importance_flag},
   			now(),
   			now()
   		)
@@ -26,14 +27,16 @@
 			bm.board_content,
 			bm.user_code,
 			bm.board_type,
+			bm.importance_flag,
 			
 			um.name,
-			
+				
 			COUNT(rm.reply) AS total_reply,
 			
 			bd.views,
-			
-			bm2.total_count,
+			<if test="boardPage == true">
+				bm2.total_count,
+			</if>
 			
 			bm.create_date,
 			bm.update_date
@@ -42,14 +45,13 @@
 			left outer join user_mst um on (um.usercode = bm.user_code)
 			LEFT OUTER JOIN reply_mst rm ON (rm.board_code = bm.board_code)
 			left outer join board_dtl bd on (bd.board_code = bm.board_code)
-			LEFT OUTER JOIN (select
-											COUNT(bm.board_code) AS total_count,
-											COUNT(rm.reply_code) AS total_reply
-										FROM
-											board_mst bm
-											LEFT OUTER JOIN reply_mst rm on (rm.board_code = bm.board_code)
-										where
-											board_type = #{type}) bm2 ON (1 = 1)
+			<if test="boardPage == true">
+				LEFT OUTER JOIN (select
+												COUNT(board_code) AS total_count
+											FROM
+												board_mst
+											where
+												board_type = #{type}) bm2 ON (1 = 1)
   		where
 			<choose>
 				<when test='type == 1'>
@@ -58,16 +60,17 @@
 				<when test='type == 2'>
 					board_type = 2
 				</when>
-				<otherwise>
+				<when test='type == 3'>
 					board_type = 3
-				</otherwise>
+				</when>
 			</choose>
-		
+			</if>
 		GROUP BY
 			board_code
 		ORDER BY
+			importance_flag desc,
 			board_code desc
-		LIMIT #{page},  #{totalCount}
+		limit #{page},  #{totalCount}
   	</select>
   	
   	<select id="getBoardByBoardCode" parameterType="Integer" resultType="com.springboot.farm.springbootpractice.domain.entity.Board">

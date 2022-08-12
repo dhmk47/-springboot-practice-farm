@@ -58,11 +58,12 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
-	public List<ReadBoardRespDto> getBoardList(String type, int page, int totalCount) throws Exception {
+	public List<ReadBoardRespDto> getBoardList(String type, int page, int totalCount, boolean boardPageFlag) throws Exception {
 		List<ReadBoardRespDto> boardList = null;
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		map.put("type", type.equals("notice") ? 1 : type.equals("free") ? 2 : 3);
+		map.put("type", type.equals("notice") ? 1 : type.equals("free") ? 2 : type.equals("QnA") ? 3 : 4);
+		map.put("boardPage", boardPageFlag);
 		map.put("page", (page - 1) * totalCount);
 		map.put("totalCount", totalCount);
 		

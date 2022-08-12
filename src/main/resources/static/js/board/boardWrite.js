@@ -80,12 +80,13 @@ document.querySelector("main").onmouseover = () => {
     }
 }
 
-
 /*  main  */
 
 document.querySelector("article button").onclick = () => {
     let title = titleInput.value;
     let content = contentInput.value;
+
+    let importanceFlag = document.querySelector("#importance").checked;
 
     $.ajax({
         type: "post",
@@ -94,7 +95,8 @@ document.querySelector("article button").onclick = () => {
             boardTitle: title,
             boardContent: content,
             "userCode": userCode,
-            boardType: boardTypeNumber
+            boardType: boardTypeNumber,
+            "importanceFlag" : importanceFlag
         }),
         contentType: "application/json",
         dataType: "json",

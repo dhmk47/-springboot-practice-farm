@@ -20,6 +20,7 @@ public class CreateBoardRespDto {
 	private String name;
 	private int views;
 	private String reply;
+	private boolean importanceFlag;
 	private LocalDateTime createDate;
 	private LocalDateTime updateDate;
 }

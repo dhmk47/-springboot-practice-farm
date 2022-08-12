@@ -109,7 +109,43 @@ main input, main textarea {
     resize: none;
 }
 
-article button {
+.botton-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    width: 700px;
+}
+
+.importance-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 20px;
+
+    width: 30px;
+    height: 30px;
+    border: 1px solid #141414;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+}
+
+.importance-label:hover {
+    background-color: #a39e9e;
+}
+
+#importance:checked + label {
+    background-color: #a39e9e;
+}
+
+#importance:checked + label::after {
+    content: "✔";
+    font-weight: 700;
+}
+
+.bottom-box button {
     position: absolute;
     bottom: -30px;
     right: 610px;

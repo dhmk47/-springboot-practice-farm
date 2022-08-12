@@ -146,6 +146,10 @@ section ul li span {
     padding-left: 15px;
 }
 
+.importance span {
+    font-weight: 500;
+}
+
 .board-header-list {
     border-bottom: 1px solid #a5a3a3;
 }

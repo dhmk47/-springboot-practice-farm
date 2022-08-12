@@ -565,6 +565,58 @@ loginInputItems[1].onkeypress = () => {
     }
 }
 
+function showContent(boardType, boardCode) {
+    location.href = `/content?type=${boardType == 1 ? "notice" : boardType == 2 ? "free" : "QnA"}&number=${boardCode}`;
+}
+
+function clearBoard(boardContentList) {
+    boardContentList.innerHTML = "";
+}
+
+function setBoard(boardList) {
+    const boardContentList = document.querySelector(".board-content-list");
+
+    clearBoard(boardContentList);
+
+    for(board of boardList) {
+        boardContentList.innerHTML += `
+        <li ${board.importanceFlag ? 'class="importance"' : ''}>
+            <span class="board-code">${board.boardCode}</span>
+            <span class="board-type">${board.boardType == 1 ? "[공지사항]" : board.boardType == 2 ? "[자유게시판]" : "[QnA]"}</span>
+            <span class="board-title" onclick="showContent(${board.boardType}, ${board.boardCode})">
+            ${board.boardTitle}</span>
+            <span class="board-reply-count">${board.totalReply != 0 ? "["+board.totalReply+"]" : ""}</span>
+            <span class="writer-span">${board.name}</span>
+            <span class="views-span">${board.views}</span>
+            <span class="date-span">${board.time}</span>
+        </li>
+        `;
+    }
+}
+
+function boardLoad() {
+    let boardList = null;
+    $.ajax({
+        type: "get",
+        url: `/api/v1/board/all/list`,
+        async: false,
+        data: {
+            page: 1,
+            totalCount: 8,
+            boardPageFlag: false
+        },
+        dataType: "json",
+        success: (response) => {
+            if(response.data != null) {
+                boardList = response.data;
+            }
+        },
+        error: errorMessage
+    });
+
+    return boardList;
+}
+
 function setUserInfo(obj) {
     if(obj != null) {
         if(obj.roles.includes("USER")) {
@@ -600,6 +652,8 @@ function loadUser() {
 function load(){
 
     loadUser();
+
+    setBoard(boardLoad());
 
     if(signinFlag) {
         userMenu.style.display = "block";

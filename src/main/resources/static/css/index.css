@@ -394,6 +394,77 @@ header span {
     height: 500px;
 
     background-color: aquamarine;
+
+    position: relative;
+}
+
+.board-header-list {
+    width: 100%;
+    border-bottom: 1px solid #a5a3a3;
+}
+
+.recently-board ul li {
+    display: flex;
+    align-items: center;
+    margin: 14px 0px 10px;
+
+    position: relative;
+
+    height: 40px;
+    
+    color: black;
+    cursor: default;
+}
+
+.recently-board ul li:not(:last-of-type) {
+    border-bottom: 1px solid #a5a3a3;
+}
+
+.importance span {
+    font-weight: 500;
+}
+
+.recently-board li span {
+    margin: 15px 20px 25px 0px;
+    padding-left: 15px;
+}
+
+.board-code {
+    width: 60px;
+}
+
+.board-type {
+    width: 80px;
+}
+
+.board-title {
+    margin-right: 0px;
+    cursor: pointer;
+}
+
+.board-reply-count {
+    padding-left: 0px;
+    margin-left: 15px;
+    color: red;
+    cursor: pointer;
+}
+
+.writer-span {
+    width: 100px;
+    position: absolute;
+    right: 230px;
+}
+
+.views-span {
+    width: 100px;
+    position: absolute;
+    right: 140px;
+}
+
+.date-span {
+    width: 90px;
+    position: absolute;
+    right: 50px;
 }
 
 .top-left-margin {

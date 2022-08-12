@@ -64,7 +64,7 @@ headerNavItems[1].onclick = () => {
 }
 
 headerNavItems[2].onclick = () => {
-    location.href = "/board?type=question&page=1";
+    location.href = "/board?type=QnA&page=1";
 }
 
 userMenuBtn.onclick = () => {
@@ -278,7 +278,8 @@ function boardLoad() {
         async: false,
         data: {
             page: page,
-            totalCount: 8
+            totalCount: 8,
+            boardPageFlag: true
         },
         dataType: "json",
         success: (response) => {
@@ -296,7 +297,7 @@ function boardLoad() {
                 for(board of response.data) {
                     boardList.innerHTML +=
                     `
-                    <li>
+                    <li ${board.importanceFlag ? 'class="importance"' : ''}>
                         <span class="board-code">${board.boardCode}</span>
                         <span class="board-type">${board.boardType == 1 ? "[공지사항]" : board.boardType == 2 ? "[자유게시판]" : "[QnA]"}</span>
                         <span class="board-title" onclick="showContent(${board.boardType}, ${board.boardCode})">
@@ -317,7 +318,7 @@ function boardLoad() {
 }
 
 function showContent(boardType, boardCode) {
-    location.href = `/content?type=${boardType == 1 ? "notice" : boardType == 2 ? "free" : "question"}&number=${boardCode}`;
+    location.href = `/content?type=${boardType == 1 ? "notice" : boardType == 2 ? "free" : "QnA"}&number=${boardCode}`;
 }
 
 function setPage(index) {
