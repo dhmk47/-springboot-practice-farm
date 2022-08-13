@@ -12,10 +12,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class ReadReplyRespDto {
+	private int replyCode;
 	private int boardCode;
 	private String reply;
 	private String name;
 	private String roles;
+	private int userCode;
 	private Object time;
 	private int totalReplyCount;
 	private LocalDateTime createDate;

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import com.springboot.farm.springbootpractice.domain.board.BoardRepository;
@@ -59,9 +61,12 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
+	@Cacheable(value = "boardList", key =  "#type + #page")
 	public List<ReadBoardRespDto> getBoardList(String type, int page, int totalCount, boolean boardPageFlag) throws Exception {
 		List<ReadBoardRespDto> boardList = null;
 		Map<String, Object> map = new HashMap<String, Object>();
+		
+		System.out.println(page + "번 page 들어와서 service 접근");
 		
 		map.put("type", type.equals("notice") ? 1 : type.equals("free") ? 2 : type.equals("QnA") ? 3 : 4);
 		map.put("boardPage", boardPageFlag);
@@ -104,7 +109,7 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public boolean deleteBoardByBoardCode(int boardCode) throws Exception {
-		return false;
+		return boardRepository.delete(boardCode) > 0;
 	}
 
 }

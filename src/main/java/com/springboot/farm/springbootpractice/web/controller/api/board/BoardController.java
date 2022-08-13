@@ -2,7 +2,9 @@ package com.springboot.farm.springbootpractice.web.controller.api.board;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,7 +62,7 @@ public class BoardController {
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "저장 성공", status));
 	}
-	
+
 	@GetMapping("/{type}/list")
 	public ResponseEntity<?> getAllBoardList(@PathVariable String type, int page, int totalCount, boolean boardPageFlag) {
 		List<ReadBoardRespDto> boardList = null;
@@ -116,5 +118,19 @@ public class BoardController {
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "게시글 수정 완료", status));
 		
+	}
+	
+	@DeleteMapping("/{boardCode}")
+	public ResponseEntity<?> deleteBoardByBoardCode(@PathVariable int boardCode) {
+		boolean status = false;
+		
+		try {
+			status = boardService.deleteBoardByBoardCode(boardCode);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "게시글 삭제 실패", status));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "게시글 삭제 완료", status));
 	}
 }

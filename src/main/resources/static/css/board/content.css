@@ -183,13 +183,19 @@ section ul {
 section ul li {
     display: flex;
     flex-direction: column;
+    border-bottom: 1px solid #dbdbdb70;
 
+    margin-bottom: 10px;
+
+    height: auto;
+    
     color: black;
     cursor: default;
 }
 
 .reply-writer-box {
     display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -198,12 +204,24 @@ section ul li {
     font-weight: 500;
 }
 
+.repley-modify-delete-span-box span {
+    cursor: pointer;
+}
+
+.modify-reply-span::after {
+    content: "│";
+    cursor: default;
+}
+
 .reply-info-box {
-    margin-top: 10px;
+    margin: 10px 0px;
 
-    height: 30px;
+    /* height: 30px; */
+}
 
-    border-bottom: 1px solid #dbdbdb70;
+.modify-input {
+    z-index: 1;
+    width: 600px;
 }
 
 .show-more-reply-box {

@@ -179,7 +179,11 @@ modifyAndDeleteButtons[0].onclick = () => {
 
 // 게시글 삭제 버튼
 modifyAndDeleteButtons[1].onclick = () => {
+    let result = confirm("정말 삭제 하시겠습니까?");
 
+    if(result) {
+        deleteBoard(boardCode);
+    }
 }
 
 // input focus 중 Enter 입력시 댓글 추가
@@ -311,8 +315,22 @@ function saveContent() {
         }),
         dataType: "json",
         success: (response) => {
+            
+        },
+        error: errorMessage
+    });
+}
+
+function deleteBoard(boardCode) {
+    $.ajax({
+        type: "delete",
+        url: `/api/v1/board/${boardCode}`,
+        dataType: "json",
+        async: false,
+        success: (response) => {
             if(response.data) {
-                alert("api 통신 성공")
+                alert("삭제 성공");
+                history.back();
             }
         },
         error: errorMessage
@@ -349,14 +367,24 @@ function enterReply() {
 
     if(replyList != null) {
         for(replyObj of replyList) {
+            let result = (replyObj.userCode == userCode) || (adminFlag || managerFlag);
+            let replyCode = replyObj.replyCode;
+
             replyUl.innerHTML += `
             <li>
                 <div class="reply-writer-box">
-                    <span class="writer-span">${replyObj.name}</span>
-                    <span>${replyObj.time}</span>
+                    <div>
+                        <span class="writer-span">${replyObj.name}</span>
+                        <span>${replyObj.time}</span>
+                    </div>
+                    <div class="repley-modify-delete-span-box ${result ? '' : 'visible'}">
+                        <span class="modify-reply-span" onclick="modifyReply(${replyCode})">수정</span>
+                        <span class="delete-reply-span" onclick="deleteReply(${replyCode})">삭제</span>
+                    </div>
                 </div>
                 <div class="reply-info-box">
-                    <span>${replyObj.reply}</span>
+                    <span class="reply-${replyCode}">${replyObj.reply}</span>
+                    <input type="text" class="modify-reply-input-${replyCode} modify-input visible">
                 </div>
             </li>
             `
@@ -405,6 +433,33 @@ function addReply() {
         },
         error: errorMessage
     });
+}
+
+function modifyReply(replyCode) {
+    const replySpan = document.querySelector(`.reply-${replyCode}`);
+    const modifyReplyInput = document.querySelector(`.modify-reply-input-${replyCode}`);
+
+    toggleVisibleReplyAndInput(replySpan, modifyReplyInput);
+
+
+}
+
+function toggleVisibleReplyAndInput(reply, input) {
+    reply.classList.toggle("visible");
+    input.classList.toggle("visible");
+
+}
+
+// function removeVisible(dom) {
+//     dom.classList.remove("visible");
+// }
+
+// function addVisible(dom) {
+//     dom.classList.add("visible");
+// }
+
+function deleteReply(replyCode) {
+
 }
 
 function errorMessage(request, status, error) {

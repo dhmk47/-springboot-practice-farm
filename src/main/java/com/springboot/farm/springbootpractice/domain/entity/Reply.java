@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class Reply {
+	private int reply_code;
 	private int board_code;
 	private String reply;
 	private String name;
@@ -25,10 +26,12 @@ public class Reply {
 	
 	public ReadReplyRespDto toDto() {
 		return ReadReplyRespDto.builder()
+				.replyCode(reply_code)
 				.boardCode(board_code)
 				.reply(reply)
 				.name(name)
 				.roles(roles)
+				.userCode(user_code)
 				.totalReplyCount(total_reply_count)
 				.createDate(create_date)
 				.updateDate(update_date)

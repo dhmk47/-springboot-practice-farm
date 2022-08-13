@@ -21,6 +21,7 @@
 		SELECT
 			rm.reply_code,
 			rm.reply,
+			rm.user_code,
 			rm.create_date,
 			rm.update_date,
 			
