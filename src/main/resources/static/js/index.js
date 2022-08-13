@@ -499,44 +499,44 @@ document.querySelector(".show-product-button").onclick = () => {
     }
 }
 
-// loginBoxButtons[0].onclick = () => {
-//     for(let i = 0; i < loginInputItems.length; i++){
-//         if(isEmpty(loginInputItems[i].value)){
-//             alert((i == 0 ? "아이디를"
-//             : "비밀번호를") + " 입력해 주세요.");
-//             return;
-//         }
-//     }
+loginBoxButtons[0].onclick = () => {
+    for(let i = 0; i < loginInputItems.length; i++){
+        if(isEmpty(loginInputItems[i].value)){
+            alert((i == 0 ? "아이디를"
+            : "비밀번호를") + " 입력해 주세요.");
+            return false;
+        }
+    }
 
-//     $.ajax({
-//         type: "post",
-//         url: "/api/v1/user/signin",
-//         contentType: "application/json",
-//         data: JSON.stringify({
-//             "username": loginInputItems[0].value,
-//             "password": loginInputItems[1].value
-//         }),
-//         dataType: "json",
-//         success: (response) => {
-//             if(response.data != null) {
-//                 alert("로그인 성공");
-//                 signinFlag = true;
-//                 if(response.data.roles.includes("ADMIN")){
-//                     adminFlag = true;
-//                 }else {
-//                     userCode = response.data.userCode;
-//                     money = response.data.money;
-//                     showMoneyBox.innerHTML = `보유금액: ${money}원`;
-//                 }
-//                 // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
-//                 load();
-//             }else {
-//                 alert("회원정보가 옳바르지 않습니다.");
-//             }
-//         },
-//         error: errorMessage
-//     });
-// }
+    // $.ajax({
+    //     type: "post",
+    //     url: "/api/v1/user/signin",
+    //     contentType: "application/json",
+    //     data: JSON.stringify({
+    //         "username": loginInputItems[0].value,
+    //         "password": loginInputItems[1].value
+    //     }),
+    //     dataType: "json",
+    //     success: (response) => {
+    //         if(response.data != null) {
+    //             alert("로그인 성공");
+    //             signinFlag = true;
+    //             if(response.data.roles.includes("ADMIN")){
+    //                 adminFlag = true;
+    //             }else {
+    //                 userCode = response.data.userCode;
+    //                 money = response.data.money;
+    //                 showMoneyBox.innerHTML = `보유금액: ${money}원`;
+    //             }
+    //             // 나중에 로그인 되었으면 세션에 저장해서 location으로 index
+    //             load();
+    //         }else {
+    //             alert("회원정보가 옳바르지 않습니다.");
+    //         }
+    //     },
+    //     error: errorMessage
+    // });
+}
 
 loginBoxButtons[1].onclick = () => {
     location.href = "/signup";

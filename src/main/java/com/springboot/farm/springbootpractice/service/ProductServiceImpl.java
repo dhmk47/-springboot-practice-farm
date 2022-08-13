@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.springboot.farm.springbootpractice.domain.entity.PastAndNowProductInfo;
 import com.springboot.farm.springbootpractice.domain.entity.Product;
 import com.springboot.farm.springbootpractice.domain.product.ProductRepository;
 import com.springboot.farm.springbootpractice.web.dto.product.BuyProductDto;
@@ -58,44 +57,53 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public ReadProductRespDto getProductByProductName(String productName) throws Exception {
 		Product readProductRespDto = null;
+		
 		readProductRespDto = productRepository.readProductByProductName(productName);
+		
 		return readProductRespDto == null ? null : readProductRespDto.toReadRespDto();
 	}
 	
 	@Override
 	public List<ReadProductRespDto> getAllProductList(String type) throws Exception {
-		List<ReadProductRespDto> productList = null;
+//		List<ReadProductRespDto> productList = null;
+//		
+//		
+//		productList = productRepository.readAllProduct(type)
+//				.stream()
+//				.map(entity -> entity.toReadRespDto())
+//				.collect(Collectors.toCollection(ArrayList::new));
+//		
+//		return productList;
 		
-		productList = productRepository.readAllProduct(type)
-				.stream()
-				.map(entity -> entity.toReadRespDto())
-				.collect(Collectors.toCollection(ArrayList::new));
-		
-		return productList;
+		return toReadProductRestDtoList(productRepository.readAllProduct(type));
 	}
 	
 	@Override
 	public List<ReadProductRespDto> getMyProductList(int userCode) throws Exception {
-		List<ReadProductRespDto> productList = null;
+//		List<ReadProductRespDto> productList = null;
+//		
+//		productList = productRepository.readMyProductList(userCode)
+//				.stream()
+//				.map(entity -> entity.toReadRespDto())
+//				.collect(Collectors.toCollection(ArrayList::new));
+//		
+//		return productList;
 		
-		productList = productRepository.readMyProductList(userCode)
-				.stream()
-				.map(entity -> entity.toReadRespDto())
-				.collect(Collectors.toCollection(ArrayList::new));
-		
-		return productList;
+		return toReadProductRestDtoList(productRepository.readMyProductList(userCode));
 	}
 	
 	@Override
 	public List<ReadProductRespDto> getRecentlyProductList(String date) throws Exception {
-		List<ReadProductRespDto> productList = null;
+//		List<ReadProductRespDto> productList = null;
+//		
+//		productList = productRepository.readRecentlyProductLIst(date)
+//				.stream()
+//				.map(entity -> entity.toReadRespDto())
+//				.collect(Collectors.toCollection(ArrayList::new));
+//		
+//		return productList;
 		
-		productList = productRepository.readRecentlyProductLIst(date)
-				.stream()
-				.map(entity -> entity.toReadRespDto())
-				.collect(Collectors.toCollection(ArrayList::new));
-		
-		return productList;
+		return toReadProductRestDtoList(productRepository.readRecentlyProductLIst(date));
 	}
 	
 	@Override
@@ -140,5 +148,17 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public boolean removeDeletedUserProduct(int userCode) throws Exception {
 		return productRepository.deleteDeletedUserProduct(userCode) > 0;
+	}
+	
+
+	private List<ReadProductRespDto> toReadProductRestDtoList(List<Product> productEntityList) {
+		List<ReadProductRespDto> dtoList = new ArrayList<>();
+		
+		dtoList = productEntityList
+			.stream()
+			.map(entity -> entity.toReadRespDto())
+			.collect(Collectors.toCollection(ArrayList::new));
+		
+		return dtoList;
 	}
 }

@@ -36,20 +36,20 @@
             </div>
         </header>
         <main>
-            <div class="login-box">
+            <form class="login-box" method="post" action="/auth/signin">
                 <div class="input-box">
                     <div>
-                        <input type="text" placeholder="아이디">
+                        <input type="text" name="username" placeholder="아이디">
                     </div>
                     <div>
-                        <input type="password" placeholder="비밀번호">
+                        <input type="password" name="password" placeholder="비밀번호">
                     </div>
                 </div>
                 <div class="signin-signup-button-box">
-                    <button type="button">로그인</button>
+                    <button type="submit">로그인</button>
                     <button type="button">회원가입</button>
                 </div>
-            </div>
+            </form>
             <article>
                 <span class="type-span visible" th:text="${type}"></span>
                 <span class="board-code-span visible" th:text="${boardCode}"></span>

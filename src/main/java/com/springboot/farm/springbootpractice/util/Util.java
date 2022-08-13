@@ -1,5 +1,10 @@
 package com.springboot.farm.springbootpractice.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.springboot.farm.springbootpractice.web.dto.board.SaveBoardToMapReqDto;
+
 public class Util {
 	// 새로운 품목이 들어온다면 true로 대입 후 true면 db에 접근 후 데이터 가져오기
 	// false면 db 접근 X
@@ -14,4 +19,6 @@ public class Util {
 	
 	// 삭제된 품목중 사용자가 가지고 있는 품목이 있는지 확인 Flag
 	public static boolean deletedFlag = true;
+	
+	public static Map<Integer, SaveBoardToMapReqDto> boardMap = new HashMap<Integer, SaveBoardToMapReqDto>();
 }

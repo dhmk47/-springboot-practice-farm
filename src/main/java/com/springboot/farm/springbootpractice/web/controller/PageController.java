@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.springboot.farm.springbootpractice.handler.aop.annotation.Log;
+
 @Controller
 public class PageController {
 
@@ -38,9 +40,12 @@ public class PageController {
 		return "/board/board";
 	}
 	
-	@GetMapping("/{type}/write")
-	public String goNoticeWrite(@PathVariable String type, Model model) {
+	@GetMapping("/{boardType}")
+	public String goNoticeWrite(@PathVariable String boardType, String type, String number, Model model) {
+		System.out.println("들어옴");
+		model.addAttribute("boardType", boardType);
 		model.addAttribute("type", type);
+		model.addAttribute("boardCode", number);
 		return "/board/boardWrite";
 	}
 	

@@ -36,7 +36,9 @@
             </div>
         </header>
         <main>
+            <span class="board-type-span visible" th:text="${boardType}"></span>
             <span class="type-span visible" th:text="${type}"></span>
+            <span class="board-code-span visible" th:text="${boardCode}"></span>
             <article>
                 <section class="title-input">
                     <input type="text" placeholder="제목을 입력하세요.">

@@ -52,6 +52,9 @@ let boardCode = parseInt(boardCodeSpan.textContent);
 // 임시로 사용할 userCode
 let userCode = 0;
 
+// 게시글 데이터를 담을 객체
+let data = {};
+
 $(userDtlMenu).fadeOut(0);
 
 enterContent(load());
@@ -133,28 +136,28 @@ loginBoxButtons[0].onclick = () => {
         if(isEmpty(loginInputItems[i].value)){
             alert((i == 0 ? "아이디를"
             : "비밀번호를") + " 입력해 주세요.");
-            return;
+            return false;
         }
     }
 
-    $.ajax({
-        type: "post",
-        url: "/api/v1/user/signin",
-        contentType: "application/json",
-        data: JSON.stringify({
-            "username": loginInputItems[0].value,
-            "password": loginInputItems[1].value
-        }),
-        dataType: "json",
-        success: (response) => {
-            if(response.data != null) {
-                location.replace(`content?type=${type}&number=${boardCode}`);
-            }else {
-                alert("회원정보가 옳바르지 않습니다.");
-            }
-        },
-        error: errorMessage
-    });
+    // $.ajax({
+    //     type: "post",
+    //     url: "/api/v1/user/signin",
+    //     contentType: "application/json",
+    //     data: JSON.stringify({
+    //         "username": loginInputItems[0].value,
+    //         "password": loginInputItems[1].value
+    //     }),
+    //     dataType: "json",
+    //     success: (response) => {
+    //         if(response.data != null) {
+    //             location.replace(`content?type=${type}&number=${boardCode}`);
+    //         }else {
+    //             alert("회원정보가 옳바르지 않습니다.");
+    //         }
+    //     },
+    //     error: errorMessage
+    // });
 }
 
 loginBoxButtons[1].onclick = () => {
@@ -170,7 +173,8 @@ loginInputItems[1].onkeypress = () => {
 
 // 게시글 수정버튼
 modifyAndDeleteButtons[0].onclick = () => {
-    location.href = `/${type}/write`;
+    saveContent();
+    location.href = `/${type}?type=modify&number=${boardCode}`;
 }
 
 // 게시글 삭제 버튼
@@ -248,7 +252,7 @@ function load() {
         loginBox.style.visibility = "visible";
     }
 
-    let data = null;
+    data = null;
     replyUl.innerHTML = "";
 
     $.ajax({
@@ -288,26 +292,28 @@ function enterContent(data) {
     boardInfoBox[1].innerHTML += `${data.views}회`;
     boardInfoBox[2].innerHTML += `${data.time}`;
 
-    saveContent(data);
-
     if(checkUser(data.userCode)) {
         showBtnMenu();
     }
 }
 
-
-function saveContent(data) {
+// 수정하기 클릭시 실행
+function saveContent() {
     $.ajax({
         type: "post",
-        url: "",
+        url: `/api/v1/board/save/map/${data.boardCode}`,
         contentType: "application/json",
         data: JSON.stringify({
             boardTitle: data.boardTitle,
             boardContent: data.boardContent,
-            boardCode: data.boardCode
+            boardType: type,
+            importanceFlag: data.importanceFlag
         }),
         dataType: "json",
         success: (response) => {
+            if(response.data) {
+                alert("api 통신 성공")
+            }
         },
         error: errorMessage
     });

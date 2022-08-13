@@ -80,6 +80,7 @@
 			bm.board_content,
 			bm.user_code,
 			bm.board_type,
+			bm.importance_flag,
 			
 			um.name,
 			

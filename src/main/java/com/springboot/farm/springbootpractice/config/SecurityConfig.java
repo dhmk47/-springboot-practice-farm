@@ -53,7 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/index")
 				.loginProcessingUrl("/auth/signin")
 				.failureHandler(new AuthFailureHandler())
-				.defaultSuccessUrl("/");
+				.defaultSuccessUrl("/")
+			.and()
+				.logout()
+				.logoutSuccessUrl("/");
 		
 		
 	}

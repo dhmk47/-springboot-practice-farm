@@ -9,6 +9,8 @@ const userDtlMenuItems = document.querySelectorAll(".user-dtl-menu span");
 const titleInput = document.querySelector(".title-input input");
 const contentInput = document.querySelector(".content-input textarea");
 
+const importanceCheckBox = document.querySelector("#importance");
+
 // 게시판 구분짓는 flag
 let userMenuFlag = false;
 
@@ -19,8 +21,12 @@ let adminFlag = false;
 let userCode = 0;
 let name = null;
 
+let data = {};
+
 // 게시판 구분
-let boardType = document.querySelector(".type-span").textContent;
+let boardType = document.querySelector(".board-type-span").textContent; // 어느 게시판인지
+let type = document.querySelector(".type-span").textContent;            // 작성인지 수정인지
+let boardCode = document.querySelector(".board-code-span").textContent;
 let boardTypeNumber = boardType == "notice" ? 1 : boardType == "free" ? 2 : 3;
 
 $(userDtlMenu).fadeOut(0);
@@ -86,7 +92,7 @@ document.querySelector("article button").onclick = () => {
     let title = titleInput.value;
     let content = contentInput.value;
 
-    let importanceFlag = document.querySelector("#importance").checked;
+    let importanceFlag = importanceCheckBox.checked;
 
     $.ajax({
         type: "post",
@@ -153,7 +159,36 @@ function toggleImportanceBox() {
 
 function load() {
     loadUser();
+    if(type == "modify") {
+        loadBoard();
+        setContent();
+    }
     toggleImportanceBox();
+}
+
+function loadBoard() {
+    $.ajax({
+        type: "get",
+        url: `/api/v1/board/load/map/${parseInt(boardCode)}`,
+        dataType: "json",
+        async: false,
+        success: (response) => {
+            if(response.data != null) {
+                data = response.data;
+            }
+        },
+        error: errorMessage
+    });
+}
+
+function setContent() {
+    titleInput.value = data.boardTitle;
+    contentInput.value = data.boardContent;
+
+    if(data.importanceFlag) {
+        importanceCheckBox.setAttribute('checked', true);
+    }
+
 }
 
 function errorMessage(request, status, error) {
