@@ -109,7 +109,7 @@ main input, main textarea {
     resize: none;
 }
 
-.botton-box {
+.button-box {
     display: flex;
     justify-content: flex-end;
     align-items: center;

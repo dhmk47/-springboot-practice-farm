@@ -96,4 +96,15 @@
 			bm.board_code = #{board_code}
 			and board_type = #{board_type}
   	</select>
+  	<update id="updateBoardByBoardCode" parameterType="com.springboot.farm.springbootpractice.domain.entity.Board">
+  		update
+  			board_mst
+  		set
+  			board_title = #{board_title},
+  			board_content = #{board_content},
+  			importance_flag = #{importance_flag},
+  			update_date = now()
+  		where
+  			board_code = #{board_code}
+  	</update>
   </mapper>

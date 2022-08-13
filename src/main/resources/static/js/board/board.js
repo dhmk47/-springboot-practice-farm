@@ -221,7 +221,7 @@ nextButton.onclick = () => {
 }
 
 document.querySelector(".write-button button").onclick = () => {
-    location.href = `/${type}/write`;
+    location.href = `/${type}?type=write&number=${boardCode}`;
 }
 
 function setUserInfo(obj) {

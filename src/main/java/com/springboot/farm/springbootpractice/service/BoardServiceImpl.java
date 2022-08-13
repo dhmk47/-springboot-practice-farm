@@ -15,6 +15,7 @@ import com.springboot.farm.springbootpractice.domain.entity.Board;
 import com.springboot.farm.springbootpractice.web.dto.board.CreateBoardReqDto;
 import com.springboot.farm.springbootpractice.web.dto.board.CreateBoardRespDto;
 import com.springboot.farm.springbootpractice.web.dto.board.ReadBoardRespDto;
+import com.springboot.farm.springbootpractice.web.dto.board.UpdateBoardReqDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -74,7 +75,6 @@ public class BoardServiceImpl implements BoardService{
 		
 		boardList.forEach(board -> {
 			LocalDateTime now = LocalDateTime.now();
-			
 			String localDateTime = board.getUpdateDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 			int yearResult = now.getYear() - board.getUpdateDate().getYear();
 			int dayResult = now.getDayOfYear() - board.getUpdateDate().getDayOfYear();
@@ -98,13 +98,13 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int updateBoardByBoardCode(int boardCode) throws Exception {
-		return 0;
+	public boolean updateBoardByBoardCode(UpdateBoardReqDto updateBoardReqDto) throws Exception {
+		return boardRepository.updateBoardByBoardCode(updateBoardReqDto.toEntity()) > 0;
 	}
 
 	@Override
-	public int deleteBoardByBoardCode(int boardCode) throws Exception {
-		return 0;
+	public boolean deleteBoardByBoardCode(int boardCode) throws Exception {
+		return false;
 	}
 
 }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import com.springboot.farm.springbootpractice.web.dto.board.CreateBoardReqDto;
 import com.springboot.farm.springbootpractice.web.dto.board.CreateBoardRespDto;
 import com.springboot.farm.springbootpractice.web.dto.board.ReadBoardRespDto;
 import com.springboot.farm.springbootpractice.web.dto.board.SaveBoardToMapReqDto;
+import com.springboot.farm.springbootpractice.web.dto.board.UpdateBoardReqDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -87,8 +89,9 @@ public class BoardController {
 		return ResponseEntity.ok().body(new CMRespDto<>(1, boardType + " " + boardCode + "번 게시글 불러오기 성공", readBoardRespDto));
 	}
 	
-	@GetMapping("/load/map/{boardCoad}")
+	@GetMapping("/load/map/{boardCode}")
 	public ResponseEntity<?> getBoardFromMap(@PathVariable int boardCode) {
+		System.out.println(boardCode);
 		
 		SaveBoardToMapReqDto board = Util.boardMap.get(boardCode);
 		
@@ -97,5 +100,21 @@ public class BoardController {
 		}
 
 		return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "수정할 게시글 불러오기 실패", board));
+	}
+	
+	@PutMapping("/{boardCode}")
+	public ResponseEntity<?> updateBoardByBoardCode(@PathVariable int boardCode, @RequestBody UpdateBoardReqDto updateBoardReqDto) {
+		boolean status = false;
+		
+		updateBoardReqDto.setBoardCode(boardCode);
+		try {
+			status = boardService.updateBoardByBoardCode(updateBoardReqDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "게시글 수정 실패", status));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "게시글 수정 완료", status));
+		
 	}
 }

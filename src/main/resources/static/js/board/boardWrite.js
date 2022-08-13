@@ -9,6 +9,8 @@ const userDtlMenuItems = document.querySelectorAll(".user-dtl-menu span");
 const titleInput = document.querySelector(".title-input input");
 const contentInput = document.querySelector(".content-input textarea");
 
+const submitButton = document.querySelector(".button-box button");
+
 const importanceCheckBox = document.querySelector("#importance");
 
 // 게시판 구분짓는 flag
@@ -88,12 +90,40 @@ document.querySelector("main").onmouseover = () => {
 
 /*  main  */
 
-document.querySelector("article button").onclick = () => {
+submitButton.onclick = () => {
     let title = titleInput.value;
     let content = contentInput.value;
 
     let importanceFlag = importanceCheckBox.checked;
 
+    if(type != "modify") {  // 게시글 작성
+        createBoard(title, content, importanceFlag);
+    }else {                 // 게시글 수정
+        updateBoard(title, content, importanceFlag);
+    }
+}
+
+function updateBoard(title, content, importanceFlag) {
+    $.ajax({
+        type: "put",
+        url: `/api/v1/board/${boardCode}`,
+        contentType: "application/json",
+        data: JSON.stringify({
+            boardCode: boardCode,
+            boardTitle: title,
+            boardContent: content,
+            importanceFlag: importanceFlag
+        }),
+        dataType: "json",
+        success: (response) => {
+            if(response.data) {
+                history.back();
+            }
+        }
+    });
+}
+
+function createBoard(title, content, importanceFlag) {
     $.ajax({
         type: "post",
         url: "/api/v1/board/new",
@@ -102,13 +132,13 @@ document.querySelector("article button").onclick = () => {
             boardContent: content,
             "userCode": userCode,
             boardType: boardTypeNumber,
-            "importanceFlag" : importanceFlag
+            "importanceFlag": importanceFlag
         }),
         contentType: "application/json",
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
-                history.back();
+                location.replace(`/content?type=${boardType}&number=${boardCode}`);
             }else {
                 alert("게시글 작성 실패!");
             }
@@ -152,7 +182,7 @@ function loadUser() {
 
 function toggleImportanceBox() {
     if(boardTypeNumber == 1) {
-        document.querySelector(".botton-box span").classList.toggle("visible");
+        document.querySelector(".button-box span").classList.toggle("visible");
         document.querySelector(".importance-label").classList.toggle("visible");
     }
 }
@@ -189,6 +219,7 @@ function setContent() {
         importanceCheckBox.setAttribute('checked', true);
     }
 
+    submitButton.innerHTML = "수정하기";
 }
 
 function errorMessage(request, status, error) {
