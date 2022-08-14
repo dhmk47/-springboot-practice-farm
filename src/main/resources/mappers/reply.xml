@@ -52,4 +52,12 @@
 		where
 			reply_code = #{reply_code}
 	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		delete
+		from
+			reply_mst
+		where
+			reply_code = #{reply_code}
+	</delete>
 </mapper>

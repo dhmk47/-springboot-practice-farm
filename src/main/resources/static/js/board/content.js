@@ -429,11 +429,7 @@ function addReply() {
         dataType: "json",
         success: (response) => {
             if(response.data) {
-                alert("댓글 수정 성공");
-                location.replace(`content?type=${type}&number=${boardCode}`);
-            }else{
-                
-                alert("댓글 수정 실패");
+                reLoadPage();
             }
         },
         error: errorMessage
@@ -447,7 +443,7 @@ function modifyReply(replyCode) {
 
     toggleVisibleReplyAndInput(replySpan, modifyReplyInput, modifyButton);
 
-
+    modifyReplyInput.value = replySpan.textContent;
 }
 
 function toggleVisibleReplyAndInput(reply, input, button) {
@@ -498,14 +494,21 @@ function deleteReply(replyCode) {
             url: `/api/v1/content/reply/${replyCode}`,
             dataType: "json",
             success: (response) => {
-                
-            }
-        })
+                if(response.data) {
+                    reLoadPage();
+                }
+            },
+            error: errorMessage
+        });
     }
 }
 
 function checkConfirm() {
     return confirm("정말 삭제 하시겠습니까?");
+}
+
+function reLoadPage() {
+    location.replace(`content?type=${type}&number=${boardCode}`);
 }
 
 function errorMessage(request, status, error) {

@@ -2,6 +2,7 @@ package com.springboot.farm.springbootpractice.web.controller.api.board;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +31,8 @@ import lombok.RequiredArgsConstructor;
 public class BoardController {
 	
 	private final BoardService boardService;
-	
+
+	@CacheEvict(value = "boardList", allEntries = true)
 	@PostMapping("/new")
 	public ResponseEntity<?> insertBoard(@RequestBody CreateBoardReqDto createBoardReqDto) {
 		CreateBoardRespDto createBoardRespDto = null;
@@ -103,7 +105,8 @@ public class BoardController {
 
 		return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "수정할 게시글 불러오기 실패", board));
 	}
-	
+
+	@CacheEvict(value = "boardList", allEntries = true)
 	@PutMapping("/{boardCode}")
 	public ResponseEntity<?> updateBoardByBoardCode(@PathVariable int boardCode, @RequestBody UpdateBoardReqDto updateBoardReqDto) {
 		boolean status = false;
@@ -119,7 +122,8 @@ public class BoardController {
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "게시글 수정 완료", status));
 		
 	}
-	
+
+	@CacheEvict(value = "boardList", allEntries = true)
 	@DeleteMapping("/{boardCode}")
 	public ResponseEntity<?> deleteBoardByBoardCode(@PathVariable int boardCode) {
 		boolean status = false;

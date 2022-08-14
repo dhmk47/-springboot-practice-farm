@@ -9,4 +9,5 @@ public interface ReplyService {
 	public boolean addReply(CreateReplyReqDto createReplyReqDto) throws Exception;
 	public List<ReadReplyRespDto> getContentReplyListByBoardCode(int boardCode, int page, int index) throws Exception;
 	public boolean updateReply(int replyCode, String reply) throws Exception;
+	public boolean deleteReply(int replyCode) throws Exception;
 }

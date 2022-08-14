@@ -105,4 +105,9 @@ public class ReplyServiceImpl implements ReplyService{
 		
 		return replyRepository.updateReplyByReplyCode(map) > 0;
 	}
+	
+	@Override
+	public boolean deleteReply(int replyCode) throws Exception {
+		return replyRepository.delete(replyCode) > 0;
+	}
 }
