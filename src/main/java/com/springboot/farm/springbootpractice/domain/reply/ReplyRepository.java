@@ -11,4 +11,5 @@ import com.springboot.farm.springbootpractice.domain.entity.Reply;
 public interface ReplyRepository {
 	public int save(Reply reply);
 	public List<Reply> getReplyListByBoardCode(Map<String, Object> map);
+	public int updateReplyByReplyCode(Map<String, Object> map);
 }

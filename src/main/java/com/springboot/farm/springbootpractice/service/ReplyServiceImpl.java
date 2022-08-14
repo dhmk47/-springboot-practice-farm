@@ -96,4 +96,13 @@ public class ReplyServiceImpl implements ReplyService{
 		
 		return list;
 	}
+	
+	@Override
+	public boolean updateReply(int replyCode, String reply) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("reply_code", replyCode);
+		map.put("reply", reply);
+		
+		return replyRepository.updateReplyByReplyCode(map) > 0;
+	}
 }

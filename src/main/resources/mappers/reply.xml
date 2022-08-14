@@ -42,4 +42,14 @@
 			board_code = #{board_code}
 		limit #{page}, #{index}
 	</select>
+	
+	<update id="updateReplyByReplyCode" parameterType="HashMap">
+		update
+			reply_mst
+		set
+			reply = #{reply},
+			update_date = now()
+		where
+			reply_code = #{reply_code}
+	</update>
 </mapper>

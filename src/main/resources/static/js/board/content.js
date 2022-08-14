@@ -385,6 +385,7 @@ function enterReply() {
                 <div class="reply-info-box">
                     <span class="reply-${replyCode}">${replyObj.reply}</span>
                     <input type="text" class="modify-reply-input-${replyCode} modify-input visible">
+                    <button type="button" class="modify-reply-button-${replyCode} modify-button visible" onclick="updateReply(${replyCode})">수정하기</button>
                 </div>
             </li>
             `
@@ -428,7 +429,11 @@ function addReply() {
         dataType: "json",
         success: (response) => {
             if(response.data) {
+                alert("댓글 수정 성공");
                 location.replace(`content?type=${type}&number=${boardCode}`);
+            }else{
+                
+                alert("댓글 수정 실패");
             }
         },
         error: errorMessage
@@ -437,15 +442,17 @@ function addReply() {
 
 function modifyReply(replyCode) {
     const replySpan = document.querySelector(`.reply-${replyCode}`);
+    const modifyButton = document.querySelector(`.modify-reply-button-${replyCode}`);
     const modifyReplyInput = document.querySelector(`.modify-reply-input-${replyCode}`);
 
-    toggleVisibleReplyAndInput(replySpan, modifyReplyInput);
+    toggleVisibleReplyAndInput(replySpan, modifyReplyInput, modifyButton);
 
 
 }
 
-function toggleVisibleReplyAndInput(reply, input) {
+function toggleVisibleReplyAndInput(reply, input, button) {
     reply.classList.toggle("visible");
+    button.classList.toggle("visible");
     input.classList.toggle("visible");
 
 }
@@ -458,8 +465,47 @@ function toggleVisibleReplyAndInput(reply, input) {
 //     dom.classList.add("visible");
 // }
 
-function deleteReply(replyCode) {
+function updateReply(replyCode) {
+    let reply = getReply(replyCode);
 
+    $.ajax({
+        type: "put",
+        url: `/api/v1/content/reply/${replyCode}`,
+        contentType: "application/json",
+        data: JSON.stringify({
+            reply: reply
+        }),
+        dataType: "json",
+        success: (response) => {
+            if(response.data) {
+                location.href = `/content?type=${type}&number=${boardCode}`
+            }
+        },
+        error: errorMessage
+    });
+}
+
+function getReply(replyCode) {
+    return document.querySelector(`.modify-reply-input-${replyCode}`).value;
+}
+
+function deleteReply(replyCode) {
+    let checkFlag = checkConfirm();
+
+    if(checkFlag) {
+        $.ajax({
+            type: "delete",
+            url: `/api/v1/content/reply/${replyCode}`,
+            dataType: "json",
+            success: (response) => {
+                
+            }
+        })
+    }
+}
+
+function checkConfirm() {
+    return confirm("정말 삭제 하시겠습니까?");
 }
 
 function errorMessage(request, status, error) {
