@@ -193,6 +193,14 @@ section ul li {
     cursor: default;
 }
 
+.role-admin {
+    background: hwb(273 29% 16%);
+}
+
+.role-manager {
+    background: rgb(255, 90, 90);
+}
+
 .reply-writer-box {
     display: flex;
     justify-content: space-between;

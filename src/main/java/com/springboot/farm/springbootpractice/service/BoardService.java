@@ -12,5 +12,6 @@ public interface BoardService {
 	public ReadBoardRespDto getBoardByBoardCode(int boardCode, String board_type) throws Exception;
 	public List<ReadBoardRespDto> getBoardList(String type, int page, int totalCount, boolean boardPageFlag) throws Exception;
 	public boolean updateBoardByBoardCode(UpdateBoardReqDto updateBoardReqDto) throws Exception;
+	public boolean updateBoardViewsCount(int boardCode) throws Exception;
 	public boolean deleteBoardByBoardCode(int boardCode) throws Exception;
 }

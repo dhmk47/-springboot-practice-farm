@@ -28,7 +28,7 @@ public class ReplyController {
 
 	private final ReplyService replyService;
 
-	@CacheEvict(value = "boardList", allEntries = true)
+//	@CacheEvict(value = "boardList", allEntries = true)
 	@PostMapping("/reply")
 	public ResponseEntity<?> insertReply(@RequestBody CreateReplyReqDto createReplyReqDto) {
 		boolean result = false;
@@ -72,7 +72,7 @@ public class ReplyController {
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "댓글 수정 성공", status));
 	}
 	
-	@CacheEvict(value = "boardList", allEntries = true)
+//	@CacheEvict(value = "boardList", allEntries = true)
 	@DeleteMapping("/reply/{replyCode}")
 	public ResponseEntity<?> deleteReplyByReplyCode(@PathVariable int replyCode) {
 		boolean status = false;

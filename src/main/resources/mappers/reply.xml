@@ -40,6 +40,9 @@
 										board_code = #{board_code}) rm2 ON (1 = 1)
 		WHERE
 			board_code = #{board_code}
+		ORDER BY
+			roles LIKE '%ADMIN' DESC,
+			roles LIKE '%MANAGER' DESC
 		limit #{page}, #{index}
 	</select>
 	

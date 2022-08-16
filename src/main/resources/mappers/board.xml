@@ -107,6 +107,14 @@
   		where
   			board_code = #{board_code}
   	</update>
+  	<update id="updateBoardViewCount" parameterType="Integer">
+  		update
+  			board_dtl
+  		set
+  			views = views + 1
+  		where
+  			board_code = #{board_code}
+  	</update>
   	<delete id="delete" parameterType="Integer">
   		delete
   		from

@@ -13,5 +13,6 @@ public interface BoardRepository {
 	public Board getBoardByBoardCode(int board_code, int board_type);
 	public List<Board> getBoardList(Map<String, Object> map);
 	public int updateBoardByBoardCode(Board board);
+	public int updateBoardViewCount(int board_code);
 	public int delete(int board_code);
 }

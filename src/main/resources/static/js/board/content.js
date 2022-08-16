@@ -370,8 +370,10 @@ function enterReply() {
             let result = (replyObj.userCode == userCode) || (adminFlag || managerFlag);
             let replyCode = replyObj.replyCode;
 
+            
+
             replyUl.innerHTML += `
-            <li>
+            <li class="role-${replyObj.roles.includes('ADMIN') ? 'admin' : replyObj.roles.includes('MANAGER') ? 'manager' : 'user'}">
                 <div class="reply-writer-box">
                     <div>
                         <span class="writer-span">${replyObj.name}</span>

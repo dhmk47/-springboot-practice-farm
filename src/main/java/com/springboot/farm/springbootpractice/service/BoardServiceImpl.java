@@ -61,12 +61,12 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
-	@Cacheable(value = "boardList", key =  "#type + #page")
+//	@Cacheable(value = "boardList", key =  "#type + #page")
 	public List<ReadBoardRespDto> getBoardList(String type, int page, int totalCount, boolean boardPageFlag) throws Exception {
 		List<ReadBoardRespDto> boardList = null;
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		System.out.println(page + "번 page 들어와서 service 접근");
+//		System.out.println(page + "번 page 들어와서 service 접근");
 		
 		map.put("type", type.equals("notice") ? 1 : type.equals("free") ? 2 : type.equals("QnA") ? 3 : 4);
 		map.put("boardPage", boardPageFlag);
@@ -105,6 +105,11 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public boolean updateBoardByBoardCode(UpdateBoardReqDto updateBoardReqDto) throws Exception {
 		return boardRepository.updateBoardByBoardCode(updateBoardReqDto.toEntity()) > 0;
+	}
+	
+	@Override
+	public boolean updateBoardViewsCount(int boardCode) throws Exception {
+		return boardRepository.updateBoardViewCount(boardCode) > 0;
 	}
 
 	@Override

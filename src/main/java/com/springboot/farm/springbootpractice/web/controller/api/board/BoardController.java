@@ -2,8 +2,6 @@ package com.springboot.farm.springbootpractice.web.controller.api.board;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +30,7 @@ public class BoardController {
 	
 	private final BoardService boardService;
 
-	@CacheEvict(value = "boardList", allEntries = true)
+//	@CacheEvict(value = "boardList", allEntries = true)
 	@PostMapping("/new")
 	public ResponseEntity<?> insertBoard(@RequestBody CreateBoardReqDto createBoardReqDto) {
 		CreateBoardRespDto createBoardRespDto = null;
@@ -85,6 +83,11 @@ public class BoardController {
 		
 		try {
 			readBoardRespDto = boardService.getBoardByBoardCode(boardCode, boardType);
+			
+			if(readBoardRespDto != null) {
+				boardService.updateBoardViewsCount(boardCode);
+				readBoardRespDto.setViews(readBoardRespDto.getViews() + 1);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, boardType + " " + boardCode + "번 게시글 불러오기 실패", readBoardRespDto));
@@ -106,7 +109,7 @@ public class BoardController {
 		return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "수정할 게시글 불러오기 실패", board));
 	}
 
-	@CacheEvict(value = "boardList", allEntries = true)
+//	@CacheEvict(value = "boardList", allEntries = true)
 	@PutMapping("/{boardCode}")
 	public ResponseEntity<?> updateBoardByBoardCode(@PathVariable int boardCode, @RequestBody UpdateBoardReqDto updateBoardReqDto) {
 		boolean status = false;
@@ -123,7 +126,7 @@ public class BoardController {
 		
 	}
 
-	@CacheEvict(value = "boardList", allEntries = true)
+//	@CacheEvict(value = "boardList", allEntries = true)
 	@DeleteMapping("/{boardCode}")
 	public ResponseEntity<?> deleteBoardByBoardCode(@PathVariable int boardCode) {
 		boolean status = false;

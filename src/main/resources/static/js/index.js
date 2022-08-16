@@ -224,7 +224,7 @@ productAdminmenu[0].onclick = () => {
 }
 
 productAdminmenu[1].onclick = () => {
-    if(adminFlag) { // 관리자일 경우 새로운 getMapping 요청
+    if(adminFlag || managerFlag) { // 관리자일 경우 새로운 getMapping 요청
         location.href = "/product/management";
     }else {
         // if(!signinFlag) {
@@ -619,12 +619,12 @@ function boardLoad() {
 
 function setUserInfo(obj) {
     if(obj != null) {
-        if(obj.roles.includes("USER")) {
-            userFlag = true;
+        if(obj.roles.includes("ADMIN")) {
+            adminFlag = true;
         }else if(obj.roles.includes("MANAGER")) {
             managerFlag = true;
         }else {
-            adminFlag = true;
+            userFlag = true;
         }
 
         userCode = obj.userCode;
@@ -694,14 +694,15 @@ function load(){
         url: "/api/v1/product/new/list",
         dataType: "json",
         success: (response) => {
-            if(response.data.length != 0) {
+            if(response.data == null) {
+                document.querySelector(".new-farm-product").innerHTML = 
+                `<span class="no-new-product">새롭게 추가된<br>농산물이 없습니다.</span?`;
+
+            }else if(response.data.length != 0) {
                 for(let i = 0; i < response.data.length; i++){
                     document.querySelector(".new-farm-product").innerHTML += 
                     `<span class="new-product"> ${response.data[i].product_name}</span>`;
                 }
-            }else {
-                document.querySelector(".new-farm-product").innerHTML = 
-                `<span class="no-new-product">새롭게 추가된<br>농산물이 없습니다.</span?`;
             }
         },
         error: errorMessage
