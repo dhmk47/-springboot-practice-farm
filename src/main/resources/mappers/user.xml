@@ -36,6 +36,13 @@
   			um.username = #{username}
   	</select>
   	
+  	<select id="getAllUser" resultType="com.springboot.farm.springbootpractice.domain.entity.User">
+  		select
+  			usercode
+  		from
+  			user_mst
+  	</select>
+  	
   	<update id="updateUserMoney" parameterType="HashMap">
   		update
   			user_dtl

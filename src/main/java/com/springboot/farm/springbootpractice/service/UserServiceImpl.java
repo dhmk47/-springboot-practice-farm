@@ -1,16 +1,15 @@
 package com.springboot.farm.springbootpractice.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.springboot.farm.springbootpractice.domain.entity.User;
 import com.springboot.farm.springbootpractice.domain.user.UserRepository;
 import com.springboot.farm.springbootpractice.web.dto.auth.CheckUsernameReqDto;
 import com.springboot.farm.springbootpractice.web.dto.auth.CreateUserReqDto;
-import com.springboot.farm.springbootpractice.web.dto.user.ReadUserRespDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +22,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User getUser(CheckUsernameReqDto checkUsernameReqDto) throws Exception {
 		return null;
+	}
+	
+	@Override
+	public List<User> getAllUserToList() throws Exception {
+		return userRepository.getAllUser();
 	}
 
 	@Override

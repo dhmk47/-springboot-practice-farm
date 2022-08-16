@@ -103,13 +103,13 @@ public class ProductServiceImpl implements ProductService{
 //		
 //		return productList;
 		
+		
 		return toReadProductRestDtoList(productRepository.readRecentlyProductLIst(date));
 	}
 	
 	@Override
 	public List<ReadPastAndNowProductInfoDto> getRecentlyModifiedProductList(String date) throws Exception {
 		List<ReadPastAndNowProductInfoDto> productList = null;
-		
 		productList = productRepository.readModifiedProductList(date)
 				.stream()
 				.map(entity -> entity.toRespDto())

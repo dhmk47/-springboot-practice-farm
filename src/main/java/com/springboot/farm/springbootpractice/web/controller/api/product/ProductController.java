@@ -63,9 +63,7 @@ public class ProductController {
 		try {
 			if(productService.insertProduct(createProductReqDto)) {
 				result = true;
-				/*Util.addProductFlag.forEach((key, value) -> {
-					Util.addProductFlag.put(key, true);
-				});*/
+				allUsersProductFlagUpdate();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -146,36 +144,17 @@ public class ProductController {
 	}
 	
 	@GetMapping("/new/list")
-	public ResponseEntity<?> getRecentlyProductList(/*int userCode*/) {
+	public ResponseEntity<?> getRecentlyProductList(int userCode) {
 		List<ReadProductRespDto> productList = null;
-		
-		int userCode = 8;
-		if(Util.newProductMap.get(userCode) != null) {
-			int now = LocalDateTime.now().getDayOfYear();
-			int minute = LocalDateTime.now().getMinute();
-			
-			productList = Util.newProductMap.get(userCode)
-				.stream()
-//				.filter(product -> ((now > 6 ? now + 365 : now) - (product.getUpdate_date().getDayOfYear())) < 6)
-				.filter(product -> minute - product.getUpdate_date().getMinute() < 1)
-				.collect(Collectors.toCollection(ArrayList<ReadProductRespDto>::new));
-			
-			System.out.println(minute + " : " + Util.newProductMap.get(userCode).get(0).getUpdate_date().getMinute());
-			System.out.println(productList);
-			
-			return ResponseEntity.ok().body(new CMRespDto<>(1, "새롭게 추가된 품목 불러오기 성공", productList));
-		}
-		
-		Util.addProductFlag.put(userCode, true);
 		
 		if(Util.addProductFlag.get(userCode) != null) {
 			
 			if(/*Util.addProductFlag*/Util.addProductFlag.get(userCode)) {
 				
-				System.out.println("db 접근");
+				System.out.println("if문 db 접근");
 				
 				Date now = new Date();
-				now.setDate(now.getDate() - 1);
+				now.setDate(now.getDate() - 3);
 				SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 				
 				try {
@@ -188,8 +167,40 @@ public class ProductController {
 					e.printStackTrace();
 					return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "새롭게 추가된 품목 불러오기 실패", productList));
 				}
+			}else if(Util.newProductMap.get(userCode) != null) {
+				System.out.println("else if문 db 접근x");
+				int now = LocalDateTime.now().getDayOfYear();
+				int minute = LocalDateTime.now().getMinute();
+				
+				productList = Util.newProductMap.get(userCode)
+					.stream()
+					.filter(product -> ((now < 6 ? now + 365 : now) - (product.getCreate_date().getDayOfYear())) < 3)
+//					.filter(product -> minute - product.getCreate_date().getMinute() < 2)
+					.collect(Collectors.toCollection(ArrayList<ReadProductRespDto>::new));
+				
+				System.out.println(productList);
+				
+				Util.newProductMap.put(userCode, productList);
+				
+			}
+		}else {
+			System.out.println("else문 db 접근");
+			
+			Date now = new Date();
+			now.setDate(now.getDate() - 3);
+			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+			
+			try {
+				productList = productService.getRecentlyProductList(date.format(now) + "");
+				Util.newProductMap.put(userCode, productList);
+				Util.addProductFlag.put(userCode, false);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "새롭게 추가된 품목 불러오기 실패", productList));
 			}
 		}
+		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "새롭게 추가된 품목 불러오기 성공", productList));
 	}
 	
@@ -199,7 +210,7 @@ public class ProductController {
 		
 		if(Util.modifyProductFlag) {
 			Date now = new Date();
-			now.setDate(now.getDate() - 1);
+			now.setDate(now.getDate() - 3);
 			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 			
 			try {
@@ -288,5 +299,17 @@ public class ProductController {
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "품목 삭제 성공", result));
+	}
+	
+	private void allUsersProductFlagUpdate() {
+		try {
+			userService.getAllUserToList()
+				.forEach(user -> Util.addProductFlag.put(user.getUsercode(), true));
+			System.out.println("모두 true로 변경");
+			
+			Util.addProductFlag.put(0, true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

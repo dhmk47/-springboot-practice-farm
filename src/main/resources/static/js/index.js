@@ -692,9 +692,10 @@ function load(){
     $.ajax({
         type: "get",
         url: "/api/v1/product/new/list",
+        data: {userCode: userCode},
         dataType: "json",
         success: (response) => {
-            if(response.data == null) {
+            if(response.data.length == 0) {
                 document.querySelector(".new-farm-product").innerHTML = 
                 `<span class="no-new-product">새롭게 추가된<br>농산물이 없습니다.</span?`;
 
