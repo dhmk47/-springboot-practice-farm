@@ -56,18 +56,24 @@
                     <i class="fa-solid fa-xmark xmark3"></i>
                     <div></div>
                 </div>
-                <form method="post" action="/auth/signin" class="login-box">
-                    <div class="input-box">
-                        <div>
-                            <input type="text" name="username" placeholder="아이디">
-                        </div>
-                        <div>
-                            <input type="password" name="password" placeholder="비밀번호">
-                        </div>
+                <div>
+                    <div class="oAuth2-login-div">
+                        <div class="naver-oAuth2 oAuth2-div"><i class="fa-solid fa-n"></i></div>
+                        <div class="oAuth2-div"><i class="fa-brands fa-google"></i></div>
                     </div>
-                    <div class="signin-signup-button-box">
-                        <button type="submit">로그인</button>
-                        <button type="button">회원가입</button>
+                    <form method="post" action="/auth/signin" class="login-box">
+                        <div class="input-box">
+                            <div>
+                                <input type="text" name="username" placeholder="아이디">
+                            </div>
+                            <div>
+                                <input type="password" name="password" placeholder="비밀번호">
+                            </div>
+                        </div>
+                        <div class="signin-signup-button-box">
+                            <button type="submit">로그인</button>
+                            <button type="button">회원가입</button>
+                        </div>
                     </form>
                 </div>
             </div>

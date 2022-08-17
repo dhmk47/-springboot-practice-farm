@@ -11,10 +11,16 @@ import org.springframework.util.AntPathMatcher;
 import com.springboot.farm.springbootpractice.config.auth.AuthFailureHandler;
 import com.springboot.farm.springbootpractice.config.auth.CustomAccessDeniedHandler;
 import com.springboot.farm.springbootpractice.config.auth.CustomAuthenticationEntryPoint;
+import com.springboot.farm.springbootpractice.service.auth.PrincipalOAuth2Service;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	private final PrincipalOAuth2Service principalOAuth2Service;
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -43,20 +49,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //				.authenticated()
 			.anyRequest()
 				.permitAll()
+				
 			.and()
+			
 			.exceptionHandling()
 				.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 				
 				.accessDeniedHandler(new CustomAccessDeniedHandler())
+				
 			.and()
+			
 			.formLogin()
 				.loginPage("/index")
 				.loginProcessingUrl("/auth/signin")
 				.failureHandler(new AuthFailureHandler())
-				.defaultSuccessUrl("/")
+				
 			.and()
-				.logout()
-				.logoutSuccessUrl("/");
+			
+			.oauth2Login()
+			.userInfoEndpoint()
+			.userService(principalOAuth2Service)
+			
+			.and()
+			
+			.failureHandler(new AuthFailureHandler())
+			.defaultSuccessUrl("/")
+			
+			.and()
+			
+			.logout()
+			.logoutSuccessUrl("/");
 		
 		
 	}

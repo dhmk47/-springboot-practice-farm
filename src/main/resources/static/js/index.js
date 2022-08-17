@@ -14,6 +14,8 @@ const userDtlMenuItems = document.querySelectorAll(".user-dtl-menu span");
 
 const productAdminmenu = document.querySelectorAll(".farm-product-dtl-menu span");
 //main
+const oAuth2LoginDiv = document.querySelector(".oAuth2-login-div");
+const oAuth2LoginBoxes = document.querySelectorAll(".oAuth2-div");
 const loginBox = document.querySelector(".login-box");
 const loginInputItems = document.querySelectorAll(".login-box input");
 const loginBoxButtons = document.querySelectorAll(".signin-signup-button-box button");
@@ -499,6 +501,17 @@ document.querySelector(".show-product-button").onclick = () => {
     }
 }
 
+oAuth2LoginBoxes[0].onclick = () => {
+    location.href = "/oauth2/authorization/naver";
+    load();
+}
+
+oAuth2LoginBoxes[1].onclick = () => {
+    location.href = "/oauth2/authorization/google";
+    load();
+
+}
+
 loginBoxButtons[0].onclick = () => {
     for(let i = 0; i < loginInputItems.length; i++){
         if(isEmpty(loginInputItems[i].value)){
@@ -658,9 +671,11 @@ function load(){
     if(signinFlag) {
         userMenu.style.display = "block";
         loginBox.style.visibility = "hidden";
+        oAuth2LoginDiv.style.visibility = "hidden";
     }else {
         userMenu.style.display = "none";
         loginBox.style.visibility = "visible";
+        oAuth2LoginDiv.style.visibility = "visible";
     }
 
     if(userCode != 0) {

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogAop {
 	
-	private Logger LOGGER = LoggerFactory.getLogger(getClass());
+	private static Logger LOGGER = LoggerFactory.getLogger(LogAop.class);
 
 	@Pointcut("@annotation(com.springboot.farm.springbootpractice.handler.aop.annotation.Log)")
 	public void enableLog() {}

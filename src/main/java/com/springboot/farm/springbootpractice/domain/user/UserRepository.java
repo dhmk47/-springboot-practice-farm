@@ -9,8 +9,10 @@ import com.springboot.farm.springbootpractice.domain.entity.User;
 
 @Mapper
 public interface UserRepository {
-	public int insertUser(User user);
-	public User getUserByUsername(String username);
-	public List<User> getAllUser();
-	public int updateUserMoney(Map<String, Object> map);
+	public int insertUser(User user) throws Exception;
+	public User getUserByUsername(String username) throws Exception;
+	public User getUserByOAuth2Id(String oAuth2_id) throws Exception;
+	public int updateUserPhone(User user) throws Exception;
+	public List<User> getAllUser() throws Exception;
+	public int updateUserMoney(Map<String, Object> map) throws Exception;
 }

@@ -20,10 +20,12 @@ public class User {
 	private int usercode;
 	private String name;
 	private String username;
+	private String oauth2_id;
 	private String password;
 	private String email;
 	private String roles;
 	private int money;
+	private String phone;
 	private LocalDateTime create_date;
 	private LocalDateTime update_date;
 	
@@ -32,10 +34,12 @@ public class User {
 				.usercode(usercode)
 				.name(name)
 				.username(username)
+				.oAuth2_id(oauth2_id)
 				.password(password)
 				.email(email)
 				.roles(roles)
 				.money(money)
+				.phone(phone)
 				.create_date(create_date)
 				.update_date(update_date)
 				.build();
@@ -46,10 +50,12 @@ public class User {
 				.userCode(usercode)
 				.name(name)
 				.username(username)
+				.oAuth2_id(oauth2_id)
 				.password(password)
 				.email(email)
 				.roles(roles)
 				.money(money)
+				.phone(phone)
 				.create_date(create_date)
 				.update_date(update_date)
 				.build();

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.farm.springbootpractice.handler.aop.annotation.ValidCheck;
 import com.springboot.farm.springbootpractice.handler.exception.CustomValidationApiException;
 import com.springboot.farm.springbootpractice.service.auth.AuthService;
 import com.springboot.farm.springbootpractice.service.auth.PrincipalDetails;
@@ -37,19 +38,9 @@ public class AuthUserController {
 	
 	private final AuthService authService;
 	
+	@ValidCheck
 	@PostMapping("/signup")
 	public ResponseEntity<?> signupUser(@RequestBody @Valid CreateUserReqDto createUserReqDto, BindingResult bindingResult) {
-		
-		if(bindingResult.hasErrors()) {
-			Map<String, String> errorMap = new HashMap<String, String>();
-			
-			bindingResult.getFieldErrors().forEach(error -> {
-				errorMap.put(error.getField(), error.getDefaultMessage());
-			});
-			
-			throw new CustomValidationApiException("유효성 검사 실패", errorMap);
-		}
-		
 		
 		CreateUserRespDto createUserRespDto = null;
 		
@@ -63,19 +54,10 @@ public class AuthUserController {
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "회원가입 성공", createUserRespDto));
 	}
-	
+
+	@ValidCheck
 	@GetMapping("/signup/validation/username")
 	public ResponseEntity<?> checkUser(@Valid CheckUsernameReqDto checkUsernameReqDto, BindingResult bindingResult){
-		
-		if(bindingResult.hasErrors()) {
-			Map<String, String> errorMap = new HashMap<String, String>();
-			
-			bindingResult.getFieldErrors().forEach(error -> {
-				errorMap.put(error.getField(), error.getDefaultMessage());
-			});
-
-			throw new CustomValidationApiException("유효성 검사 실패", errorMap);
-		}
 		
 		boolean status = false;
 		
