@@ -102,8 +102,6 @@ public class ProductServiceImpl implements ProductService{
 //				.collect(Collectors.toCollection(ArrayList::new));
 //		
 //		return productList;
-		
-		
 		return toReadProductRestDtoList(productRepository.readRecentlyProductLIst(date));
 	}
 	
@@ -153,7 +151,6 @@ public class ProductServiceImpl implements ProductService{
 
 	private List<ReadProductRespDto> toReadProductRestDtoList(List<Product> productEntityList) {
 		List<ReadProductRespDto> dtoList = new ArrayList<>();
-		
 		dtoList = productEntityList
 			.stream()
 			.map(entity -> entity.toReadRespDto())

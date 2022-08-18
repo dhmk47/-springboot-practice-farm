@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.springboot.farm.springbootpractice.web.dto.board.SaveBoardToMapReqDto;
+import com.springboot.farm.springbootpractice.web.dto.product.ReadPastAndNowProductInfoDto;
 import com.springboot.farm.springbootpractice.web.dto.product.ReadProductRespDto;
 
 public class Util {
@@ -19,7 +20,8 @@ public class Util {
 	public static Map<Integer, List<ReadProductRespDto>> newProductMap = new HashMap<Integer, List<ReadProductRespDto>>();
 	
 	// 수정된 품목이 있는지 확인 Flag
-	public static boolean modifyProductFlag = true;
+	public static Map<Integer, Boolean> modifyProductFlag = new HashMap<Integer, Boolean>();
+	public static Map<Integer, List<ReadPastAndNowProductInfoDto>> modifyProductMap = new HashMap<Integer, List<ReadPastAndNowProductInfoDto>>();
 	
 	// 삭제된 품목중 사용자가 가지고 있는 품목이 있는지 확인 Flag
 	public static boolean deletedFlag = true;

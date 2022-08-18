@@ -434,7 +434,12 @@ function addReply() {
                 reLoadPage();
             }
         },
-        error: errorMessage
+        error: (error) => {
+            if(error.status == 403){
+                alert("로그인을 먼저 진행해주세요.");
+                doClear(replyInput);
+            }
+        }
     });
 }
 
@@ -511,6 +516,10 @@ function checkConfirm() {
 
 function reLoadPage() {
     location.replace(`content?type=${type}&number=${boardCode}`);
+}
+
+function doClear(obj) {
+    obj.value = "";
 }
 
 function errorMessage(request, status, error) {

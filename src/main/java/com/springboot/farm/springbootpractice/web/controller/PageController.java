@@ -33,23 +33,22 @@ public class PageController {
 	
 	// 게시판
 	
-	@GetMapping("/board")
-	public String goNotice(Model model, @RequestParam String type, @RequestParam int page) {
+	@GetMapping("/board")	// 게시판
+	public String goBoard(Model model, @RequestParam String type, @RequestParam int page) {
 		model.addAttribute("type", type);
 		model.addAttribute("page", page);
 		return "/board/board";
 	}
 	
-	@GetMapping("/{boardType}")
-	public String goNoticeWrite(@PathVariable String boardType, String type, String number, Model model) {
-		System.out.println("들어옴");
+	@GetMapping("/{boardType}")		// 게시판 작성
+	public String goBoardWrite(@PathVariable String boardType, String type, String number, Model model) {
 		model.addAttribute("boardType", boardType);
 		model.addAttribute("type", type);
 		model.addAttribute("boardCode", number);
 		return "/board/boardWrite";
 	}
 	
-	@GetMapping("/content")
+	@GetMapping("/content")			// 게시글
 	public String goContent(Model model, @RequestParam String type, @RequestParam int number) {
 		model.addAttribute("type", type);
 		model.addAttribute("boardCode", number);

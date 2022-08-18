@@ -138,7 +138,7 @@ function createBoard(title, content, importanceFlag) {
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
-                location.replace(`/content?type=${boardType}&number=${boardCode}`);
+                location.replace(`/content?type=${boardType}&number=${response.data.boardCode}`);
             }else {
                 alert("게시글 작성 실패!");
             }

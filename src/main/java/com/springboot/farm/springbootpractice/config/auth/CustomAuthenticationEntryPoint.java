@@ -24,7 +24,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 		}else {
 			String uri = request.getRequestURI();
-			if(uri.equals("/notice/write") || uri.equals("/free/write") || uri.equals("/QnA/write")) {
+			if(uri.equals("/notice") || uri.equals("/free") || uri.equals("/QnA")) {
 				response.setCharacterEncoding("utf-8");
 				response.setContentType("text/html; charset=utf-8");
 				response.getWriter().print("<html><head></head><body><script>alert(\"로그인 후 진행해주세요.\");location.href=\"/index\"</script></body></html>");

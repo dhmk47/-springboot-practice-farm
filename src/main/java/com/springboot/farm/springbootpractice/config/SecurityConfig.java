@@ -39,14 +39,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/v1/product/auth/**")
 				.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
 			
-			.antMatchers("/notice/write", "/free/write", "/QnA/write")
+				.antMatchers("/notice/**")
+				.access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+				
+			.antMatchers("/notice", "/free", "QnA")
 				.authenticated()
 			
-			.antMatchers("/notice/write")
-				.access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-			
-//			.antMatchers("/", "/index")
-//				.authenticated()
+			.antMatchers("/api/v1/content/reply")
+				.authenticated()
 			.anyRequest()
 				.permitAll()
 				

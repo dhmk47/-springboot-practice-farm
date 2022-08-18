@@ -727,6 +727,7 @@ function load(){
     $.ajax({
         type: "get",
         url: "/api/v1/product/modify/list",
+        data: {userCode: userCode},
         dataType: "json",
         success: (response) => {
 
@@ -738,7 +739,7 @@ function load(){
                 for(let i = 0; i < response.data.length; i++) {
                     obj = response.data[i];
 
-                    showProductInfoChangeBox.innerHTML =
+                    showProductInfoChangeBox.innerHTML +=
                     `<span class="change-product-title">${obj.updatedName}<br></span>`;
                     
                     if(obj.originalName != obj.updatedName) {

@@ -142,7 +142,8 @@
 			nullif(op.season, pk.season) AS original_season,
 			nullif(pk.season, op.season) AS updated_season,
 			nullif(op.grow_day, pk.grow_day) AS original_grow_day,
-			nullif(pk.grow_day, op.grow_day) AS updated_grow_day
+			nullif(pk.grow_day, op.grow_day) AS updated_grow_day,
+			op.update_date
 		FROM
 			original_product op
 			LEFT OUTER JOIN product_kind pk ON(pk.product_code = op.product_code)
@@ -172,7 +173,8 @@
   			product_name = #{product_name},
   			price = #{price},
   			season = #{season},
-  			grow_day = #{grow_day}
+  			grow_day = #{grow_day},
+  			update_date = now()
   		where
   			product_code = #{product_code}
   	</update>
