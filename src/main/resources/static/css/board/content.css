@@ -149,12 +149,21 @@ section {
     height: 50px;
 }
 
+.file-box span {
+    font-size: 20px;
+    font-weight: 600;
+}
+
 .content-text {
     border: 1px solid #141414;
     width: 700px;
     height: 600px;
 
     resize: none;
+}
+
+.file-list {
+    margin-top: 10px;
 }
 
 .reply-box {

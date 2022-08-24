@@ -8,8 +8,8 @@ import com.springboot.farm.springbootpractice.web.dto.board.ReadBoardRespDto;
 import com.springboot.farm.springbootpractice.web.dto.board.UpdateBoardReqDto;
 
 public interface BoardService {
-	public CreateBoardRespDto createBoard(CreateBoardReqDto createBoardReqDto) throws Exception;
-	public ReadBoardRespDto getBoardByBoardCode(int boardCode, String board_type) throws Exception;
+	public int createBoard(CreateBoardReqDto createBoardReqDto) throws Exception;
+	public List<ReadBoardRespDto> getBoardByBoardCode(int boardCode, String board_type) throws Exception;
 	public List<ReadBoardRespDto> getBoardList(String type, int page, int totalCount, boolean boardPageFlag) throws Exception;
 	public boolean updateBoardByBoardCode(UpdateBoardReqDto updateBoardReqDto) throws Exception;
 	public boolean updateBoardViewsCount(int boardCode) throws Exception;

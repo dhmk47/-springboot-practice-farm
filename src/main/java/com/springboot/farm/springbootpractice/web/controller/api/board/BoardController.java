@@ -32,17 +32,17 @@ public class BoardController {
 
 //	@CacheEvict(value = "boardList", allEntries = true)
 	@PostMapping("/new")
-	public ResponseEntity<?> insertBoard(@RequestBody CreateBoardReqDto createBoardReqDto) {
-		CreateBoardRespDto createBoardRespDto = null;
+	public ResponseEntity<?> insertBoard(CreateBoardReqDto createBoardReqDto) {
+		int boardCode = 0;
 		
 		try {
-			createBoardRespDto = boardService.createBoard(createBoardReqDto);
+			boardCode = boardService.createBoard(createBoardReqDto);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "게시글 작성 실패", createBoardRespDto));
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "게시글 작성 실패", boardCode));
 		}
 		
-		return ResponseEntity.ok().body(new CMRespDto<>(1, "게시글 작성 성공", createBoardRespDto));
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "게시글 작성 성공", boardCode));
 	}
 	
 	@PostMapping("/save/map/{boardCode}")
@@ -79,21 +79,21 @@ public class BoardController {
 	
 	@GetMapping("/{boardType}/{boardCode}")
 	public ResponseEntity<?> getBoardByBoardCode(@PathVariable String boardType, @PathVariable int boardCode) {
-		ReadBoardRespDto readBoardRespDto = null;
+		List<ReadBoardRespDto> readBoardRespDtoList = null;
 		
 		try {
-			readBoardRespDto = boardService.getBoardByBoardCode(boardCode, boardType);
+			readBoardRespDtoList = boardService.getBoardByBoardCode(boardCode, boardType);
 			
-			if(readBoardRespDto != null) {
+			if(readBoardRespDtoList != null) {
 				boardService.updateBoardViewsCount(boardCode);
-				readBoardRespDto.setViews(readBoardRespDto.getViews() + 1);
+				readBoardRespDtoList.get(0).setViews(readBoardRespDtoList.get(0).getViews() + 1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, boardType + " " + boardCode + "번 게시글 불러오기 실패", readBoardRespDto));
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, boardType + " " + boardCode + "번 게시글 불러오기 실패", readBoardRespDtoList));
 		}
 		
-		return ResponseEntity.ok().body(new CMRespDto<>(1, boardType + " " + boardCode + "번 게시글 불러오기 성공", readBoardRespDto));
+		return ResponseEntity.ok().body(new CMRespDto<>(1, boardType + " " + boardCode + "번 게시글 불러오기 성공", readBoardRespDtoList));
 	}
 	
 	@GetMapping("/load/map/{boardCode}")
@@ -111,7 +111,7 @@ public class BoardController {
 
 //	@CacheEvict(value = "boardList", allEntries = true)
 	@PutMapping("/{boardCode}")
-	public ResponseEntity<?> updateBoardByBoardCode(@PathVariable int boardCode, @RequestBody UpdateBoardReqDto updateBoardReqDto) {
+	public ResponseEntity<?> updateBoardByBoardCode(@PathVariable int boardCode, UpdateBoardReqDto updateBoardReqDto) {
 		boolean status = false;
 		
 		updateBoardReqDto.setBoardCode(boardCode);

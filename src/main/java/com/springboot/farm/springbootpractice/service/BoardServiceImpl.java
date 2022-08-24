@@ -1,21 +1,26 @@
 package com.springboot.farm.springbootpractice.service;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.springboot.farm.springbootpractice.domain.board.BoardRepository;
 import com.springboot.farm.springbootpractice.domain.entity.Board;
+import com.springboot.farm.springbootpractice.domain.entity.BoardFile;
 import com.springboot.farm.springbootpractice.web.dto.board.CreateBoardReqDto;
-import com.springboot.farm.springbootpractice.web.dto.board.CreateBoardRespDto;
 import com.springboot.farm.springbootpractice.web.dto.board.ReadBoardRespDto;
 import com.springboot.farm.springbootpractice.web.dto.board.UpdateBoardReqDto;
 
@@ -26,11 +31,52 @@ import lombok.RequiredArgsConstructor;
 public class BoardServiceImpl implements BoardService{
 	
 	private final BoardRepository boardRepository;
+	
+	@Value("${file.path}")
+	private String filePath;
 
 	@Override
-	public CreateBoardRespDto createBoard(CreateBoardReqDto createBoardReqDto) throws Exception {
-		Board board = createBoardReqDto.toEntity();
+	public int createBoard(CreateBoardReqDto createBoardReqDto) throws Exception {
 		
+		Board board = createBoardReqDto.toEntity();
+		boardRepository.saveBoard(board);
+		
+		if(createBoardReqDto.getFiles() != null) {
+			String originalName = createBoardReqDto.getFiles().get(0).getOriginalFilename();
+			
+			if(!originalName.isBlank()) {
+				
+				List<BoardFile> fileList = new ArrayList<BoardFile>();
+				for(MultipartFile file : createBoardReqDto.getFiles()) {
+					
+					originalName = file.getOriginalFilename();
+					String tempFileName = UUID.randomUUID().toString().replaceAll("-", "") + "_" + originalName; 
+					
+					
+					Path uploadPath = Paths.get(filePath + "files/" + tempFileName);
+					
+					File f = new File(filePath + "files");
+					
+					if(!f.exists()) {
+						f.mkdir();
+					}
+					
+					Files.write(uploadPath, file.getBytes());
+					
+					fileList.add(BoardFile.builder()
+									.file_name(tempFileName)
+									.board_code(board.getBoard_code())
+									.build());
+				}
+				
+				boardRepository.saveFiles(fileList);
+			}
+		}
+		
+		return board.getBoard_code();
+		
+		
+
 //		String title = board.getBoard_title();
 //		String content = board.getBoard_content();
 //		for(int i = 0; i < 50; i++) {
@@ -38,26 +84,28 @@ public class BoardServiceImpl implements BoardService{
 //			board.setBoard_content(content + (i + 1));
 //			boardRepository.save(board);
 //		}
-		System.out.println(board);
-		boardRepository.save(board);
-		
-		return board != null ? board.toCreateBoardRespDto() : null;
 	}
 
 	@Override
-	public ReadBoardRespDto getBoardByBoardCode(int boardCode, String board_type) throws Exception {
-		Board board = null;
+	public List<ReadBoardRespDto> getBoardByBoardCode(int boardCode, String board_type) throws Exception {
+		List<Board> boardList = null;
+		List<ReadBoardRespDto> readBoardRespDtoList = null;
+		
 		int boardType = board_type.equals("notice") ? 1 : board_type.equals("free") ? 2 : 3;
 		
-		board = boardRepository.getBoardByBoardCode(boardCode, boardType);
+		boardList = boardRepository.getBoardByBoardCode(boardCode, boardType);
+		System.out.println(boardList);
 		
-		ReadBoardRespDto readBoardRespDto = board == null ? null : board.toReadBoardRespDto();
+		readBoardRespDtoList = boardList == null ? null :boardList
+															.stream()
+															.map(boardEntity -> boardEntity.toReadBoardRespDto())
+															.collect(Collectors.toList());
 
-		if(readBoardRespDto != null) {
-			readBoardRespDto.setTime(readBoardRespDto.getUpdateDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd___HH:mm:ss")));
+		if(readBoardRespDtoList != null) {
+			readBoardRespDtoList.get(0).setTime(readBoardRespDtoList.get(0).getUpdateDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd___HH:mm:ss")));
 		}
 		
-		return readBoardRespDto;
+		return readBoardRespDtoList;
 	}
 	
 	@Override

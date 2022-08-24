@@ -1,6 +1,7 @@
 package com.springboot.farm.springbootpractice.domain.product;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,7 +15,7 @@ public interface ProductRepository {
 	public int saveList(List<Product> product);
 	public int addUserProduct(Product product);
 	public Product readUserProductByProductName(Product product);
-	public Product readProductByProductName(String productName);
+	public Product readProductByProductName(String product_name, String type);
 	public List<Product> readAllProduct(String type);
 	public List<Product> readMyProductList(int userCode);
 	public List<Product> readRecentlyProductLIst(String date);

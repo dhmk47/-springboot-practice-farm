@@ -1,12 +1,5 @@
 package com.springboot.farm.springbootpractice.web.controller.api.user.auth;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -19,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.farm.springbootpractice.handler.aop.annotation.ValidCheck;
-import com.springboot.farm.springbootpractice.handler.exception.CustomValidationApiException;
 import com.springboot.farm.springbootpractice.service.auth.AuthService;
 import com.springboot.farm.springbootpractice.service.auth.PrincipalDetails;
 import com.springboot.farm.springbootpractice.util.Util;

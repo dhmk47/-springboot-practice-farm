@@ -104,16 +104,28 @@ public class ProductController {
 	
 	@GetMapping("/{productName}")
 	public ResponseEntity<?> getProductByProductName(@PathVariable String productName) {
-		System.out.println("요청이 들어왔습니다.");
 		ReadProductRespDto readProductRespDto = null;
 		try {
-			readProductRespDto = productService.getProductByProductName(productName);
+			readProductRespDto = productService.getProductByProductName(productName, "default");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.ok().body(new CMRespDto<>(-1, "품목 불러오기 실패", readProductRespDto));
 		}
 		
 		return ResponseEntity.ok().body(new CMRespDto<>(1, "품목 불러오기 성공", readProductRespDto));
+	}
+	
+	@GetMapping("/deleted/check/{productName}")
+	public ResponseEntity<?> getDeletedProductByProductName(@PathVariable String productName) {
+		ReadProductRespDto readProductRespDto = null;
+		try {
+			readProductRespDto = productService.getProductByProductName(productName, "delete");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.ok().body(new CMRespDto<>(-1, "삭제된 품목 불러오기 실패", readProductRespDto));
+		}
+		
+		return ResponseEntity.ok().body(new CMRespDto<>(1, "삭제된 품목 불러오기 성공", readProductRespDto));
 	}
 	
 	// type에 따라 모든, 삭제 농산물 리스트 불러옴

@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.springboot.farm.springbootpractice.domain.board.BoardRepository">
-  	<insert id="save" parameterType="com.springboot.farm.springbootpractice.domain.entity.Board"
+  	<insert id="saveBoard" parameterType="com.springboot.farm.springbootpractice.domain.entity.Board"
   	useGeneratedKeys="true" keyProperty="board_code">
   		insert into
   			board_mst
@@ -18,6 +18,21 @@
   			now(),
   			now()
   		)
+  	</insert>
+  	
+  	<insert id="saveFiles" parameterType="java.util.List">
+  		insert into
+  			board_file
+  		values
+  		<foreach collection="fileList" item="file" separator=",">
+  		(
+  			0,
+  			#{file.file_name},
+  			#{file.board_code},
+  			now(),
+  			now()
+  		)
+  		</foreach>
   	</insert>
   	
   	<select id="getBoardList" parameterType="HashMap" resultType="com.springboot.farm.springbootpractice.domain.entity.Board">
@@ -86,12 +101,15 @@
 			
 			bd.views,
 			
+			bf.file_name,
+			
 			bm.create_date,
 			bm.update_date
 		from
 			board_mst bm
 			left outer join user_mst um on (um.usercode = bm.user_code)
 			left outer join board_dtl bd on (bd.board_code = bm.board_code)
+			left outer join board_file bf on (bf.board_code = bm.board_code)
 		where
 			bm.board_code = #{board_code}
 			and board_type = #{board_type}

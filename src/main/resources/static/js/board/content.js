@@ -19,7 +19,7 @@ const boardInfoBox = document.querySelectorAll(".board-info-box span");
 const replyInput = document.querySelector(".reply-input");
 
 // 댓글 리스트
-const replyUl = document.querySelector("section ul");
+const replyUl = document.querySelector(".reply-section ul");
 
 // 댓글 리스트 더 불러오기 위한 변수
 const showMoreReplyBox = document.querySelector(".show-more-reply-box");
@@ -268,12 +268,22 @@ function load() {
             if(response.data != null) {
                 data = response.data;
 
+                if(data[0].files != null) {
+                    const fileList = document.querySelector(".file-list");
+
+                    for(board of data) {
+                        fileList.innerHTML += `
+                        <li>${board.files}</li>
+                        `;
+                    }
+                }
+
             }
         },
         error: errorMessage
     });
 
-    return data;
+    return data[0];
 }
 
 // 수정, 삭제 버튼 보여주기

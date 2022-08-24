@@ -40,18 +40,28 @@
             <span class="type-span visible" th:text="${type}"></span>
             <span class="board-code-span visible" th:text="${boardCode}"></span>
             <article>
-                <section class="title-input">
-                    <input type="text" placeholder="제목을 입력하세요.">
-                </section>
-                <section class="content-input">
-                    <textarea name="" id="" placeholder="내용을 입력하세요."></textarea>
-                </section>
-                <div class="button-box">
-                    <span class="visible">중요 체크</span>
-                    <input type="checkbox" id="importance" class="visible">
-                    <label for="importance" class="importance-label visible"></label>
-                    <button type="button">작성하기</button>
-                </div>
+                <form enctype="multipart/form-data">
+                    <!-- <form enctype="multipart/form-data">
+                        <input type="file" class="image-upload-form">
+                    </form> -->
+                    <input type="file" name="files" multiple="multiple">
+                    <section class="title-input">
+                        <input type="text" placeholder="제목을 입력하세요." name="boardTitle">
+                    </section>
+                    <section class="content-input">
+                        <div class="image-preview">
+
+                        </div>
+                        <textarea name="boardContent" id="" placeholder="내용을 입력하세요.">
+                        </textarea>
+                    </section>
+                    <div class="button-box">
+                        <span class="visible">중요 체크</span>
+                        <input type="checkbox" id="importance" class="visible">
+                        <label for="importance" class="importance-label visible"></label>
+                        <button type="button">작성하기</button>
+                    </div>
+                </form>
             </article>
         </main>
     </div>

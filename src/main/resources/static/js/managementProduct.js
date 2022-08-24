@@ -383,6 +383,36 @@ customButtons[3].onclick = () => {
     }
 }
 
+function checkDeletedProduct() {
+    let loadProductFlag = false;
+    $.ajax({
+        type: "get",
+        url: `/api/v1/product/deleted/check/${inputItems[0].value}`,
+        async: false,
+        dataType: "json",
+        success: (response) => {
+            if(response.data != null) {
+                if(confirm("저번에 삭제했던 품목이 있습니다.\n정보를 불러오시겠습니까?")) {
+                    let deletedObj = response.data;
+
+                    permissionFlag = true;
+                    toggleInputItems();
+
+                    inputItems[1].value = deletedObj.price;
+                    inputItems[2].value = deletedObj.season;
+                    inputItems[3].value = deletedObj.grow_day;
+                    productCode = deletedObj.product_code;
+
+                    loadProductFlag = true;
+                }
+            }
+        },
+        error: errorMessage
+    });
+
+    return loadProductFlag;
+}
+
 // 농산물 체크 버튼
 checkButton.onclick = () => {
     if (isEmpty(inputItems[0].value)) {
@@ -391,6 +421,15 @@ checkButton.onclick = () => {
     }else if(checkedProductName == inputItems[0].value){
         return;
     }
+
+    if(addProductFlag) {
+        let loadProductFlag = checkDeletedProduct();
+
+        if(loadProductFlag) {
+            return;
+        }
+    }
+
     $.ajax({
         data: "get",
         url: `/api/v1/product/${inputItems[0].value}`,
@@ -515,7 +554,8 @@ submitButton[0].onclick = () => {
             success: (response) => {
                 if(response.data != 0) {
                     alert(response.data + "개의 농산물 다시 등록 성공");
-                    location.replace("/api/v1/product/deleted/new");
+                    location.replace("/product/management");
+                    customButtons[3].click();
                 }else {
                     alert("농산물 다시 등록 실패");
                 }
@@ -538,6 +578,7 @@ submitButton[0].onclick = () => {
                 url: "/api/v1/product/new",
                 contentType: "application/json",
                 data: JSON.stringify({
+                    productCode: productCode,
                     productName: inputItems[0].value,
                     price: inputItems[1].value,
                     season: inputItems[2].value,

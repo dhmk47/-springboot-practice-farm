@@ -1,5 +1,9 @@
 package com.springboot.farm.springbootpractice.web.dto.board;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.springboot.farm.springbootpractice.domain.entity.Board;
 
 import lombok.Data;
@@ -11,6 +15,7 @@ public class CreateBoardReqDto {
 	private int userCode;
 	private int boardType;
 	private boolean importanceFlag;
+	private List<MultipartFile> files;
 	
 	public Board toEntity() {
 		return Board.builder()

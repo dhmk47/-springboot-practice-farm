@@ -6,6 +6,7 @@ const userDtlMenu = document.querySelector(".user-dtl-menu");
 const userDtlMenuItems = document.querySelectorAll(".user-dtl-menu span");
 
 //main
+// const imageUploadInput = document.querySelector(".image-upload-form");
 const titleInput = document.querySelector(".title-input input");
 const contentInput = document.querySelector(".content-input textarea");
 
@@ -90,30 +91,59 @@ document.querySelector("main").onmouseover = () => {
 
 /*  main  */
 
+// imageUploadInput.onchange = (e) => {
+//     let reader = new FileReader();
+
+//     reader.onload = (e) => {
+//         let img = document.createElement("img");
+//         img.setAttribute("src", e.target.result);
+//         // document.querySelector(".image-preview").appendChild(img);
+//         document.querySelector(".content-input textarea").appendChild(img);
+//     }
+
+//     reader.readAsDataURL(e.target.files[0]);
+
+//     // let newImage = document.createElement("img");
+//     // newImage.setAttribute("class", "img");
+//     // newImage.src = URL.createObjectURL(file);
+//     // contentInput.appendChild(newImage);
+
+// }
+
 submitButton.onclick = () => {
-    let title = titleInput.value;
-    let content = contentInput.value;
+    // let title = titleInput.value;
+    // let content = contentInput.value;
 
     let importanceFlag = importanceCheckBox.checked;
 
+    let formData = new FormData(document.querySelector("form"));
+
+    formData.append("importanceFlag", importanceFlag);
+    
+    formData.forEach((v, k) => {
+        console.log("key: " + k);
+        console.log("value: " + v);
+    });
+
     if(type != "modify") {  // 게시글 작성
-        createBoard(title, content, importanceFlag);
+        
+        formData.append("userCode", userCode);
+        formData.append("boardType", boardTypeNumber);
+        createBoard(formData);
     }else {                 // 게시글 수정
-        updateBoard(title, content, importanceFlag);
+        formData.append("boardCode", boardCode);
+        updateBoard(formData);
     }
 }
 
-function updateBoard(title, content, importanceFlag) {
+function updateBoard(formData) {
     $.ajax({
         type: "put",
         url: `/api/v1/board/${boardCode}`,
-        contentType: "application/json",
-        data: JSON.stringify({
-            boardCode: boardCode,
-            boardTitle: title,
-            boardContent: content,
-            importanceFlag: importanceFlag
-        }),
+        enctype: "multipart/form-data",
+        contentType: false,
+        processData: false,
+        data: formData,
         dataType: "json",
         success: (response) => {
             if(response.data) {
@@ -123,22 +153,18 @@ function updateBoard(title, content, importanceFlag) {
     });
 }
 
-function createBoard(title, content, importanceFlag) {
+function createBoard(formData) {
     $.ajax({
         type: "post",
         url: "/api/v1/board/new",
-        data: JSON.stringify({
-            boardTitle: title,
-            boardContent: content,
-            "userCode": userCode,
-            boardType: boardTypeNumber,
-            "importanceFlag": importanceFlag
-        }),
-        contentType: "application/json",
+        enctype: "multipart/form-data",
+        contentType: false,
+        processData: false,
+        data: formData,
         dataType: "json",
         success: (response) => {
             if(response.data != null) {
-                location.replace(`/content?type=${boardType}&number=${response.data.boardCode}`);
+                location.replace(`/content?type=${boardType}&number=${response.data}`);
             }else {
                 alert("게시글 작성 실패!");
             }

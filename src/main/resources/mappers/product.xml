@@ -10,7 +10,14 @@
   		insert into
   			product_kind
   		values(
+  		<choose>
+  			<when test="product_code != 0">
+  			#{product_code},
+  			</when>
+  			<otherwise>
   			0,
+  			</otherwise>
+  		</choose>
   			#{product_name},
   			#{price},
   			#{season},
@@ -103,7 +110,7 @@
   			and user_code = #{user_code}
   	</select>
   	
-  	<select id="readProductByProductName" parameterType="String" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">
+  	<select id="readProductByProductName" parameterType="HashMap" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">
   		select
   			product_code,
   			product_name,
@@ -113,9 +120,16 @@
   			create_date,
   			update_date
   		from
-  			product_kind
+  		<choose>
+  			<when test="type.equals('default')">
+	  			product_kind
+  			</when>
+  			<otherwise>
+  				deleted_product
+  			</otherwise>
+  		</choose>
   		where
-  			product_name = #{productName}
+  			product_name = #{product_name}
   	</select>
   	
   	<select id="readRecentlyProductLIst" parameterType="String" resultType="com.springboot.farm.springbootpractice.domain.entity.Product">

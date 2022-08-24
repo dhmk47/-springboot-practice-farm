@@ -1,7 +1,9 @@
 package com.springboot.farm.springbootpractice.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -55,10 +57,10 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
-	public ReadProductRespDto getProductByProductName(String productName) throws Exception {
+	public ReadProductRespDto getProductByProductName(String productName, String type) throws Exception {
 		Product readProductRespDto = null;
 		
-		readProductRespDto = productRepository.readProductByProductName(productName);
+		readProductRespDto = productRepository.readProductByProductName(productName, type);
 		
 		return readProductRespDto == null ? null : readProductRespDto.toReadRespDto();
 	}

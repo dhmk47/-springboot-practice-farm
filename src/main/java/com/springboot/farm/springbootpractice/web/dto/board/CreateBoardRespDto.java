@@ -1,6 +1,7 @@
 package com.springboot.farm.springbootpractice.web.dto.board;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,7 @@ public class CreateBoardRespDto {
 	private int boardCode;
 	private String boardTitle;
 	private String boardContent;
+	private List<BoardFileRespDto> files;
 	private int userCode;
 	private int boardType;
 	private String name;

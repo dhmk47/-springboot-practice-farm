@@ -16,7 +16,7 @@ public interface ProductService {
 	public boolean addUserProduct(BuyProductDto buyProductDto) throws Exception;
 	public int addProductToList(CreateProductListReqDto createProductListReqDto) throws Exception;
 	public ReadProductRespDto getUserProductByProductName(ReadProductReqDto readProductReqDto) throws Exception;
-	public ReadProductRespDto getProductByProductName(String productName) throws Exception;
+	public ReadProductRespDto getProductByProductName(String productName, String type) throws Exception;
 	public List<ReadProductRespDto> getAllProductList(String type) throws Exception;
 	public List<ReadProductRespDto> getMyProductList(int userCode) throws Exception;
 	public List<ReadProductRespDto> getRecentlyProductList(String date) throws Exception;
